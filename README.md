@@ -15,3 +15,6 @@ Mögliche wissenschaftliche Arbeiten:
 - https://github.com/diiq/frontend-fuzzer
 - EWVHunter: Grey-Box Fuzzing with Knowledge Guide on Embedded Web Front-Ends https://www.mdpi.com/2076-3417/10/11/4015
 
+### Motivation
+
+Ein Beispiel was wir schreiben könnten warum Frontend Fuzzing wichtig ist: 'Bei klassischen Webanwendungen berechnet und liefert der Server ein HTML-Dokument aus. Seit einigen Jahren gibt es einen Trend weg von Serverlastiger Code-Ausführung hin zu Clientlastiger Code-Ausführung. *irgendwas mit bugs sind schlecht; sicherheit ist wichtig; Wenn Website nicht funktioniert ist es schlecht;...* Aus diesem Grund müssen Fehler im Frontend schnell und effizient aufgedeckt werden. Fuzzer können eingesetzt werden um diese Fehler zu finden. ...'
