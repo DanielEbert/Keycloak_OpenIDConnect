@@ -17,4 +17,4 @@ Mögliche wissenschaftliche Arbeiten:
 
 ### Motivation
 
-Ein Beispiel was wir schreiben könnten warum Frontend Fuzzing wichtig ist: 'Bei klassischen Webanwendungen berechnet und liefert der Server ein HTML-Dokument aus. Seit einigen Jahren gibt es einen Trend weg von Serverlastiger Code-Ausführung hin zu Clientlastiger Code-Ausführung. *irgendwas mit bugs sind schlecht; sicherheit ist wichtig; Wenn Website nicht funktioniert ist es schlecht;...* Aus diesem Grund müssen Fehler im Frontend schnell und effizient aufgedeckt werden. Fuzzer können eingesetzt werden um diese Fehler zu finden. ...'
+Ein Beispiel was wir schreiben könnten warum Frontend Fuzzing wichtig ist: 'Bei klassischen Webanwendungen berechnet und liefert der Server ein HTML-Dokument aus. Seit einigen Jahren gibt es einen Trend weg von Serverlastiger Code-Ausführung hin zu Clientlastiger Code-Ausführung. *irgendwas mit bugs sind schlecht; sicherheit ist wichtig; Wenn Website nicht funktioniert ist es schlecht;...* Aus diesem Grund müssen Fehler im Frontend schnell und effizient aufgedeckt werden. Fuzzer können eingesetzt werden, um diese Fehler zu finden. ...'
