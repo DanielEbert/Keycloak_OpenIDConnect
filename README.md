@@ -43,7 +43,7 @@ Kommentar zum MVP - sieht geschmeidig aus! Wenn ich es richtig verstehe, willst 
 
 Jedoch bleibt die Frage bestehen - Was sind die Folgen von DOM XSS, ich denke hartkodierte Passwörter reichen nicht.
 
-
+(Ebert) MVP findet erstmal noch kein XSS oder so sondern nur standard dinge wie unhandeled exceptions. MVP ist aber so dass man es einfach in die richtung erweitern kann die man möchte, z.B. finden von XSS oder was anders. beim finden von XSS muss man dann die logik implementieren, dass die XSS erkannt werden. könnte man z.B. machen indem man alle alert events mitloggt (das geht in 3 zeilen python code). Von Schwachstellen die bei einzig und allein nur bei Webanwendungen vorkommen (XSS, owasp top 10, ...) hast du mehr ahnung darum wollte ich mit dir morgen nochmal kurz darüber reden was da am meisten sinn machen könnte. hat der karg irgendetwas gesagt, dass wir sowas spezielles wie XSS finden müssen oder würden unhandeled exceptions reichen?
 
 
 
