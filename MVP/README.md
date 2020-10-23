@@ -14,4 +14,4 @@ in the gitroot/MVP folder in new tab: python3 -m http.server
 ./main.py
 ~~~
 
-Corpus should contain items, after maybe 5 minutes the letter 'B' should be in the corpus
+Corpus should contain items, after maybe 1 minutes the letter 'B' should be in the corpus
