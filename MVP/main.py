@@ -3,6 +3,7 @@
 from MVPFuzzer import MVPFuzzer
 
 import pyppeteer
+
 import asyncio
 import time
 
@@ -12,6 +13,11 @@ async def main():
     b = await pyppeteer.launch()
     for _ in range(10000):
         p = await b.newPage()
+
+        @p.on('pageerror')
+        def on_error(msg):
+          print(msg)
+
         await p.coverage.startJSCoverage({'resetOnNavigation': False})
         await p.goto('http://0.0.0.0:8000/example.html')
 

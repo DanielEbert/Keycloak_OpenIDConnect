@@ -22,6 +22,7 @@ $( "input" )
     var value = $( this ).val();
     if (value == 'B') {
       $( "p" ).text( "FLAG: njkdsnjlsnglsjnglks" )
+      throw new Error('hello world')
     } else {
       $( "p" ).text( value );
     }
