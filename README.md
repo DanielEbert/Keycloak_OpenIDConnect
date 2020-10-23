@@ -39,5 +39,11 @@ Dom Flow is a feature where one can drag and drop the sources and sinks as he wi
 Kopiert von https://firefox-source-docs.mozilla.org/tools/fuzzing/index.html#random-ui-interaction
 A third way to test programs and in particular user interfaces is by directly interacting with the <b>UI in a random way</b>, typically in combination with other actions the program has to perform. Imagine for example an automated browser that surfs through the web and randomly performs actions such as scrolling, zooming and clicking links. The nice thing about this approach is that you likely find many issues that the end-user also experiences. However, this approach typically suffers from bad reproducibility (see also Reproducibility) and is therefore often of limited use. An example for a fuzzing tool using this technique is Android Monkey. At Mozilla however, we currently don’t make much use of this approach.
 
+Kommentar zum MVP - sieht geschmeidig aus! Wenn ich es richtig verstehe, willst du den Schwerpunkt auf DOM based XSS legen ( Beispiel wäre https://github.com/rverton/xssmap , DOMinator Tool , DOM Snitch) Arbeit: https://people.cispa.io/ben.stock/papers/lekies2013flows.pdf
+
+Jedoch bleibt die Frage bestehen - Was sind die Folgen von DOM XSS, ich denke hartkodierte Passwörter reichen nicht.
+
+
+
 
 
