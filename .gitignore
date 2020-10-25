@@ -1,0 +1,8 @@
+expose/**
+
+!expose/images
+!expose/images/**
+!expose/expose_daniel_ebert_sebastian_scherer.tex
+!expose/literatur.bib
+
+**/docs/**
