@@ -67,9 +67,15 @@ Die verbreitetsten Schwachstellen sind:
 \subsection{Umsetzung von SSO innerhalb einer Beispielwebanwendung}
 SSO soll an einer Beispielwebanwendung mit Keycloak gezeigt werden. Keycloak ist eine Open-Source-Lösung für Identity und Access Management (IAM), die auf die Entwicklung moderner Anwendungen und Services ausgerichtet ist. Die Community-Version von Red Hat macht es einfach, die Authentifizierung an Anwendungen und Diensten mit wenig bis gar keinem Code sicher zu implementieren. \cite{RFC6819}
 
-Die Umsetzung basiert auf der oben gezeigten Architektur. Im praktischen Teil setzen wir einen Keycloak Server auf. Wir erstellen eine Single Page Application mit ReactJS, bei der sich User in Keycloak registrieren und einloggen können und Ressourcen von 2 Backend Systemen über eine REST API abrufen können. Die Backend Systeme sind in Python geschrieben und verwenden Flask. Diese Backend und Frontend Systeme werden in Keycloak angebunden und integriert. Dabei fokussieren wir uns auf die Themen User Registration, User Login, User Logout, Session Management. Der Keycloak Server, als auch die Backend und Frontend Systeme laufen in getrennten Docker Containern. Wir verwenden Docker Compose um die Container hinsichtlich z.B. des Netwerks oder des persistenten Speichers hin zu konfigurieren.
+Die Umsetzung basiert auf der oben gezeigten Architektur. Im praktischen Teil setzen wir einen Keycloak Server im Standalone Mode auf. Wir erstellen eine Single Page Application mit ReactJS, bei der sich User in Keycloak registrieren und einloggen können und Ressourcen von 2 Backend Systemen über eine REST API abrufen können. Die Backend Systeme sind in Python geschrieben und verwenden Flask. Diese Backend und Frontend Systeme werden in Keycloak angebunden und integriert. Dabei fokussieren wir uns auf die SSO Aspekte von Keycloak wie User Registration, User Login, User Logout, und Session Management. Keycloak Features die weniger mit SSO zu tun haben, wie z.B. Identity Brokering, Rollen und Gruppen, externe Datenbanken, und Log Events, werden nicht näher bearbeitet. Der Keycloak Server, als auch die Backend und Frontend Systeme laufen in getrennten Docker Containern. Wir verwenden Docker Compose um die Container hinsichtlich z.B. des Netwerks oder des persistenten Speichers hin zu konfigurieren.
 	
 	
+
+% https://www.keycloak.org/documentation.html
+% https://github.com/thomasdarimont/awesome-keycloak < verlinkt 100 weitere websiten die etwas mit keycloak zu tun haben
+% https://developers.redhat.com/blog/2019/12/11/keycloak-core-concepts-of-open-source-identity-and-access-management/
+
+
 	% keycloak server aufsetzen und konfigurieren
 	% 1 sample reactjs single page app using keycloak as SSO
 	% 2 backend services using python flask
