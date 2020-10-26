@@ -35,12 +35,12 @@ Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizie
 Die folgenden Untersektionen beinhalten unsere vorläufige Gliederung.
 
 \subsection{Einführung}	
-Einleitendes Kapitel in das Thema SSO, welches die Definition des Mechanismus enthält und hier erläutern wir ebenfalls die Use-Cases für SSO bei Webanwendungen. SSO ist für die Sicherheit eine Methode um die Psychological Acceptability der Benutzer zu erhöhen, da sie nicht dazu gezwungen werden sich jedesmal manuell zu authentifizieren.
-
-User sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Clients sind Entitäten, die Keycloak zur Authentifizierung eines Benutzers beauftragen können. Clients stellen Ressourcen zur Verfügung, deren Zugriff auf die authentifizierten und autorisierten User beschränkt ist. In Keycloak erhalten User nach einem erfolgreichen Log-In einen Token. User können sich mit diesem Token bei mehreren Clients authentifizieren, ohne sich erneut z.B. mit E-Mail und Passwort einloggen zu müssen. Tokens sind von Keycloak signiert und können deshalb auf ihre Echtheit überprüft werden.
+Einleitendes Kapitel in das Thema SSO, welches die Definition des Mechanismus enthält, die Einordnung des Themas, die grundsätzliche Problemstellung und -abgrenzung, die Use-Cases für SSO bei Webanwendungen, das Ziel der Arbeit und unser Vorgehen. SSO ist für die Sicherheit eine Methode um die Psychological Acceptability der Benutzer zu erhöhen, da sie nicht dazu gezwungen werden sich jedesmal manuell zu authentifizieren.
 	
 \subsection{Aufbau von SSO}	
-Es gibt mehrere Möglichkeiten SSO umzusetzen. Da der Umfang der Ausarbeitung 20 Seiten betragen soll, ist es nicht möglich alle SSO-Architekturen vorzustellen. Unsere praktische Umsetzung basiert auf Keycloak und dem OpenID Connect (OIDC) Standardprotokoll für Autorisierung und Authentifizierung und daher werden wir diese Architektur vorstellen. Wir haben uns für OIDC entschieden, da dieses speziell für Web Applications entwickelt worden ist. [1]
+Es gibt mehrere Möglichkeiten SSO umzusetzen. Da der Umfang der Ausarbeitung 20 Seiten betragen soll, ist es nicht möglich alle SSO-Architekturen vorzustellen. Unsere praktische Umsetzung basiert auf Keycloak und dem OpenID Connect (OIDC) Standardprotokoll für Autorisierung und Authentifizierung und daher werden wir diese Architektur vorstellen. Wir haben uns für OIDC entschieden, da dieses speziell für Web Applications entwickelt worden ist. TODO [1]
+
+User sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Clients sind Entitäten, die Keycloak zur Authentifizierung eines Benutzers beauftragen können. Clients stellen Ressourcen zur Verfügung, deren Zugriff auf die authentifizierten und autorisierten User beschränkt ist. In Keycloak erhalten User nach einem erfolgreichen Log-In einen Token. User können sich mit diesem Token bei mehreren Clients authentifizieren, ohne sich erneut z.B. mit E-Mail und Passwort einloggen zu müssen. Tokens sind von Keycloak signiert und können deshalb auf ihre Echtheit überprüft werden.
 
 \subsection{SSO-Threat Model}
 	
@@ -64,12 +64,12 @@ Die verbreitetsten Schwachstellen sind:
 	\item Open Redirectors
 \end{itemize}
 
+TODO: basti hast du quellen für diese sektion?
+
 \subsection{Umsetzung von SSO innerhalb einer Beispielwebanwendung}
 SSO soll an einer Beispielwebanwendung mit Keycloak gezeigt werden. Keycloak ist eine Open-Source-Lösung für Identity und Access Management (IAM), die auf die Entwicklung moderner Anwendungen und Services ausgerichtet ist. Die Community-Version von Red Hat macht es einfach, die Authentifizierung an Anwendungen und Diensten mit wenig bis gar keinem Code sicher zu implementieren. \cite{RFC6819}
 
 Die Umsetzung basiert auf der oben gezeigten Architektur. Im praktischen Teil setzen wir einen Keycloak Server im Standalone Mode auf. Wir erstellen eine Single Page Application mit ReactJS, bei der sich User in Keycloak registrieren und einloggen können und Ressourcen von 2 Backend Systemen über eine REST API abrufen können. Die Backend Systeme sind in Python geschrieben und verwenden Flask. Diese Backend und Frontend Systeme werden in Keycloak angebunden und integriert. Dabei fokussieren wir uns auf die SSO Aspekte von Keycloak wie User Registration, User Login, User Logout, und Session Management. Keycloak Features die weniger mit SSO zu tun haben, wie z.B. Identity Brokering, Rollen und Gruppen, externe Datenbanken, und Log Events, werden nicht näher bearbeitet. Der Keycloak Server, als auch die Backend und Frontend Systeme laufen in getrennten Docker Containern. Wir verwenden Docker Compose um die Container hinsichtlich z.B. des Netwerks oder des persistenten Speichers hin zu konfigurieren.
-	
-	
 
 % https://www.keycloak.org/documentation.html
 % https://github.com/thomasdarimont/awesome-keycloak < verlinkt 100 weitere websiten die etwas mit keycloak zu tun haben
@@ -87,9 +87,11 @@ Die Umsetzung basiert auf der oben gezeigten Architektur. Im praktischen Teil se
 	
 	
 	
-	
-	
-	%[1] https://www.keycloak.org/docs/latest/securing_apps/#openid-connect-vs-saml
+	% TODO: Quellen einfügen und \ref anstelle von [1] ...
+	% [1] https://www.keycloak.org/docs/latest/securing_apps/#openid-connect-vs-saml
+	% [2] https://www.researchgate.net/publication/309225903_A_Review_on_Single_Sign_on_Enabling_Technologies_and_Protocols
+	% [3] https://www.researchgate.net/publication/257743941_A_Survey_on_Single_Sign-On_Techniques
+	% [4] https://www.keycloak.org/documentation.html
 	
 	%* https://www.ei.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/30/oidc-security.pdf
 	%* https://openid.net/specs/openid-connect-core-1_0.html
