@@ -35,12 +35,12 @@ Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizie
 Die folgenden Untersektionen beinhalten unsere vorläufige Gliederung.
 
 \subsection{Einführung}	
-Einleitendes Kapitel in das Thema SSO, welches die Definition des Mechanismus enthält und erläutern die Use-Cases für SSO bei Webanwendungen. SSO ist für die Sicherheit eine Methode um die Psychological Acceptability der Benutzer zu erhöhen, da sie nicht dazu gezwungen werden sich jedesmal manuell zu authentifizieren.
+Einleitendes Kapitel in das Thema SSO, welches die Definition des Mechanismus enthält und hier erläutern wir ebenfalls die Use-Cases für SSO bei Webanwendungen. SSO ist für die Sicherheit eine Methode um die Psychological Acceptability der Benutzer zu erhöhen, da sie nicht dazu gezwungen werden sich jedesmal manuell zu authentifizieren.
 
 User sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Clients sind Entitäten, die Keycloak zur Authentifizierung eines Benutzers beauftragen können. Clients stellen Ressourcen zur Verfügung, deren Zugriff auf die authentifizierten und autorisierten User beschränkt ist. In Keycloak erhalten User nach einem erfolgreichen Log-In einen Token. User können sich mit diesem Token bei mehreren Clients authentifizieren, ohne sich erneut z.B. mit E-Mail und Passwort einloggen zu müssen. Tokens sind von Keycloak signiert und können deshalb auf ihre Echtheit überprüft werden.
 	
 \subsection{Aufbau von SSO}	
-Es gibt mehrere Möglichkeiten SSO umzusetzen. Da der Umfang der Ausarbeitung 20 Seiten betragen soll, ist es nicht möglich alle SSO-Architekturen vorzustellen. Unsere praktische Umsetzung basiert auf dem OpenID Connect (OIDC) Standardprotokoll für Autorisierung und Authentifizierung und daher werden wir diese Architektur vorstellen. Wir haben uns für OIDC entschieden, da dieses speziell für web applications entwickelt worden ist. [1]
+Es gibt mehrere Möglichkeiten SSO umzusetzen. Da der Umfang der Ausarbeitung 20 Seiten betragen soll, ist es nicht möglich alle SSO-Architekturen vorzustellen. Unsere praktische Umsetzung basiert auf Keycloak und dem OpenID Connect (OIDC) Standardprotokoll für Autorisierung und Authentifizierung und daher werden wir diese Architektur vorstellen. Wir haben uns für OIDC entschieden, da dieses speziell für Web Applications entwickelt worden ist. [1]
 
 \subsection{SSO-Threat Model}
 	
