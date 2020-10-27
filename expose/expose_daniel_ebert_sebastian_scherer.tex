@@ -71,9 +71,20 @@ SSO soll an einer Beispielwebanwendung mit Keycloak gezeigt werden. Keycloak ist
 
 Die Umsetzung basiert auf der oben gezeigten Architektur. Im praktischen Teil setzen wir einen Keycloak Server im Standalone Mode auf. Wir erstellen eine Single Page Application mit ReactJS, bei der sich User in Keycloak registrieren und einloggen können und Ressourcen von 2 Backend Systemen über eine REST API abrufen können. Die Backend Systeme sind in Python geschrieben und verwenden Flask. Diese Backend und Frontend Systeme werden in Keycloak angebunden und integriert. Dabei fokussieren wir uns auf die SSO Aspekte von Keycloak wie User Registration, User Login, User Logout, und Session Management. Keycloak Features die weniger mit SSO zu tun haben, wie z.B. Identity Brokering, Rollen und Gruppen, externe Datenbanken, und Log Events, werden nicht näher bearbeitet. Der Keycloak Server, als auch die Backend und Frontend Systeme laufen in getrennten Docker Containern. Wir verwenden Docker Compose um die Container hinsichtlich z.B. des Netwerks oder des persistenten Speichers hin zu konfigurieren.
 
+% kommt auf jeden fall in literatur:
+% https://arxiv.org/pdf/1508.04324.pdf
+% https://arxiv.org/pdf/1704.08539.pdf
+% https://www.ecsec.de/fileadmin/Ecsec-files/pub//oidc_connect_sok.pdf
+% https://pdfs.semanticscholar.org/3194/f5175fa44005012a15f67dc48fa711b2c0b3.pdf
+% https://www.pingidentity.com/content/dam/pic/downloads/resources/white-papers/en/openid-connect-white-paper.pdf?id=b6322a80-f285-11e3-ac10-0800200c9a66
+% https://arxiv.org/ftp/arxiv/papers/1808/1808.10624.pdf
+% https://www.ru.nl/publish/pages/769526/z_researchpaper_sso_final_nick_heijmink_s4250559.pdf
+
 % https://www.keycloak.org/documentation.html
+% https://arxiv.org/pdf/1601.01229.pdf
 % https://github.com/thomasdarimont/awesome-keycloak < verlinkt 100 weitere websiten die etwas mit keycloak zu tun haben
 % https://developers.redhat.com/blog/2019/12/11/keycloak-core-concepts-of-open-source-identity-and-access-management/
+% https://www.evidian.com/pdf/wp-esso-en.pdf
 
 
 	% keycloak server aufsetzen und konfigurieren
