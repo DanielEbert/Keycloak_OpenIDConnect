@@ -11,7 +11,7 @@ const Register = () => {
   }, [keycloak])
 
   return (
-    <li><a className="black-text" onClick={register}>Register</a></li>
+    <li><a className="black-text" onClick={register} href="#top">Register</a></li>
   )
 }
 

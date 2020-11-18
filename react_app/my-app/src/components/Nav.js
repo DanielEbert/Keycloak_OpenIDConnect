@@ -19,7 +19,7 @@ class Nav extends Component {
 
   render() {
     return (
-      <nav>
+      <nav id="top">
         <div className="nav-wrapper light-green lighten-2">
           <div className="container">
             <span className="brand-logo grey-text text-darken-4">SSO Example</span>

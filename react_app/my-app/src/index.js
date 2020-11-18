@@ -15,11 +15,11 @@ const keycloak = Keycloak({
 })
 
 const eventLogger = (event, error) => {
-  console.log('onKeycloakEvent', event, error)
+  //console.log('onKeycloakEvent', event, error)
 }
 
 const tokenLogger = (tokens) => {
-  console.log('onKeycloakTokens', tokens)
+  //console.log('onKeycloakTokens', tokens)
 }
 
 ReactDOM.render(

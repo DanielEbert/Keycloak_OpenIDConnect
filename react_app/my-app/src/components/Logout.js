@@ -11,7 +11,7 @@ const Logout = () => {
   }, [keycloak])
 
   return (
-    <li><a className="black-text" onClick={logout}>Logout</a></li>
+    <li><a className="black-text" onClick={logout} href="#top">Logout</a></li>
   )
 }
 

@@ -11,7 +11,7 @@ const Login = () => {
   }, [keycloak])
 
   return (
-    <li><a className="black-text" onClick={login}>Login</a></li>
+    <li><a className="black-text" onClick={login} href="#top">Login</a></li>
   )
 }
 

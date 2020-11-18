@@ -23,11 +23,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Root = () => {
   const { keycloak } = useKeycloak()
+  const [token, updateToken] = React.useState(keycloak.tokenParsed)
   const [modalIsOpen, openModal] = React.useState(false)
   const [modalContent, changeModalContent] = React.useState({})
 
   const classes = useStyles();
  
+  keycloak.onAuthRefreshSuccess = function() { 
+    updateToken(keycloak.tokenParsed)
+  }
 
   const onOpenModal = () => {
     openModal(true);
@@ -98,7 +102,7 @@ const Root = () => {
             <div className="row" style={{marginTop:'25px'}}>
               <h3 className="center">Token</h3>
               <div className="divider"></div>
-              <pre style={{marginTop:'20px'}}>{JSON.stringify(keycloak.tokenParsed, null, 2)}</pre>
+              <pre style={{marginTop:'20px'}}>{JSON.stringify(token, null, 2)}</pre>
             </div>
           </div>
           : ""}
