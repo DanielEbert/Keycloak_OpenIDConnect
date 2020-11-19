@@ -1,6 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import Modal from '@material-ui/core/Modal';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Typography from '@material-ui/core/Typography';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -23,14 +29,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Root = () => {
   const { keycloak } = useKeycloak()
-  const [token, updateToken] = React.useState(keycloak.tokenParsed)
+  const [IDToken, updateIDToken] = React.useState(keycloak.idTokenParsed)
+  const [accessToken, updateAccessToken] = React.useState(keycloak.tokenParsed)
+  const [refreshToken, updateRefreshToken] = React.useState(keycloak.refreshTokenParsed)
   const [modalIsOpen, openModal] = React.useState(false)
   const [modalContent, changeModalContent] = React.useState({})
 
   const classes = useStyles();
  
   keycloak.onAuthRefreshSuccess = function() { 
-    updateToken(keycloak.tokenParsed)
+    updateIDToken(keycloak.idTokenParsed)
+    updateAccessToken(keycloak.tokenParsed)
+    updateRefreshToken(keycloak.refreshTokenParsed)
   }
 
   const onOpenModal = () => {
@@ -100,9 +110,32 @@ const Root = () => {
         {keycloak.authenticated ? 
           <div className="container">
             <div className="row" style={{marginTop:'25px'}}>
-              <h3 className="center">Access Token</h3>
-              <div className="divider"></div>
-              <pre style={{marginTop:'20px'}}>{JSON.stringify(token, null, 2)}</pre>
+            <h3 className="center" style={{marginTop:'50px'}}>Tokens</h3>
+            <div className="divider" ></div>
+            <Accordion style={{marginTop:'25px'}}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <h6>ID Token</h6>
+              </AccordionSummary>
+              <AccordionDetails>
+                <pre>{JSON.stringify(IDToken, null, 2)}</pre>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion style={{marginTop:'15px'}}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <h6>Access Token</h6>
+              </AccordionSummary>
+              <AccordionDetails>
+                <pre>{JSON.stringify(accessToken, null, 2)}</pre>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion style={{marginTop:'15px'}}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <h6>Refresh Token</h6>
+              </AccordionSummary>
+              <AccordionDetails>
+                <pre>{JSON.stringify(refreshToken, null, 2)}</pre>
+              </AccordionDetails>
+            </Accordion>
             </div>
           </div>
           : ""}
