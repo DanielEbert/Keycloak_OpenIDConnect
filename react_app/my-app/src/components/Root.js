@@ -100,7 +100,7 @@ const Root = () => {
         {keycloak.authenticated ? 
           <div className="container">
             <div className="row" style={{marginTop:'25px'}}>
-              <h3 className="center">Token</h3>
+              <h3 className="center">Access Token</h3>
               <div className="divider"></div>
               <pre style={{marginTop:'20px'}}>{JSON.stringify(token, null, 2)}</pre>
             </div>
