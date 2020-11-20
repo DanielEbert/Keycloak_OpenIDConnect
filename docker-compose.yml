@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  postgres:
+      image: postgres
+      volumes:
+        - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: keycloak
+        POSTGRES_USER: keycloak
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  keycloak:
+      image: quay.io/keycloak/keycloak:latest
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_SCHEMA: public
+        DB_PASSWORD: ${POSTGRES_PASSWORD}
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      depends_on:
+        - postgres
+      ports:
+        - "8080:8080"
+  frontend1:
+      image: danielebert00/reactfrontend3000:1
+      ports:
+        - "3000:3000"
+  frontend2:
+      image: danielebert00/reactfrontend3001:1
+      ports:
+        - "3001:3001"
+  backendservice1:
+      image: danielebert00/backendservice:1
+      environment:
+        PORT: 5001
+      ports:
+        - "5001:5001"
+  backendservice2:
+      image: danielebert00/backendservice:1
+      environment:
+        PORT: 5002
+      ports:
+        - "5002:5002"
