@@ -3,6 +3,8 @@
 
 % Abstract?
 
+%TODO cite vor oder nach dem Punkt?
+
 \section{Einleitung} \label{EB_Einleitung}
 
 Durch das Single Sign-on (SSO) muss sich ein User nur einmal unter Zuhilfenahme eines einzigen Authentifizierungsverfahrens identifizieren. Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizieren und die erkannte Identität zu bestätigen. Dies hat den Vorteil, dass sich der User nur einmal identifizieren muss und seine Identität sicher an weitere Systeme weitergegeben werden kann, ohne dass sich dieser dort erneut anmelden muss. Dadurch hat der User Zugriff auf mehrere Systeme, wie z.B. Front-End Anwendungen oder Back-end Services, bei dem die Ressourcen für die authentifizierten und autorisierten User beschränkt ist. \cite{MKS2009}
@@ -15,23 +17,37 @@ In der Praxis wird allerdings in vielen Fällen das selbe Passwort für mehrere 
 
 \subsection{Vorteile von SSO}
 
+%TODO psychological acceptability
 Neben den im letzten Abschnitt erläuterten Vorteilen im Hinblick auf die User hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern [34]. Weiter sorgt SSO für eine simplere Administration, da alle Userdaten in einem System aufbewahrt werden [34]. Außerdem sind die User eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
 
 \subsection{Nachteile von SSO}
 
 SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits existierende Systeme einzubauen [34]. Um dem entgegenzuwirken bieten SSO Lösungen wie Keycloak fertige Adapter für verschiedene Programmiersprachen und Systeme an, wie z.B. für ReactJS [35] [36]. Außerdem könnte man durch das SSO System einen Single Point of Failure haben. Auch dem kann entgegengewirkt werden. Zum Beispiel bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden [33]. Diese Instanzen können auf mehrere Server verteilt werden um die Redundanz zu erhöhen. % TODO: logged in desktop?
 
-\subsection{Abgrenzung}
+\subsection{Abgrenzung und Definition}
 
-Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der User mit Web-basierten Applikationen und Services.
+Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der User mit webbasierten Applikationen und Services.
 
-Bei SSO können verschiedene Protokolle wie OpenID Connect oder SAML 2.0 eingesetzt werden. In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses speziell für Webanwendungen entwickelt worden ist und außerdem das modernere Protokoll ist [37]. Das OpenID Connect Protokoll ist eine Erweiterung des OAuth 2.0 Protokolls [1].
+Bei SSO können verschiedene Protokolle wie OAuth 2.0, OpenID Connect(OIDC) oder SAML 2.0 eingesetzt werden. 
 
-Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt [39]. In dieser Arbeit wird vor allem in der praktische Umsetzung in Kapitel TODO Keycloak verwendet.
+Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt, in der Regel indem er der Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt, die diese Tatsache beweisen. \cite{OAuth2inAction}
+
+OAuth 2.0 allein ist kein Mechanismus, um zu sagen, wer ein Benutzer ist oder wie er sich authentifiziert hat, es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Zugriffstokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Zugriffstoken wird der API vorgelegt, die weiß, wie sie überprüfen kann, ob das Zugriffstoken aktiv ist. \cite{AuthorizationvsAuthentication}
+
+Wird zum Beispiel in ein Hotel eingecheckt, erhält man eine Schlüsselkarte, mit der das zugewiesene Zimmer betreten werden kann. Die Schlüsselkarte sagt nichts jedoch darüber aus, wer der Hotelgast ist oder wie er sich an der Rezeption authentifiziert hat, aber die Karte kann für die Dauer des Aufenthalts für den Zugang zu dem Hotelzimmer verwendet werden. In ähnlicher Weise zeigt ein OAuth 2.0-Zugriffstoken nicht an, wer ein Benutzer ist, es ist einfach das, was für den Zugriff auf Daten verwendet werden kann. \cite{AuthorizationvsAuthentication}
+
+OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist. OIDC ist ein vollwertiges Authentifizierungs- und Autorisierungsprotokoll. OIDC macht auch starken Gebrauch von den Json Web Token (JWT)-Standards. Diese Standards definieren ein JSON-Format für Identitäts-Token und Möglichkeiten, diese Daten auf kompakte und webfreundliche Weise digital zu signieren und zu verschlüsseln. \cite{ssoProtocols}
+
+Es ist ein offener Standard, der von der OpenID Foundation im Februar 2014 veröffentlicht wurde. \cite{OAuth2inAction}
+
+In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses speziell für Webanwendungen entwickelt worden ist und außerdem das modernere Protokoll ist im Gegensatz zu SAML 2.0 [37]. Außerdem ist OIDC auch besser für HTML5/JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML. Da Token im JSON-Format vorliegen, sind sie von JavaScript leichter zu verarbeiten \cite{ssoProtocols}.
+
+Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt [39].
 
 
 \subsection{Vorgehen}
 
+%TODO
 TODO
 
 
@@ -246,9 +262,22 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 
 
 \section{Threat Model}
-
-% https://en.wikipedia.org/wiki/Threat_model > essentially What can go wrong? and What can we do about it?
 % https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation > seems good 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 %TODO
