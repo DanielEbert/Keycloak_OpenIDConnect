@@ -264,18 +264,31 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 \section{Threat Model}
 % https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation > seems good 
 
+% https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation
 
+In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine gute Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
 
+\subsection{Brute-Force}
 
+Password Policies, Max Login Failures
 
+\subsection{Clickjacking}
 
+Content-Security-Policy, X-FRAME\_OPTIONS
 
+\subsection{SSL/HTTPS}
 
+Verwenden von SSL/TLS
 
+\subsection{CSRF}
 
+\subsection{Kompromittierte Access und Refresh Tokens}
 
+SSL/HTTPS, Lifespan, 
 
+\subsection{Password database Kompromittierung}
 
+Hashing
 
 
 
