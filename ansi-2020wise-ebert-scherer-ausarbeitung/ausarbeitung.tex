@@ -4,6 +4,7 @@
 % Abstract?
 
 %TODO cite vor oder nach dem Punkt?
+% A: wenn du einen kompletten Absatz zitierst, dann nach dem Punkt. Wenn du einen Satz zitiertst, vor dem Punkt. Mein Betreuer von Bosch hat gemeint, es ist nicht gut einen kompletten Absatz zu zitieren. Der Leser denkt sonst man hat einen kompletten Absatz abgeschrieben. Es ist kein Problem, wenn mehrere Sätze hinereinander den gleichen \cite haben. 
 
 \section{Einleitung} \label{EB_Einleitung}
 
@@ -28,19 +29,15 @@ SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits exis
 
 Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der User mit webbasierten Applikationen und Services.
 
-Bei SSO können verschiedene Protokolle wie OAuth 2.0, OpenID Connect(OIDC) oder SAML 2.0 eingesetzt werden. 
+Bei SSO können verschiedene Protokolle wie OAuth 2.0, OpenID Connect(OIDC) oder SAML 2.0 eingesetzt werden. Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt. Mit anderen Worten ist Authentifizierung der Nachweis einer Behauptung, wie z.B. der Identität eines Users im System. In der Regel beweist er das, indem er einer Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt. \cite{OAuth2inAction}
 
-Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt, in der Regel indem er der Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt, die diese Tatsache beweisen. \cite{OAuth2inAction}
+OAuth 2.0 allein ist kein Mechanismus, um zu sagen, wer ein Benutzer ist oder wie er sich authentifiziert hat. Es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Access Tokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Access Token wird der API vorgelegt, die weiß, wie sie überprüfen kann, ob das Access Token valide ist. \cite{AuthorizationvsAuthentication}
 
-OAuth 2.0 allein ist kein Mechanismus, um zu sagen, wer ein Benutzer ist oder wie er sich authentifiziert hat, es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Zugriffstokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Zugriffstoken wird der API vorgelegt, die weiß, wie sie überprüfen kann, ob das Zugriffstoken aktiv ist. \cite{AuthorizationvsAuthentication}
+Wird zum Beispiel in ein Hotel eingecheckt, erhält man eine Schlüsselkarte, mit der das zugewiesene Zimmer betreten werden kann. Die Schlüsselkarte sagt jedoch nichts darüber aus, wer der Hotelgast ist oder wie er sich an der Rezeption authentifiziert hat. Diese Karte kann für die Dauer des Aufenthalts für den Zugang zu dem Hotelzimmer verwendet werden. In ähnlicher Weise zeigt ein OAuth 2.0 Access Token nicht an, wer ein Benutzer ist. Der Token ist ein Schlüssel, welcher für den Zugriff auf Daten verwendet werden kann. \cite{AuthorizationvsAuthentication}
 
-Wird zum Beispiel in ein Hotel eingecheckt, erhält man eine Schlüsselkarte, mit der das zugewiesene Zimmer betreten werden kann. Die Schlüsselkarte sagt nichts jedoch darüber aus, wer der Hotelgast ist oder wie er sich an der Rezeption authentifiziert hat, aber die Karte kann für die Dauer des Aufenthalts für den Zugang zu dem Hotelzimmer verwendet werden. In ähnlicher Weise zeigt ein OAuth 2.0-Zugriffstoken nicht an, wer ein Benutzer ist, es ist einfach das, was für den Zugriff auf Daten verwendet werden kann. \cite{AuthorizationvsAuthentication}
+OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist. OIDC ist ein vollwertiges Authentifizierungs- und Autorisierungsprotokoll. OIDC macht auch starken Gebrauch von den Json Web Token (JWT)-Standards. Diese Standards definieren ein JSON-Format für Identitäts-Token und Möglichkeiten, diese Daten auf kompakte und webfreundliche Weise digital zu signieren und zu verschlüsseln \cite{ssoProtocols}. OIDC ist ein offener Standard, der von der OpenID Foundation im Februar 2014 veröffentlicht wurde \cite{OAuth2inAction}.
 
-OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist. OIDC ist ein vollwertiges Authentifizierungs- und Autorisierungsprotokoll. OIDC macht auch starken Gebrauch von den Json Web Token (JWT)-Standards. Diese Standards definieren ein JSON-Format für Identitäts-Token und Möglichkeiten, diese Daten auf kompakte und webfreundliche Weise digital zu signieren und zu verschlüsseln. \cite{ssoProtocols}
-
-Es ist ein offener Standard, der von der OpenID Foundation im Februar 2014 veröffentlicht wurde. \cite{OAuth2inAction}
-
-In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses speziell für Webanwendungen entwickelt worden ist und außerdem das modernere Protokoll ist im Gegensatz zu SAML 2.0 [37]. Außerdem ist OIDC auch besser für HTML5/JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML. Da Token im JSON-Format vorliegen, sind sie von JavaScript leichter zu verarbeiten \cite{ssoProtocols}.
+In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses im Gegensatz zu SAML 2.0 speziell für Webanwendungen entwickelt worden ist und das modernere Protokoll ist [37]. Außerdem ist OIDC besser für HTML5/JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML 2.0. Da Token im JSON-Format vorliegen, sind sie von JavaScript leichter zu verarbeiten \cite{ssoProtocols}.
 
 Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt [39].
 
@@ -53,7 +50,11 @@ TODO
 
 \section{Aufbau von SSO}
 
+TODO: hier 1 absatz zusammenfassung der section
+
 \subsection{Teilnehmer/Rollen}
+
+TODO: hier 1 absatz zusammenfassung der subsection
 
 \subsubsection{End-User} \label{EB_End-User}
 
