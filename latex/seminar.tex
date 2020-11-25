@@ -1,0 +1,99 @@
+\documentclass[12pt]{report}
+\parindent0em
+\parskip 1ex plus 0.4ex minus 0.4ex
+
+\usepackage[a4paper,vmargin=25mm,hmargin=20mm]{geometry}
+\usepackage{titlesec}
+\usepackage[runin]{abstract}
+\usepackage{csquotes}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+\usepackage{listings}
+%\usepackage{xunicode}
+%\usepackage[libertine]{newtxmath}
+%\usepackage[no-math]{fontspec}
+\usepackage{fontspec}
+%\usepackage{xltxtra}
+
+%\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Linux Libertine O}
+\setmainfont[Ligatures=TeX]{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+%\setmonofont{Linux Libertine Mono O}
+%\setmonofont{Courier New}
+%\setmonofont{Courier}
+
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx}
+% \usepackage{biblatex}
+\usepackage[style=alphabetic,backend=biber]{biblatex}
+\usepackage{blindtext}
+\blindmathtrue
+
+% Adjust bibliography command
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
+
+\defbibheading{chapterbib}{%
+  \section*{Literatur}
+  \addcontentsline{toc}{section}{Literatur}
+}
+
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{7pt}}
+\titleformat{\chapter}[block]{\LARGE\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{}{}
+\titlespacing*{\chapter}{0pt}{2ex}{2ex}
+
+\newcommand{\chapterauthor}[1]{%
+  \textsc{#1}\\ \vspace{1ex}%
+  %\addcontentsline{toc}{section}{\textsc{#1}}
+  \addtocontents{toc}{\protect\hspace*{18pt}\textsc{#1}}
+}
+\newcommand{\comment}[1]{}
+
+\newcommand{\addchapterbib}[1]{
+  \addsectionbib[label=#1]{#1.bib}
+}
+
+\newcommand{\addchapter}[1]{
+  \begin{refsection}[#1]
+    \clearpage
+    \input{#1}
+    \printbibliography[heading=chapterbib]  
+  \end{refsection}
+}
+
+% ******************************************************************************
+% * Bibliography Datei wird hier hinzugefügt.
+% ******************************************************************************
+\addchapterbib{granger-potter-zauberstaebe}
+%\addchapterbib{cooper-bazinga}
+
+\begin{document}
+
+
+\begin{center}
+  \textbf{\Large Titelseite}
+\end{center}
+
+% Sans Serif: \textsf{Testtext}
+
+% Mono: \texttt{Testtext} 
+
+\tableofcontents
+
+% ******************************************************************************
+% * Datei mit der Ausarbeitung wird hier hinzugefügt.
+% ******************************************************************************
+\addchapter{granger-potter-zauberstaebe}
+%\addchapter{cooper-bazinga}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-master: t
+%%% TeX-engine: xetex
+%%% End: 
+
