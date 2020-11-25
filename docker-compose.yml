@@ -1,3 +1,7 @@
+# TODO add build
+# TODO restructure services
+# TODO change naming of the services - reactapp to client ...
+
 version: '3'
 
 services:
