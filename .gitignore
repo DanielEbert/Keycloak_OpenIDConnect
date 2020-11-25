@@ -1,9 +1,9 @@
-expose/**
+ansi-2020wise-scherer-ebert-konzept/**
 
-!expose/images
-!expose/images/**
-!expose/expose_daniel_ebert_sebastian_scherer.tex
-!expose/literatur.bib
+!ansi-2020wise-scherer-ebert-konzept/images
+!ansi-2020wise-scherer-ebert-konzept/images/**
+!ansi-2020wise-scherer-ebert-konzept/expose_daniel_ebert_sebastian_scherer.tex
+!ansi-2020wise-scherer-ebert-konzept/literatur.bib
 
 **/docs/**
 
