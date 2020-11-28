@@ -76,7 +76,7 @@ Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern 
 
 \subsubsection{OpenID Provider}
 
-Der OpenID Provider kann Benutzer authentifizieren und Claims der Benutzer speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Benutzers stellen OpenID Provider den BenutzerInfo Endpoint bereit. Clients können dort mit einem Access Token des Benutzers alle oder einen bestimmten Teil der Claims des Benutzers abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion TODO beschrieben.
+Der OpenID Provider kann Benutzer authentifizieren und Claims der Benutzer speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Benutzers stellen OpenID Provider den UserInfo Endpoint bereit. Clients können dort mit einem Access Token des Benutzers alle oder einen bestimmten Teil der Claims des Benutzers abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion TODO beschrieben.
 
 Es gibt weitere Endpunkte des OpenID Provider, wie zum Beispiel Endpunkte um ID, Access, und Refresh Tokens anzufordern, um einen Benutzer auszuloggen, oder um die Signatur eines Token zu validieren. OpenID Provider können Benutzer selbst oder über einen externen Identity Provider wie Google, Github, oder Stack Overflow authentifizieren [7] [6]. Dementsprechend werden die Accountdaten lokal oder bei dem externen Identity Provider gespeichert.
 
@@ -124,7 +124,7 @@ Der ID Token ist nur für den Client, der an der Authentifizierung des Benutzers
 
 Der Access Token wird für die Authorisierung des Benutzers verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authorization Header an Backend Services enthalten sein [27]. Dies wird später in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} näher erläutert.
 
-Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token keine weiteren Informationen über den Benutzer oder die Authentifizierung des Benutzers enthalten [9]. Falls ein Client trotzdem Benutzer Informationen benötigt, kann er die erlaubten Benutzer Claims mit dem Access Token bei dem BenutzerInfo Endpunkt abfragen. Die nachfolgende Auflistung zeigt ein Beispiel für ein Access Token.
+Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token keine weiteren Informationen über den Benutzer oder die Authentifizierung des Benutzers enthalten [9]. Falls ein Client trotzdem Benutzer Informationen benötigt, kann er die erlaubten Benutzer Claims mit dem Access Token bei dem UserInfo Endpunkt abfragen. Die nachfolgende Auflistung zeigt ein Beispiel für ein Access Token.
 
 \begin{lstlisting}[caption=Beispiel Access Token, captionpos=b]
 {
@@ -144,7 +144,7 @@ Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token kei
 }
 \end{lstlisting}
 
-Der \emph{scope} Claim beschreibt sowohl welche Benutzer Claims über den BenutzerInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \emph{profile} Scope Zugriff auf die Benutzer Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim BenutzerInfo Endpunkt [11]. 
+Der \emph{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \emph{profile} Scope Zugriff auf die Benutzer Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim UserInfo Endpunkt [11]. 
 
 Der \emph{aud} (Audience) Claim gibt an, für welche Clients der Access Token bestimmt ist. Erhält ein Client einen Access Token und dieser Client ist nicht in der \emph{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden.
 % Hier oder später das beispiel von https://www.keycloak.org/docs/latest/server_admin/#_audience
@@ -168,7 +168,7 @@ Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benut
 
 \subsubsection{Authentifizierung eines Benutzers}
 
-Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und BenutzerInfo Endpoint werden vom OpenID Provider bereitgestellt.
+Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt.
 
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
@@ -222,7 +222,7 @@ Durch die POST Anfrage werden die Tokens im HTTP Response Body zurückgegeben. D
 
 In Schritt 8 muss der ID Token validiert werden. Dazu gehört zum Beispiel das Überprüfen der Signatur des Tokens [24]. Wird im Authorization Request in Schritt 1 eine nonce angegeben, dann muss der ID Token einen nonce Claim enthalten [24]. Die nonce des Authorization Request muss mit der nonce des ID Tokens übereinstimmen [24]. Außerdem muss die ID des Clients im 'aud' Claim des ID Tokens enthalten sein, die 'iss' muss die ID des OpenID Providers enthalten, und der ID Token darf nicht bereits abgelaufen sein [24]. Der 'aud' und 'iss' Claim wurden in Sektion \ref{EB_End-Benutzer} erläutert. Optional können weitere Validierungen stattfinden. Zum Beispiel kann ein Token abgelehnt werden, wenn die auth\_time zu weit in der Vergangenheit liegt [24]. Der interessierte Leser findet unter [24] alle weiteren optionalen Validierungen.
 
-Wie bereits in Sektion \ref{EB_AccessToken} erläutert kann der ID Token nicht alle Benutzer Claims enthalten. Die durch den scope Claim des Access Token zugelassenen Benutzer Claims können abschließend optional über den BenutzerInfo Endpunkt angefordert werden.
+Wie bereits in Sektion \ref{EB_AccessToken} erläutert kann der ID Token nicht alle Benutzer Claims enthalten. Die durch den scope Claim des Access Token zugelassenen Benutzer Claims können abschließend optional über den UserInfo Endpunkt angefordert werden.
 
 Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den Implicit Flow und den Hybrid Flow an, um einen Benutzer zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance [26] und eine kürzere Latenz als der Authorization Code Flow [25]. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können [26] [23].
 
