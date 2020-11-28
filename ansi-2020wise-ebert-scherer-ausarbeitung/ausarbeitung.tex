@@ -3,33 +3,39 @@
 
 % Abstract?
 
-%TODO cite vor oder nach dem Punkt?
-% A: wenn du einen kompletten Absatz zitierst, dann nach dem Punkt. Wenn du einen Satz zitiertst, vor dem Punkt. Mein Betreuer von Bosch hat gemeint, es ist nicht gut einen kompletten Absatz zu zitieren. Der Leser denkt sonst man hat einen kompletten Absatz abgeschrieben. Es ist kein Problem, wenn mehrere Sätze hinereinander den gleichen \cite haben. 
+%Cite Syntax - A: wenn du einen kompletten Absatz zitierst, dann nach dem Punkt. Wenn du einen Satz zitiertst, vor dem Punkt. Mein Betreuer von Bosch hat gemeint, es ist nicht gut einen kompletten Absatz zu zitieren. Der Leser denkt sonst man hat einen kompletten Absatz abgeschrieben. Es ist kein Problem, wenn mehrere Sätze hinereinander den gleichen \cite haben. 
+
+% Wenn noch Zeit, dann AuthScan für Keycloak
+
+%TODO Daniel - trag bitte deine Quellen ein, ich würde in der Sektion Ablauf SSO/OIDC paar Sachen umstellen - teilweise sieht das so aus wie wenn das mit Deepl übersetzt worden ist - nicht falsch verstehen, alles locker
 
 \section{Einleitung} \label{EB_Einleitung}
 
-Durch das Single Sign-on (SSO) muss sich ein User nur einmal unter Zuhilfenahme eines einzigen Authentifizierungsverfahrens identifizieren. Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizieren und die erkannte Identität zu bestätigen. Dies hat den Vorteil, dass sich der User nur einmal identifizieren muss und seine Identität sicher an weitere Systeme weitergegeben werden kann, ohne dass sich dieser dort erneut anmelden muss. Dadurch hat der User Zugriff auf mehrere Systeme, wie z.B. Front-End Anwendungen oder Back-end Services, bei dem die Ressourcen für die authentifizierten und autorisierten User beschränkt ist. \cite{MKS2009}
+Durch das Single Sign-on (SSO) muss sich ein Benutzer nur einmal unter Zuhilfenahme eines einzigen Authentifizierungsverfahrens identifizieren. Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizieren und die erkannte Identität zu bestätigen. Dies hat den Vorteil, dass sich der Benutzer nur einmal identifizieren muss und seine Identität sicher an weitere Systeme weitergegeben werden kann, ohne dass sich dieser dort erneut anmelden muss. Dadurch hat der Benutzer Zugriff auf mehrere Systeme, wie z.B. Frontend Anwendungen oder Backend Services, bei dem die Ressourcen für die authentifizierten und autorisierten Benutzer beschränkt ist.
 
 \subsection{Motivation} % vielleicht keine subsections?
 
-SSO ist vor allem in Webanwendungen hilfreich, da der User dort oft mit vielen verschiedenen Systemen interagieren muss [34]. Ohne SSO müssten sich User bei jedem System individuell und erneut mit einem separaten Account einloggen [34]. Somit müsste sich der User mehrere Passwörter merken.
+% Gute Graphiken für den Vortrag: https://www.renovodata.com/blog/2019/01/17/single-sign-on
 
-In der Praxis wird allerdings in vielen Fällen das selbe Passwort für mehrere Systeme verwendet. Werden dennoch unterschiedliche Passwörter verwendet, dann sind diese oft einfach gehalten, damit man sich alle Passwörter merken kann. Aus sicherheitstechnischer Sicht ist das nicht gut. Einfache Passwörter könnten z.B. durch Brute-Force oder durch Dictionary Attacks gebrochen werden. Immer das selbe Passwort zu verwenden ist ebenfalls kritisch. Hat eines der Systeme einen Data Leak, dann könnten Angreifer Zugriff auf alle Systeme mit dem selben Passwort erhalten. Dafür könnten zwar auch Password Manager verwendet werden [34]. Bei diesen hat man allerdings immer noch das Problem der Psychological Acceptability der User, da sich diese bei jedem System erneut registrieren und einloggen müssen.
+SSO ist vor allem in Webanwendungen hilfreich, da der Benutzer dort oft mit vielen verschiedenen Systemen interagieren muss [34]. Ohne SSO müssten sich Benutzer bei jedem System individuell und erneut mit einem separaten Account einloggen [34]. Somit müsste sich der Benutzer mehrere Passwörter merken und bei jeden System einen manuellen Anmeldemechanismus durchführen. Dies senkt die psychologische Akzeptanz der Benutzer für die Sicherheit, da heutige Anmeldeprozesse Multi-Faktor Authentifizierung verwenden, welche Zeit und Aufwand benötigen.
+
+In der Praxis wird daher in vielen Fällen dasselbe Passwort für mehrere Systeme verwendet. Werden dennoch unterschiedliche Passwörter verwendet, dann sind diese oft einfach gehalten, damit man sich alle Passwörter merken kann. Aus sicherheitstechnischer Sicht ist das nicht gut. Einfache Passwörter könnten z.B. durch Brute-Force oder durch Dictionary Attacks gebrochen werden. Immer dasselbe Passwort zu verwenden ist ebenfalls kritisch. Hat eines der Systeme einen Data Leak, dann könnten Angreifer Zugriff auf alle Systeme mit demselben Passwort erhalten. Dafür könnten zwar auch ein Password Manager verwendet werden [34]. Bei diesen hat man allerdings immer noch das Problem der \textit{Psychological Acceptability} der Benutzer, da sich diese bei jedem System erneut registrieren und einloggen müssen. Hier schafft SSO Abhilfe.
 
 \subsection{Vorteile von SSO}
 
-%TODO psychological acceptability
-Neben den im letzten Abschnitt erläuterten Vorteilen im Hinblick auf die User hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern [34]. Weiter sorgt SSO für eine simplere Administration, da alle Userdaten in einem System aufbewahrt werden [34]. Außerdem sind die User eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
+%TODO es gibt mehr Vorteile und Nachteile - wenn Zeit hinzufügen: https://www.renovodata.com/blog/2019/01/17/single-sign-on
+
+Neben den im letzten Abschnitt erläuterten Vorteil der Psychological Acceptability im Hinblick auf die Benutzer hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern [34]. Weiter sorgt SSO für eine simplere Administration, da alle Benutzerdaten in einem System aufbewahrt werden [34]. Außerdem sind die Benutzer eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
 
 \subsection{Nachteile von SSO}
 
 SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits existierende Systeme einzubauen [34]. Um dem entgegenzuwirken bieten SSO Lösungen wie Keycloak fertige Adapter für verschiedene Programmiersprachen und Systeme an, wie z.B. für ReactJS [35] [36]. Außerdem könnte man durch das SSO System einen Single Point of Failure haben. Auch dem kann entgegengewirkt werden. Zum Beispiel bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden [33]. Diese Instanzen können auf mehrere Server verteilt werden um die Redundanz zu erhöhen. % TODO: logged in desktop?
 
-\subsection{Abgrenzung und Definition}
+\subsection{Abgrenzung}
 
-Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der User mit webbasierten Applikationen und Services.
+Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der Benutzer mit webbasierten Applikationen und Services.
 
-Bei SSO können verschiedene Protokolle wie OAuth 2.0, OpenID Connect(OIDC) oder SAML 2.0 eingesetzt werden. Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt. Mit anderen Worten ist Authentifizierung der Nachweis einer Behauptung, wie z.B. der Identität eines Users im System. In der Regel beweist er das, indem er einer Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt. \cite{OAuth2inAction}
+Bei SSO können verschiedene Protokolle wie OAuth 2.0, OpenID Connect(OIDC) oder SAML 2.0 eingesetzt werden. Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt. Mit anderen Worten ist Authentifizierung der Nachweis einer Behauptung, wie z.B. der Identität eines Benutzers im System. In der Regel beweist er das, indem er einer Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt. \cite{OAuth2inAction} \label{OAuthForAuthentication}
 
 OAuth 2.0 allein ist kein Mechanismus, um zu sagen, wer ein Benutzer ist oder wie er sich authentifiziert hat. Es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Access Tokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Access Token wird der API vorgelegt, die weiß, wie sie überprüfen kann, ob das Access Token valide ist. \cite{AuthorizationvsAuthentication}
 
@@ -39,8 +45,7 @@ OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist
 
 In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses im Gegensatz zu SAML 2.0 speziell für Webanwendungen entwickelt worden ist und das modernere Protokoll ist [37]. Außerdem ist OIDC besser für HTML5/JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML 2.0. Da Token im JSON-Format vorliegen, sind sie von JavaScript leichter zu verarbeiten \cite{ssoProtocols}.
 
-Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt [39].
-
+Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt. Keycloak ist eine Single-Sign-On-Lösung für Webanwendungen und RESTful-Webdienste, die OpenID Connect unterstützt. Keycloak bietet anpassbare Benutzeroberflächen für Anmeldung, Registrierung, Administration und Kontoverwaltung. Ebenfalls kann die Authentifizierung auch an Identitätsanbieter von Drittanbietern wie Facebook und Google delegiert werden. \cite{keycloakDocs}
 
 \subsection{Vorgehen}
 
@@ -48,29 +53,34 @@ Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten 
 TODO
 
 
-\section{Aufbau von SSO}
 
-TODO: hier 1 absatz zusammenfassung der section
+%TODO Aufbau SSO oder OpenID Connect
+\section{Aufbau von OpenID Connect}
+
+Das SSO-Protokoll OpenID Connect ersetzt mehrere manuelle Authentifizierungen bei verschiedenen Service Providern durch eine einzige manuelle Authentifizierung bei einem Identity Provider \cite{mladenov2016security}. Ein Identity Provider verwaltet die Identitäten mehrerer Endbenutzer, bietet spezifische Authentifizierungsmechanismen (z.B. Benutzername/Passwort oder 2-Faktoren) und erstellt Authentifizierungs-Token über authentifizierte Endbenutzer \cite{mladenov2016security}. Das Token ist ein signiertes JSON-Web-Token (JWT). Diese Authentifizierungs-Token werden von einem Service Provider verbraucht, der dem Endbenutzer in Abhängigkeit von der Token-Verifizierung den Zugang gewährt oder verweigert \cite{mladenov2016security}. Die Tokens werden über die JSON Object Signing and Encryption (JOSE)-Spezifikationssuite signiert und verschlüsselt \cite{OAuth2inAction}.
+
+Der Aufbau des OpenID Connect Protokolls wird anhand von Keycloak in den folgenden Sektionen erklärt.
 
 \subsection{Teilnehmer/Rollen}
 
+%TODO
 TODO: hier 1 absatz zusammenfassung der subsection
 
-\subsubsection{End-User} \label{EB_End-User}
+\subsubsection{Endbenutzer} \label{EB_End-Benutzer}
 
-End-User, oder kurz User, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der End-User ist der menschliche Teilnehmer. Informationen über den User und über die Authentifizierung des Users können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den User vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen User eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch User allein durch 'sub' eindeutig identifieriert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
+Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifieriert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
 
 \subsubsection{Client}
 
-Clients sind Entitäten, welche die Authentifizierung eines Users anfordern können. Es gibt zwei Arten von Clients. Die erste Art von Client ruft andere Services im Namen des authentifizierten Users auf [2] [3]. Das ist zum Beispiel die Frontend Applikation, welche im Webbrowser auf dem PC oder Smartphone des Users läuft, und geschützte Ressourcen vom Back-End Server anfordert. Die zweite Art sind Clients, die am Single-Sign on teilnehmen [3]. Das können z.B. Back-End Services sein, wo User Ressourcen abrufen können, welche für die authentifizierten und autorisierten User beschränkt ist. Dadurch müssen sich User nicht mehrmals registrieren und einloggen. Clients dieser Art können auch als Resource Server fungieren, wenn sie Ressourcen des Users speichern und hosten.
+Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt zwei Arten von Clients. Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf [2] [3]. Das ist zum Beispiel die Frontend Applikation, welche im Webbrowser auf dem PC oder Smartphone des Benutzers läuft, und geschützte Ressourcen vom Backend Server anfordert. Die zweite Art sind Clients, die am Single-Sign on teilnehmen [3]. Das können z.B. Backend Services sein, wo Benutzer Ressourcen abrufen können, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Dadurch müssen sich Benutzer nicht mehrmals registrieren und einloggen. Clients dieser Art können auch als Resource Server fungieren, wenn sie Ressourcen des Benutzers speichern und hosten.
 
 \subsubsection{OpenID Provider}
 
-Der OpenID Provider kann User authentifizieren und Claims der User speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Users stellen OpenID Provider den UserInfo Endpoint bereit. Clients können dort mit einem Access Token des Users alle oder einen bestimmten Teil der Claims des Users abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion TODO beschrieben.
+Der OpenID Provider kann Benutzer authentifizieren und Claims der Benutzer speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Benutzers stellen OpenID Provider den BenutzerInfo Endpoint bereit. Clients können dort mit einem Access Token des Benutzers alle oder einen bestimmten Teil der Claims des Benutzers abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion TODO beschrieben.
 
-Es gibt weitere Endpunkte des OpenID Provider, wie zum Beispiel Endpunkte um ID, Access, und Refresh Tokens anzufordern, um einen User auszuloggen, oder um die Signatur eines Token zu validieren. OpenID Provider können User selbst oder über einen externen Identity Provider wie Google, Github, oder Stack Overflow authentifizieren [7] [6]. Dementsprechend werden die Accountdaten lokal oder bei dem externen Identity Provider gespeichert.
+Es gibt weitere Endpunkte des OpenID Provider, wie zum Beispiel Endpunkte um ID, Access, und Refresh Tokens anzufordern, um einen Benutzer auszuloggen, oder um die Signatur eines Token zu validieren. OpenID Provider können Benutzer selbst oder über einen externen Identity Provider wie Google, Github, oder Stack Overflow authentifizieren [7] [6]. Dementsprechend werden die Accountdaten lokal oder bei dem externen Identity Provider gespeichert.
 
-Der OpenID Provider ist auch für das managen der Client verantwortlich. Zum Beispiel müssen sich Clients beim OpenID Provider registrieren, um am SSO teilzunehmen. Zusätzlich kann der OpenID Provider festlegen, auf welche anderen Clients, z.B. Back-End Services, und auf welche Informationen und Ressourcen, z.B. Claims, ein Client zugriff hat (TODO: src?).
+Der OpenID Provider ist auch für das managen der Client verantwortlich. Zum Beispiel müssen sich Clients beim OpenID Provider registrieren, um am SSO teilzunehmen. Zusätzlich kann der OpenID Provider festlegen, auf welche anderen Clients, z.B. Backend Services, und auf welche Informationen und Ressourcen, z.B. Claims, ein Client zugriff hat (TODO: src?).
 
 
 \subsection{Tokens}
@@ -79,62 +89,62 @@ Beim SSO mit OpenID Connect werden verschiedene Arten von Tokens eingesetzt. Bei
 
 Ein JWT setzt sich aus 3 Teilen zusammen. Im Header wird der Algorithmus genannt, welcher für die Signatur des Tokens verwendet wird. Der Signaturalgorithmus kann frei gewählt werden. Keycloak verwendet standardßig HMAC-SHA256. Der Payload besteht aus einer Menge von sogenannten JWT Claims. Ein JWT Claim ist, wie ein Claim bei OpenID Connect, ein Key-Value Paar. Im Payload können auch OpenID Connect Claims übertragen werden. Der dritte Teil enthält die Signatur der anderen zwei Teile. Die drei Teile sind jeweils Base64url encodiert. In Abbildungen dieser Arbeit wird nur der dekodierte Payload gezeigt.
 
-Im nachfolgenden werden drei Arten von Tokens, nämlich der ID Token, Access Token, und Refresh Token, beschrieben. Diese drei Token werden nach erfolgreicher Authentifizierung eines Users an den Client gesendet.
+Im nachfolgenden werden drei Arten von Tokens, nämlich der ID Token, Access Token, und Refresh Token, beschrieben. Diese drei Token werden nach erfolgreicher Authentifizierung eines Benutzers an den Client gesendet.
 
 \subsubsection{ID Token}
 
-Der ID Token enthält Claims über die Authentifizierung des Users. Wenn vom Client gefordert können optional weitere Claims mit Informationen über den User enthalten sein. Die folgende Auflistung zeigt ein Beispiel für ein ID Token.
+Der ID Token enthält Claims über die Authentifizierung des Benutzers. Wenn vom Client gefordert können optional weitere Claims mit Informationen über den Benutzer enthalten sein. Die folgende Auflistung zeigt ein Beispiel für ein ID Token.
 
 \begin{lstlisting}[caption=Beispiel ID Token, captionpos=b]
 {
-"exp": 1606058197,
-"iat": 1606057897,
-"auth_time": 1606057896,
-"jti": "c7e74c3e-dc1c-4790-bc47-4b787abe86dd",
-"iss": "http://keycloak/auth/realms/ExampleRealm",
-"aud": "react-frontend",
-"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
-"typ": "ID",
-"azp": "react-frontend",
-"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
-"email_verified": false,
-"name": "Tom Smith",
-"preferred_username": "tom_smith",
-"given_name": "Tom",
-"family_name": "Smith",
-"email": "tomsmith@web.de"
+	"exp": 1606058197,
+	"iat": 1606057897,
+	"auth_time": 1606057896,
+	"jti": "c7e74c3e-dc1c-4790-bc47-4b787abe86dd",
+	"iss": "http://keycloak/auth/realms/ExampleRealm",
+	"aud": "react-frontend",
+	"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
+	"typ": "ID",
+	"azp": "react-frontend",
+	"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
+	"email_verified": false,
+	"name": "Tom Smith",
+	"preferred_username": "tom_smith",
+	"given_name": "Tom",
+	"family_name": "Smith",
+	"email": "tomsmith@web.de"
 }
 \end{lstlisting}
 
-Ein Beispiel Claim für die Authentifizierung des Users ist \emph{auth\_time}, welches den Zeitpunkt der Authentisierung in Unixzeit (Epoch) angibt. Der interessierte Leser findet eine Definition für die meisten hier gezeigten Claims unter TODO [7]. Einen Teil dieser Claims werden später noch näher erläutert, TODO:check if right: wie z.B. die nonce in Sektion TODO.
+Ein Beispiel Claim für die Authentifizierung des Benutzers ist \emph{auth\_time}, welches den Zeitpunkt der Authentisierung in Unixzeit (Epoch) angibt. Der interessierte Leser findet eine Definition für die meisten hier gezeigten Claims unter TODO [7]. Einen Teil dieser Claims werden später noch näher erläutert, TODO:check if right: wie z.B. die nonce in Sektion TODO.
 
-Der ID Token ist nur für den Client, der an der Authentifizierung des Users beteiligt war, gedacht. Dieser Client kann durch den ID Token die User Erfahrung anpassen [8], z.B. mit einer Willkommensnachricht mit dem Namen des Users. Der ID Token sollte nicht für die Authorisierung verwendet werden, z.B. um geschützte Ressourcen von einem Back-End Service abzurufen. Das ist die Aufgabe des im nächsten Abschnitt geschiebenen Access Token.
+Der ID Token ist nur für den Client, der an der Authentifizierung des Benutzers beteiligt war, gedacht. Dieser Client kann durch den ID Token die Benutzer Erfahrung anpassen [8], z.B. mit einer Willkommensnachricht mit dem Namen des Benutzers. Der ID Token sollte nicht für die Authorisierung verwendet werden, z.B. um geschützte Ressourcen von einem Back-End Service abzurufen. Das ist die Aufgabe des im nächsten Abschnitt geschiebenen Access Token.
 
 \subsubsection{Access Token} \label{EB_AccessToken}
 
-Der Access Token wird für die Authorisierung des Users verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authorization Header an Backend Services enthalten sein [27]. Dies wird später in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} näher erläutert.
+Der Access Token wird für die Authorisierung des Benutzers verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authorization Header an Backend Services enthalten sein [27]. Dies wird später in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} näher erläutert.
 
-Abgesehen von der ID des Users, dem 'sub' claim, sollte der Access Token keine weiteren Informationen über den User oder die Authentifizierung des Users enthalten [9]. Falls ein Client trotzdem User Informationen benötigt, kann er die erlaubten User Claims mit dem Access Token bei dem UserInfo Endpunkt abfragen. Die nachfolgende Auflistung zeigt ein Beispiel für ein Access Token.
+Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token keine weiteren Informationen über den Benutzer oder die Authentifizierung des Benutzers enthalten [9]. Falls ein Client trotzdem Benutzer Informationen benötigt, kann er die erlaubten Benutzer Claims mit dem Access Token bei dem BenutzerInfo Endpunkt abfragen. Die nachfolgende Auflistung zeigt ein Beispiel für ein Access Token.
 
 \begin{lstlisting}[caption=Beispiel Access Token, captionpos=b]
 {
-"exp": 1606061497,
-"iat": 1606061197,
-"jti": "2239840b-86ff-41da-8e14-7acfbf05cb35",
-"iss": "http://keycloak/auth/realms/ExampleRealm",
-"aud": [
-"backendclientservice1",
-"backendclientservice2"
-],
-"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
-"typ": "Bearer",
-"azp": "react-frontend",
-"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
-"scope": "openid email profile"
+	"exp": 1606061497,
+	"iat": 1606061197,
+	"jti": "2239840b-86ff-41da-8e14-7acfbf05cb35",
+	"iss": "http://keycloak/auth/realms/ExampleRealm",
+	"aud": [
+		"backendclientservice1",
+		"backendclientservice2"
+	],
+	"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
+	"typ": "Bearer",
+	"azp": "react-frontend",
+	"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
+	"scope": "openid email profile"
 }
 \end{lstlisting}
 
-Der \emph{scope} Claim beschreibt sowohl welche User Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \emph{profile} Scope Zugriff auf die User Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim UserInfo Endpunkt [11]. 
+Der \emph{scope} Claim beschreibt sowohl welche Benutzer Claims über den BenutzerInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \emph{profile} Scope Zugriff auf die Benutzer Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim BenutzerInfo Endpunkt [11]. 
 
 Der \emph{aud} (Audience) Claim gibt an, für welche Clients der Access Token bestimmt ist. Erhält ein Client einen Access Token und dieser Client ist nicht in der \emph{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden.
 % Hier oder später das beispiel von https://www.keycloak.org/docs/latest/server_admin/#_audience
@@ -148,17 +158,17 @@ Der \emph{aud} (Audience) Claim gibt an, für welche Clients der Access Token be
 
 ID, Access, und Refresh Token haben eine Verfallszeit. Diese Verfallszeit ist im 'exp' (Expiration Time) Claim als Unixzeit gespeichert. Ist ein Token abgelaufen, dann ist er nicht mehr gültig. Speziell der Access Token hat aus Sicherheitsgründen eine kurze Verfallszeit. In Keycloak ist standardmäßig eine Verfallszeit von 5 Minuten für den Access Token eingestellt.
 
-Über den Refresh Token können neue ID, Access, und Refresh Tokens erstellt werden, ohne dass sich der User erneut authentifizieren muss. Der OpenID Provider bietet dafür einen Endpunkt an, bei dem ein Refresh Token durch gewünschte neue Tokens mit erneuerter Verfallszeit ausgetauscht werden kann. Der Refresh Token kann auch verwendet werden, um einen Access Token mit weniger Rechten zu erhalten [12]. Der Access Token mit weniger Rechten kann dann an potentiell weniger vertrauenswürdige Clients gesendet werden.
+Über den Refresh Token können neue ID, Access, und Refresh Tokens erstellt werden, ohne dass sich der Benutzer erneut authentifizieren muss. Der OpenID Provider bietet dafür einen Endpunkt an, bei dem ein Refresh Token durch gewünschte neue Tokens mit erneuerter Verfallszeit ausgetauscht werden kann. Der Refresh Token kann auch verwendet werden, um einen Access Token mit weniger Rechten zu erhalten [12]. Der Access Token mit weniger Rechten kann dann an potentiell weniger vertrauenswürdige Clients gesendet werden.
 
-Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein User kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt einen Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann der Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der User kann weiterhin neue Access Tokens anforder. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Users zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewägt werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer um möglicherweise auf geschützte Ressourcen des Users zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion TODO näher erläutert.
+Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein Benutzer kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt einen Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann der Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der Benutzer kann weiterhin neue Access Tokens anforder. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Benutzers zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewägt werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer um möglicherweise auf geschützte Ressourcen des Benutzers zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion TODO näher erläutert.
 
 \subsection{Abläufe}
 
-Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Users zum Einsatz. Wie in der Einleitung in Sektion TODO beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann.
+Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benutzers zum Einsatz. Wie in der Einleitung in Sektion TODO beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann.
 
-\subsubsection{Authentifizierung eines Users}
+\subsubsection{Authentifizierung eines Benutzers}
 
-Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen User zu authentisieren oder um zu überprüfen, ob der User bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt.
+Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und BenutzerInfo Endpoint werden vom OpenID Provider bereitgestellt.
 
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
@@ -174,7 +184,7 @@ Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Abl
 	\label{fig:EB_AuthorizationCodeFlow}
 \end{figure} % TODO: also returns refresh token; rename authorization server to authorization endpoint?
 
-Als erstes wird der Autorization Request vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String. Einer davon ist die Identifikationsnummer des Clients [14]. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes. Die später im Access Token erlaubten Scopes sind dann die Schnittmenge der gewünschten und erlaubten Scopes TODO:check if thats actually right-seems like i get auto access to some scopes. Der openid Scope muss immer in der Liste der gewünschten Scopes angegeben werden [14]. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine 'redirect\_uri' angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Users zu dieser URI geleitet [14]. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage eine 'state' enthalten werden. Diese kann vor Cross-Site Request Forgery (CSRF) schützen [14]. Ebenfalls optional kann eine 'nonce' angegeben werden, welche vor Replay Angriffen schützen kann [14]. 'state' und 'nonce' werden später in Kapitel TODO näher betrachtet. Listing \ref{EBAutorizationRequest} zeigt ein Beispiel für einen Autorization Request. Über den 'response\_type=code' wird der Authorization Code Flow ausgewählt. Mit 'response\_mode=fragment' wird festgelegt, dass später ein Code per URI Fragment übertragen wird. Letzteres wird später in Schritt 5 und 6 näher erläutert.
+Als erstes wird der Autorization Request vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String. Einer davon ist die Identifikationsnummer des Clients [14]. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes. Die später im Access Token erlaubten Scopes sind dann die Schnittmenge der gewünschten und erlaubten Scopes TODO:check if thats actually right-seems like i get auto access to some scopes. Der openid Scope muss immer in der Liste der gewünschten Scopes angegeben werden [14]. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine 'redirect\_uri' angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Benutzers zu dieser URI geleitet [14]. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage eine 'state' enthalten werden. Diese kann vor Cross-Site Request Forgery (CSRF) schützen [14]. Ebenfalls optional kann eine 'nonce' angegeben werden, welche vor Replay Angriffen schützen kann [14]. 'state' und 'nonce' werden später in Kapitel TODO näher betrachtet. Listing \ref{EBAutorizationRequest} zeigt ein Beispiel für einen Autorization Request. Über den 'response\_type=code' wird der Authorization Code Flow ausgewählt. Mit 'response\_mode=fragment' wird festgelegt, dass später ein Code per URI Fragment übertragen wird. Letzteres wird später in Schritt 5 und 6 näher erläutert.
 
 \begin{lstlisting}[caption=Beispiel Autorization Request, captionpos=b, label=EBAutorizationRequest]
 GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
@@ -187,13 +197,13 @@ client_id=react-frontend
 &nonce=67bad316-d8c1-45d1-9559-2a1c4726ce91
 \end{lstlisting}
 
-Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, also den OpenID Provider, gesendet. Bei dieser Anfrage handelt es sich um eine GET HTTP-Anfrage. Das bedeutet, dass der User nach Schritt 2 nicht auf der Website des Clients, sondern auf der Website des OpenID Provider ist. Dies ist im Hinblick auf die Sicherheit wichtig, da sich der User im dritten Schritt authentisieren muss und seine Anmeldeinformationen wie z.B. Username und Passwort eingeben muss. Da dies nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Users vom Client abgeschirmt [15]. Das bedeutet, dass der Client keine Informationen über die Anmeldeinformationen des Users hat. Der Client erhält nur die Tokens.
+Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, also den OpenID Provider, gesendet. Bei dieser Anfrage handelt es sich um eine GET HTTP-Anfrage. Das bedeutet, dass der Benutzer nach Schritt 2 nicht auf der Website des Clients, sondern auf der Website des OpenID Provider ist. Dies ist im Hinblick auf die Sicherheit wichtig, da sich der Benutzer im dritten Schritt authentisieren muss und seine Anmeldeinformationen wie z.B. Benutzername und Passwort eingeben muss. Da dies nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Benutzers vom Client abgeschirmt [15]. Das bedeutet, dass der Client keine Informationen über die Anmeldeinformationen des Benutzers hat. Der Client erhält nur die Tokens.
 
-Das OpenID Connect Protkoll schreibt nicht vor, mit welchen Methoden der OpenID Provider den User in Schritt 3 authentifiziert [16]. Als sicherere Alternative zu Username und Passwort könnte hier z.B. auch eine Zwei-Faktor-Authentifizierung eingesetzt werden. Auch die Methode, wenn der User bereits authentifiziert ist, wird vom OpenID Connect Protokoll nicht vorgeschrieben. Zum Beispiel implementiert Keycloak das über HTTP Cookies. Nach einer erfolgreichen Authentifizierung, wird ein ID Token als KEYCLOAK\_IDENTITY Cookie für Keycloak's Authorization Endpunkt gesetzt [17]. Bei Anfragen an Keycloak's Authorization Endpunkt ist dieser Token automatisch enthalten. Der Ablauf für bereits authentifizierte User ist dann größtenteil gleich wie der für nicht authentifizierte User. Allerdings wird der User dann in Schritt 3 durch den Token, und nicht durch die Eingabe von z.B. Username und Passwort authentifiziert.
+Das OpenID Connect Protkoll schreibt nicht vor, mit welchen Methoden der OpenID Provider den Benutzer in Schritt 3 authentifiziert [16]. Als sicherere Alternative zu Benutzername und Passwort könnte hier z.B. auch eine Zwei-Faktor-Authentifizierung eingesetzt werden. Auch die Methode, wenn der Benutzer bereits authentifiziert ist, wird vom OpenID Connect Protokoll nicht vorgeschrieben. Zum Beispiel implementiert Keycloak das über HTTP Cookies. Nach einer erfolgreichen Authentifizierung, wird ein ID Token als KEYCLOAK\_IDENTITY Cookie für Keycloak's Authorization Endpunkt gesetzt [17]. Bei Anfragen an Keycloak's Authorization Endpunkt ist dieser Token automatisch enthalten. Der Ablauf für bereits authentifizierte Benutzer ist dann größtenteil gleich wie der für nicht authentifizierte Benutzer. Allerdings wird der Benutzer dann in Schritt 3 durch den Token, und nicht durch die Eingabe von z.B. Benutzername und Passwort authentifiziert.
 
-Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 sicherstellen, dass der Client zum Zugriff auf die von ihm gewünschten Scopes berechtigt ist. Im vorhinein kann der Administrator des OpenID Providers die erlaubten Scopes für jeden Client festlegen. Optional kann in diesem Schritt auch ein interaktiver Dialog mit dem User stattfinden [18]. Dabei wird dem User die Liste der gewünschten Scopes angezeigt. Der User hat hier die Möglichkeit, den Scopes zuzustimmen oder die Authentifizierung abzubrechen.
+Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 sicherstellen, dass der Client zum Zugriff auf die von ihm gewünschten Scopes berechtigt ist. Im vorhinein kann der Administrator des OpenID Providers die erlaubten Scopes für jeden Client festlegen. Optional kann in diesem Schritt auch ein interaktiver Dialog mit dem Benutzer stattfinden [18]. Dabei wird dem Benutzer die Liste der gewünschten Scopes angezeigt. Der Benutzer hat hier die Möglichkeit, den Scopes zuzustimmen oder die Authentifizierung abzubrechen.
 
-In Schritt 5 und 6 wird der User bzw. der Browser zur redirect\_uri umgeleitet. Diese URI ist im Authorization Request von Schritt 1 spezifiziert worden. Die URI enthält einen vom OpenID Provider erstellten Code im Query-String oder im URI Fragment. Dieser Code ist für den Client opak. Seine Struktur wird also nur vom OpenID Provider verstanden. Der Code enthält Informationen über die Authentifizierung der vorherigen Schritte. Dazu gehören z.B. welche Scopes im Access Token enthalten sein werden. Der Code hat eine kurze Verfallszeit [21]. Im Folgenden wird eine beispielhafte Redirect URI gezeigt.
+In Schritt 5 und 6 wird der Benutzer bzw. der Browser zur redirect\_uri umgeleitet. Diese URI ist im Authorization Request von Schritt 1 spezifiziert worden. Die URI enthält einen vom OpenID Provider erstellten Code im Query-String oder im URI Fragment. Dieser Code ist für den Client opak. Seine Struktur wird also nur vom OpenID Provider verstanden. Der Code enthält Informationen über die Authentifizierung der vorherigen Schritte. Dazu gehören z.B. welche Scopes im Access Token enthalten sein werden. Der Code hat eine kurze Verfallszeit [21]. Im Folgenden wird eine beispielhafte Redirect URI gezeigt.
 
 \begin{lstlisting}[caption=Beispiel Redirect URI, captionpos=b, label=EBBeispielRedirectURI]
 https://reactfrontend.com/#
@@ -210,17 +220,19 @@ Der Code kann am Token Endpoint des OpenID Connect Providers zu einem ID, Access
 
 Durch die POST Anfrage werden die Tokens im HTTP Response Body zurückgegeben. Dadurch werden sie nicht dem Browser ausgesetzt [22] und z.B. nicht im Browserverlauf gespeichert [23]. Im Gegensatz dazu wurden Informationen wie z.B. der Code dem Browser ausgesetzt. Da der Access Token eine längere Verfallszeit hat und potentiell nicht widerrufen werden kann, sollte der Browser diesen aus Sicherheitsgründen nicht speichern [23].
 
-In Schritt 8 muss der ID Token validiert werden. Dazu gehört zum Beispiel das Überprüfen der Signatur des Tokens [24]. Wird im Authorization Request in Schritt 1 eine nonce angegeben, dann muss der ID Token einen nonce Claim enthalten [24]. Die nonce des Authorization Request muss mit der nonce des ID Tokens übereinstimmen [24]. Außerdem muss die ID des Clients im 'aud' Claim des ID Tokens enthalten sein, die 'iss' muss die ID des OpenID Providers enthalten, und der ID Token darf nicht bereits abgelaufen sein [24]. Der 'aud' und 'iss' Claim wurden in Sektion \ref{EB_End-User} erläutert. Optional können weitere Validierungen stattfinden. Zum Beispiel kann ein Token abgelehnt werden, wenn die auth\_time zu weit in der Vergangenheit liegt [24]. Der interessierte Leser findet unter [24] alle weiteren optionalen Validierungen.
+In Schritt 8 muss der ID Token validiert werden. Dazu gehört zum Beispiel das Überprüfen der Signatur des Tokens [24]. Wird im Authorization Request in Schritt 1 eine nonce angegeben, dann muss der ID Token einen nonce Claim enthalten [24]. Die nonce des Authorization Request muss mit der nonce des ID Tokens übereinstimmen [24]. Außerdem muss die ID des Clients im 'aud' Claim des ID Tokens enthalten sein, die 'iss' muss die ID des OpenID Providers enthalten, und der ID Token darf nicht bereits abgelaufen sein [24]. Der 'aud' und 'iss' Claim wurden in Sektion \ref{EB_End-Benutzer} erläutert. Optional können weitere Validierungen stattfinden. Zum Beispiel kann ein Token abgelehnt werden, wenn die auth\_time zu weit in der Vergangenheit liegt [24]. Der interessierte Leser findet unter [24] alle weiteren optionalen Validierungen.
 
-Wie bereits in Sektion \ref{EB_AccessToken} erläutert kann der ID Token nicht alle User Claims enthalten. Die durch den scope Claim des Access Token zugelassenen User Claims können abschließend optional über den UserInfo Endpunkt angefordert werden.
+Wie bereits in Sektion \ref{EB_AccessToken} erläutert kann der ID Token nicht alle Benutzer Claims enthalten. Die durch den scope Claim des Access Token zugelassenen Benutzer Claims können abschließend optional über den BenutzerInfo Endpunkt angefordert werden.
 
-Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den Implicit Flow und den Hybrid Flow an, um einen User zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance [26] und eine kürzere Latenz als der Authorization Code Flow [25]. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können [26] [23].
+Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den Implicit Flow und den Hybrid Flow an, um einen Benutzer zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance [26] und eine kürzere Latenz als der Authorization Code Flow [25]. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können [26] [23].
 
 % kurz erwähnen dass sich clients dynamisch oder alternativ dass admin das macht in openid provider? kurz?
 
+%TODO könnte wichtig werden für das Threat Model falls die Extensions Discovery und Dynamic Registration verwendet werden - nutzen wir die?
+
 \subsubsection{Zugriff auf geschützte Ressourcen} \label{EB_Zugriff auf geschützte Ressourcen}
 
-Der in dieser Sektion vorgestellte Prozess ermöglicht den Zugriff auf Ressourcen in anderen Clients, welche für die authentifizierten und autorisierten User beschränkt ist. Diese anderen Clients werden dabei auch Ressourcen Server genannt. Dabei wird der Access Token dem Ressourcen Server präsentiert. Der Standard schreibt nicht vor, wie dieses Präsentieren des Access Tokens stattfinden soll [28]. Allerdings gibt der Standard an, dass der Access Token üblicherweise über den Authorization Header der HTTP Anfrage als sogenannten Bearer Token übermittelt wird [28]. 
+Der in dieser Sektion vorgestellte Prozess ermöglicht den Zugriff auf Ressourcen in anderen Clients, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Diese anderen Clients werden dabei auch Ressourcen Server genannt. Dabei wird der Access Token dem Ressourcen Server präsentiert. Der Standard schreibt nicht vor, wie dieses Präsentieren des Access Tokens stattfinden soll [28]. Allerdings gibt der Standard an, dass der Access Token üblicherweise über den Authorization Header der HTTP Anfrage als sogenannten Bearer Token übermittelt wird [28]. 
 
 Bearer Token bedeutet, dass jeder, der im Besitz des Tokens ist, den Token wie jeder andere einsetzten kann [29]. Das bedeutet, dass der Ressourcen Server den Token an andere Clients senden kann, um von diesen Ressourcen abzurufen. Das kann z.B. in einer Microservice Architektur vorkommen [31]. Aus diesem Grund sollte man aus Sicherheitsgründen, vor allem wenn es möglicherweise nicht vertrauenswürdige Clients gibt, die erlaubten Scopes im Access Tokens analysieren und diese so weit wie möglich beschränken. Außerdem kann, wie in Sektion \ref{EB_AccessToken} beschrieben ist, über den Audience Claim im Access Token angegeben werden, für welche Clients der Access Token bestimmt ist. Der Ressourcen Server sollte validieren, dass seine Client ID im Audience Claim enthalten ist, bevor er angeforderte geschützte Daten zurücksendet [30].
 
@@ -239,7 +251,7 @@ Zusätzlich muss der Access Token validiert werden. Grundsätzlich gibt es zwei 
 
 In Abbildung \ref{fig:EB_Access Token Verifizierung Offline Variante} ist eine Übersicht der Offline Variante gezeigt. Dabei wird der Öffentliche Schlüssel, dessen Privater Schlüssel vom OpenID Provider für die Signatur des Access Token verwendet wurde, vom OpenID Provider abgerufen. In der Abbildung ist Keycloak der OpenID Provider und der Client wird als Service bezeichnet. Der Client kann die Signatur des Access Token mit dem Öffentliche Schlüssel validieren.
 
-Bei der Offline Variante wird der Public Key oft gecached [32]. Das Verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers [32]. Allerdings kann der Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Users durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. % theorietisch könnte client bescheid gegeben werden
+Bei der Offline Variante wird der Public Key oft gecached [32]. Das Verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers [32]. Allerdings kann der Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Benutzers durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. % theorietisch könnte client bescheid gegeben werden
 
 \begin{figure}[!ht]
 	\centering
@@ -248,7 +260,7 @@ Bei der Offline Variante wird der Public Key oft gecached [32]. Das Verringert d
 	\label{fig:EB_Access Token Verifizierung Online Variante}
 \end{figure}
 
-Eine Übersicht der Online Variante wird in Abbildung \ref{fig:EB_Access Token Verifizierung Online Variante} gezeigt. Hier wird der Access Token bei jeder Anfrage an den OpenID Provider gesendet, um ihn dort zu verifizieren. Der OpenID Provider kann dann zusätzlich überprüfen, ob sich der User ausgeloggt hat, ob der User gesperrt wurde, oder ob ein Administrator des OpenID Providers alle Access Tokens bis zu einem bestimmen Zeitpunkt gesperrt hat [32]. Diese Maßnahmen greifen dann mit sofortiger Wirkung. Der Nachteil der Online Variante ist, dass jede Anfrage eine höhere Latenz hat, und dass der OpenID Provider Server eine höhere Auslastung hat. Keycloak bietet für diese Variante einen Endpunkt zur Validierung an. 
+Eine Übersicht der Online Variante wird in Abbildung \ref{fig:EB_Access Token Verifizierung Online Variante} gezeigt. Hier wird der Access Token bei jeder Anfrage an den OpenID Provider gesendet, um ihn dort zu verifizieren. Der OpenID Provider kann dann zusätzlich überprüfen, ob sich der Benutzer ausgeloggt hat, ob der Benutzer gesperrt wurde, oder ob ein Administrator des OpenID Providers alle Access Tokens bis zu einem bestimmen Zeitpunkt gesperrt hat [32]. Diese Maßnahmen greifen dann mit sofortiger Wirkung. Der Nachteil der Online Variante ist, dass jede Anfrage eine höhere Latenz hat, und dass der OpenID Provider Server eine höhere Auslastung hat. Keycloak bietet für diese Variante einen Endpunkt zur Validierung an. 
 
 Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in Sektion \ref{EB_Einleitung} erwähnt, bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden [33]. Dadurch kann die Last für den OpenID Provider auf mehrere Server verteilt werden. Darüber hinaus kann die Latenzzeit reduziert werden, indem z.B. der OpenID Provider Server und der Ressourcen Server im selben Rechenzentrum oder Rack betrieben werden.
 
@@ -258,16 +270,40 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 
 % https://tools.ietf.org/html/rfc6749#section-7
 
-% Der Access Token wird für die Authorisierung des Users verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authentication Header an Backend Services enthalten sein. 
+% Der Access Token wird für die Authorisierung des Benutzers verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authentication Header an Backend Services enthalten sein. 
 
 
 
 \section{Threat Model}
-% https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation > seems good 
+\begin{comment}
+Hauptquellen - steht fast das gleiche drin:
+% https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation
 
 % https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation
 
+In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit IP Restriction aufgeführt.
+
+Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
+
+https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
+
+% https://www.nds.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/13/OIDCSecurity_1.pdf
+\end{comment}
+
+
 In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine gute Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+
+\subsection{OAuth 2.0 zur Authentifizierung}
+
+Wie bereits erklärt, ist OAuth 2.0 ein fester Bestandteil für das Delegieren von Autorisierungen im Web und damit von SSO. Eine wichtige Einschränkung von OAuth 2.0 ist die Tatsache, dass es für die Autorisierung und nicht für die Authentifizierung konzipiert wurde \ref{OAuthForAuthentication}. Die Verwendung von OAuth 2.0 zur Authentifizierung führt daher zu ernsthaften Schwachstellen.
+
+Die Häufigkeit dieser Schwachstelle wurde in einer Feldstudie mit über 149 beliebten Anwendungen untersucht \cite{chen2014oauth}. Das Ergebnis ist, dass 89 Anwendungen (59,7\%) OAuth 2.0 für Authentifizierung verwendet haben und damit anfällig sind \cite{chen2014oauth}. Diese Studie verdeutlicht die Schwere dieses Basis-Threats.
+
+Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wurde von Zhou et al. durchgeführt \cite{184435}.
+
+%TODO eventuell die Pitfalls von OAuth 2.0 for authentication aufführen - OAuth 2.0 in action Seite 242, Kapitel 13.4 ff
+
+Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
 
 \subsection{Brute-Force}
 
