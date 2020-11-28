@@ -47,7 +47,7 @@ In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses im 
 
 Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt. Keycloak ist eine Single-Sign-On-Lösung für Webanwendungen und RESTful-Webdienste, die OpenID Connect unterstützt. Keycloak bietet anpassbare Benutzeroberflächen für Anmeldung, Registrierung, Administration und Kontoverwaltung. Ebenfalls kann die Authentifizierung auch an Identitätsanbieter von Drittanbietern wie Facebook und Google delegiert werden. \cite{keycloakDocs}
 
-Keycloak unterstützt sowohl OIDC als auch SAML 2.0 [44]. Applikationen, welche mit Keycloak interagieren, müssen eines der beiden Protokolle auswählen [44]. Die Applikationen in unserer Beispielanwendung interagieren mit Keycloak über OIDC. Zusätzlich zu den SSO Features implementiert Keycloak auch Role Based Access Control. Dabei können einem User Rollen wie z.B. 'Kunde' oder 'Mitarbeiter' zugewiesen werden. Basierend auf der Rolle des Users hat dieser Zugriff auf andere Ressourcen. Da der Fokus dieser Arbeit auf SSO liegt, wird Role Based Access Control in der Beispielanwendung nicht erläutert und verwendet.
+Keycloak unterstützt sowohl OIDC als auch SAML 2.0 [44]. Applikationen, welche mit Keycloak interagieren, müssen eines der beiden Protokolle auswählen [44]. Die Applikationen in unserer Beispielanwendung interagieren mit Keycloak über OIDC. Zusätzlich zu den SSO Features implementiert Keycloak auch Role Based Access Control. Dabei können einem Benuter Rollen wie z.B. 'Kunde' oder 'Mitarbeiter' zugewiesen werden. Basierend auf der Rolle des Users hat dieser Zugriff auf andere Ressourcen. Da der Fokus dieser Arbeit auf SSO liegt, wird Role Based Access Control in der Beispielanwendung nicht erläutert und verwendet.
 
 \subsection{Vorgehen}
 
@@ -436,7 +436,7 @@ In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Di
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttribute.PNG}
-	\caption{Keycloak Client User Attribut}
+	\caption{Keycloak Client Benutzer Attribut}
 	\label{fig:EB_Keycloak Client User Attribut}
 \end{figure}
 
@@ -445,7 +445,7 @@ Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scope
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttributeClientScope.PNG}
-	\caption{Keycloak Client Scope für User Attribut}
+	\caption{Keycloak Client Scope für Benutzer Attribut}
 	\label{fig:EB_Keycloak Client Scope für User Attribut}
 \end{figure}
 
