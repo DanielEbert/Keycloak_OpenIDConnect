@@ -355,13 +355,13 @@ Alle Docker Container werden mit Docker Compose gestartet und konfiguriert. Dock
 
 In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des Git-Verzeichnisses zu sehen, welches wir für dieses Beispiel erstellt haben. Dieses Git Repository kann unter [41] geclont werden. Um das Beispiel zu starten, muss Docker, docker-compose, und das Git Repository [41] heruntergeladen bzw. installiert werden. Außerdem muss, wie in der README.md näher beschrieben, der Pfad zum postgres\_data Ordner in der .env Datei gesetzt werden.
 
-Als Alternative zur manuellen Installation des letzten Absatzes kann die von uns erstelle VMWare VM unter TODO verwendet werden. Benutzername und Passwort für die VM sind 'user' und '12345'. Das Git Repository TODO ist im Ordner '/home/user/SSOExample'.
+Als Alternative zur manuellen Installation des letzten Absatzes kann die von uns erstelle VMWare VM unter TODO verwendet werden. Benutzername und Passwort für die VM sind 'user' und '12345'. Das Git Repository TODO ist im Ordner TODO(after VM ready).
 
 Die docker-compose.yml Datei enthält die Konfiguration für Docker Compose. In .env wird der Pfad zum postgres\_data Ordner gesetzt, sowie das Adminpasswort für Keycloak. Im Beispiel ist Keycloak bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. Diese Konfiguration ist in der Datenbank bzw. dem postgres\_db Ordner gespeichert. Die Ordner react\_app und react\_app2 enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben bei der GUI identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner service enthalten. 
 
 Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter [42] hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen.
 
-Im Root Folder des geklonten Git Repositories SSOExample [41] kann der Befehl 'docker-compose up' ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter localhost:3000 und Frontend 2 unter localhost:3001 erreichbar. Im Folgenden wird die Implementierung und Konfiguration der Komponenten und Abläufe näher erläutert.
+Im Root Folder des geklonten Git Repositories TODO kann der Befehl 'docker-compose up' ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter localhost:3000 und Frontend 2 unter localhost:3001 erreichbar. Im Folgenden wird die Implementierung und Konfiguration der Komponenten und Abläufe näher erläutert.
 % TODO: also upload vm to some place and say as an alternative there is a vmware VM with these prerequisites installed.
 % TODO: should run docker-compose down before shutting down the VM/PC and next start again run docker-compose up
 
