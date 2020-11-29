@@ -1,3 +1,5 @@
+% !TeX root = ansi-2020wise-ebert-scherer-ausarbeitung.tex
+
 \chapter{Single Sign On bei Webanwendungen}
 \chapterauthor{Daniel Ebert und Sebastian Scherer}
 
@@ -25,7 +27,7 @@ In der Praxis wird daher in vielen Fällen dasselbe Passwort für mehrere System
 
 %TODO es gibt mehr Vorteile und Nachteile - wenn Zeit hinzufügen: https://www.renovodata.com/blog/2019/01/17/single-sign-on
 
-Neben den im letzten Abschnitt erläuterten Vorteil der Psychological Acceptability im Hinblick auf die Benutzer hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern \cite{EB34}. Weiter sorgt SSO für eine simplere Administration, da alle Benutzerdaten in einem System aufbewahrt werden \cite{EB34}. Außerdem sind die Benutzer eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
+Neben den im letzten Absatz erläuterten Vorteil der Psychological Acceptability im Hinblick auf die Benutzer hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern \cite{EB34}. Weiter sorgt SSO für eine simplere Administration, da alle Benutzerdaten in einem System aufbewahrt werden \cite{EB34}. Außerdem sind die Benutzer eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
 
 \subsection{Nachteile von SSO}
 
@@ -400,7 +402,7 @@ Alle Docker Container werden mit Docker Compose gestartet und konfiguriert. Dock
 	\includegraphics[width=1\textwidth]{Images/Ebert/srcDirectoryStructure.PNG}
 	\caption{Übersicht Struktur des Git-Verzeichnisses}
 	\label{fig:EB_Struktur des Git-Verzeichnisses}
-\end{figure}
+\end{figure} % TODO: update after everything finished
 
 In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des Git-Verzeichnisses zu sehen, welches wir für dieses Beispiel erstellt haben. Dieses Git Repository kann unter TODO geclont werden. Um das Beispiel zu starten, muss Docker, docker-compose, und das Git Repository TODO heruntergeladen bzw. installiert werden. Außerdem muss, wie in der README.md näher beschrieben, der Pfad zum postgres\_data Ordner in der .env Datei gesetzt werden.
 
@@ -511,9 +513,55 @@ Danach wird diesem Client Scope der in Abbildung \ref{fig:EB_Keycloak Protocol M
 
 \subsection{Frontend}
 
-Unser Frontend verwendet das Web Framework ReactJS \cite{EB43}. Für Keycloak gibt es sogenannte Adapter. Diese Adapter sind für verschiedenen Programmiersprachen und Systeme wie ReactJS verfügbar. Im Frontend wird der Adapter mit dem Namen react-keycloak verwendet \cite{EB36}. Ein Adapter ist mehr als eine Programmbibliothek \cite{EB43}. Die Adapter sind eng in das System, wie z.B. ReactJS, integriert \cite{EB43}. Zum Beispiel implementiert der Adapter den Authorization Code Flow zur Authentifizierung eines Benutzers. Authentifiziert sich der Benutzer das erste Mal, dann kann dieser Ablauf mit dem Aufruf der login() Funktion initiiert werden. Wenn sich der Benutzer bereits bei einem anderen Client authentifiziert hat, führt der Adapter den Authorization Code Flow beim Aufrufen der Website im Hintergrund aus, um den Benutzer ohne erneute Eingabe von Anmeldeinformationen wie Benutzernamen und Passwort zu authentifizieren. Im nachfolgenden Beispiel wird das anhand Screenshots der Applikation noch einmal ausführlicher beschrieben. Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung.
+Unser Frontend verwendet das Web Framework ReactJS \cite{EB43}. Für Keycloak gibt es sogenannte Adapter. Diese Adapter sind für verschiedenen Programmiersprachen und Systeme wie ReactJS verfügbar. Im Frontend wird der Adapter mit dem Namen react-keycloak verwendet \cite{EB36}. Ein Adapter ist mehr als eine Programmbibliothek \cite{EB43}. Die Adapter sind eng in das System, wie z.B. ReactJS, integriert \cite{EB43}. Zum Beispiel implementiert der Adapter den Authorization Code Flow zur Authentifizierung eines Benutzers. Authentifiziert sich der Benutzer das erste Mal, dann kann dieser Ablauf mit dem Aufruf der login() Funktion initiiert werden. Wenn sich der Benutzer bereits bei einem anderen Client authentifiziert hat, führt der Adapter den Authorization Code Flow beim Aufrufen der Website im Hintergrund aus, um den Benutzer ohne erneute Eingabe von Anmeldeinformationen wie Benutzernamen und Passwort zu authentifizieren. Im nachfolgenden Beispiel wird das anhand Screenshots der Applikation noch einmal ausführlicher beschrieben.
 
-\subsection{Backend}
+In \ref{fig:EB_Nicht Authentifiziert} ist eine Abbildung der Website von frontend1 zu sehen. Dabei hat sich der Benutzer noch nicht authentifiziert. Über die \textit{GET SERVICE 1 DATA} und \textit{GET SERVICE 2 DATA} Buttons wird jeweils eine Funktion aufgerufen, welche eine HTTP Post Anfrage an den jeweiligen Backend Service, die Clients mit ID service1 und service2, sendet. Ist ein Benutzer authentifiziert, dann wird der Access Token im Bearer Header der Anfrage mitgesendet. Die Backend Services überprüfen, ob eingehende Nachrichten einen validen Access Token enthalten. Bei Erfolg liefern diese die Identifikationsnummer für den Benutzer, den 'sub' Claim, mit dem HTTP-Statuscode 200 zurück. Andernfalls wird, wie in Abbildung \ref{fig:EB_Nicht Authentifizierte Anfrage an Backend} gezeigt, \textit{FAILED} mit Statuscode \textit{402} zurückgegeben und angezeigt. Der Backend Service wird in der nächsten Sektion \ref{EB_Backend} näher erläutert.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendLoggedOut.PNG}
+	\caption{Frontend Client GUI - Nicht Authentifiziert}
+	\label{fig:EB_Nicht Authentifiziert}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendLoggedOutBackendRequest.PNG}
+	\caption{Frontend Client GUI - Nicht Authentifizierte Anfrage an Backend}
+	\label{fig:EB_Nicht Authentifizierte Anfrage an Backend}
+\end{figure}
+
+In der oberen Navigationsleiste sind auf der rechten Seite zwei Buttons, über die sich Benutzer Authentifizieren oder Registrieren können. Für beides bietet der Keycloak Adapter Funktionen an, welche beim Klicken des jeweiligen Buttons ausgeführt werden. Beim Klicken des \textit{Login} Buttons wird der Authorization Code Flow initiiert. Der Benutzer wird dann zu Keycloak's Authorization Endpunkt geleitet. Das ist in Abbildung \ref{fig:EB_Login Font des Authorization Endpunkts} dargestellt. In der Adresszeile sieht man die Addresse des Authorization Endpunkts und einen Teil des Query-String, der die Parameter des Authorization Request enthält.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendLoginForm.PNG}
+	\caption{Keycloak GUI - Login Font des Authorization Endpunkts}
+	\label{fig:EB_Login Font des Authorization Endpunkts}
+\end{figure}
+
+Nach einer erfolgreichen Authentifizierung mit dem Authorization Code Flow wird der Benutzer zurück auf die Website des Frontend Clients geleitet. Anfragen an den Backend Service sind nun erfolgreich. Das ist in Abbildung \ref{fig:EB_Authentifizierte Anfrage an Backend} dargestellt. Access Tokens werden automatisch im Hintergrund erneuert. Dabei sendet der Adapter Anfragen mit dem Refresh Token an Keycloaks Token Endpunkt. Standardmäßig hat der Refresh Token in Keycloak eine Verfallszeit von 10 Stunden. Über den Token Endpunkt ruft der Adapter ebenfalls automatisch neue Refresh und ID Token ab.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendLoggedInBackendRequest.PNG}
+	\caption{Frontend Client GUI - Authentifizierte Anfrage an Backend}
+	\label{fig:EB_Authentifizierte Anfrage an Backend}
+\end{figure} 
+
+Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung. Ist ein Benutzer authentifiziert, dann werden ID, Access, und Refresh Token in der GUI geparst angezeigt. Abbildung \ref{fig:EB_Token} zeigt davon einen Ausschnitt.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendIDTokenExample.PNG}
+	\caption{Frontend Client GUI - Token}
+	\label{fig:EB_Token}
+\end{figure} 
+
+% TODO: sollte ich hier interessante abschnitte des codes zeigen? oder einfach nur auf code verweisen mit dem hinweis, dass der code dokumentiert ist? code ist wirklich nicht interessant, vor allem wenn man keine react kenntnisse hat, und ist meistens nur 1 zeile. code des backends ist mehr interessant
+
+
+\subsection{Backend} \label{EB_Backend}
 
 % TODO: backend should check if its in aud. can pass client id via env. am i missing sth else that i said clients should do and that im not doing?
 % weil ich online token veri mache, ist nach 'Logout All' auch alle Tokens invalide
