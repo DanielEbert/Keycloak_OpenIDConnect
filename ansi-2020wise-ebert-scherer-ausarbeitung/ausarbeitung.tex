@@ -31,7 +31,7 @@ Neben den im letzten Abschnitt erläuterten Vorteil der Psychological Acceptabil
 
 SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits existierende Systeme einzubauen [34]. Um dem entgegenzuwirken bieten SSO Lösungen wie Keycloak fertige Adapter für verschiedene Programmiersprachen und Systeme an, wie z.B. für ReactJS [35] [36]. Außerdem könnte man durch das SSO System einen Single Point of Failure haben. Auch dem kann entgegengewirkt werden. Zum Beispiel bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden [33]. Diese Instanzen können auf mehrere Server verteilt werden um die Redundanz zu erhöhen. % TODO: logged in desktop?
 
-\subsection{Abgrenzung}
+\subsection{Abgrenzung} \label{EB_Abgrenzung}
 
 Es gibt verschiedene Arten von SSO [38]. Diese Arbeit konzentriert sich auf Web SSO. Dabei interagiert der Benutzer mit webbasierten Applikationen und Services.
 
@@ -46,6 +46,8 @@ OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist
 In dieser Arbeit wird nur das OpenID Connect Protokoll betrachtet, da dieses im Gegensatz zu SAML 2.0 speziell für Webanwendungen entwickelt worden ist und das modernere Protokoll ist [37]. Außerdem ist OIDC besser für HTML5/JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML 2.0. Da Token im JSON-Format vorliegen, sind sie von JavaScript leichter zu verarbeiten \cite{ssoProtocols}.
 
 Es gibt verschiedene Implementierungen von SSO Systemen. Eines der bekanntesten dieser Implementierungen ist Keycloak. Keycloak ist Open Source und wird von Red Hat und der Open Source Community entwickelt. Keycloak ist eine Single-Sign-On-Lösung für Webanwendungen und RESTful-Webdienste, die OpenID Connect unterstützt. Keycloak bietet anpassbare Benutzeroberflächen für Anmeldung, Registrierung, Administration und Kontoverwaltung. Ebenfalls kann die Authentifizierung auch an Identitätsanbieter von Drittanbietern wie Facebook und Google delegiert werden. \cite{keycloakDocs}
+
+Keycloak unterstützt sowohl OIDC als auch SAML 2.0 [44]. Applikationen, welche mit Keycloak interagieren, müssen eines der beiden Protokolle auswählen [44]. Die Applikationen in unserer Beispielanwendung interagieren mit Keycloak über OIDC. Zusätzlich zu den SSO Features implementiert Keycloak auch Role Based Access Control. Dabei können einem Benuter Rollen wie z.B. 'Kunde' oder 'Mitarbeiter' zugewiesen werden. Basierend auf der Rolle des Users hat dieser Zugriff auf andere Ressourcen. Da der Fokus dieser Arbeit auf SSO liegt, wird Role Based Access Control in der Beispielanwendung nicht erläutert und verwendet.
 
 \subsection{Vorgehen}
 
@@ -70,20 +72,20 @@ TODO: hier 1 absatz zusammenfassung der subsection
 
 Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifieriert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
 
-\subsubsection{Client}
+\subsubsection{Client} \label{EB_Client}
 
 Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt zwei Arten von Clients. Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf [2] [3]. Das ist zum Beispiel die Frontend Applikation, welche im Webbrowser auf dem PC oder Smartphone des Benutzers läuft, und geschützte Ressourcen vom Backend Server anfordert. Die zweite Art sind Clients, die am Single-Sign on teilnehmen [3]. Das können z.B. Backend Services sein, wo Benutzer Ressourcen abrufen können, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Dadurch müssen sich Benutzer nicht mehrmals registrieren und einloggen. Clients dieser Art können auch als Resource Server fungieren, wenn sie Ressourcen des Benutzers speichern und hosten.
 
 \subsubsection{OpenID Provider}
 
-Der OpenID Provider kann Benutzer authentifizieren und Claims der Benutzer speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Benutzers stellen OpenID Provider den UserInfo Endpoint bereit. Clients können dort mit einem Access Token des Benutzers alle oder einen bestimmten Teil der Claims des Benutzers abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion TODO beschrieben.
+Der OpenID Provider kann Benutzer authentifizieren und Claims der Benutzer speichern. Keycloak ist ein Beispiel für einen OpenID Provider. Ebenfalls stellen sie verschiedene Service-Endpunkte für Clients zur Verfügung. Neben dem Endpunkt für die Authentifizierung eines Benutzers stellen OpenID Provider den UserInfo Endpoint bereit. Clients können dort mit einem Access Token des Benutzers alle oder einen bestimmten Teil der Claims des Benutzers abrufen [4]. Über Scopes, ein Feld des Access Tokens, wird festgelegt, welche Claims abrufen werden können. Die verschiedenen Arten und der Aufbau von Tokens wird in der nächsten Sektion \ref{EB_Tokens} beschrieben.
 
 Es gibt weitere Endpunkte des OpenID Provider, wie zum Beispiel Endpunkte um ID, Access, und Refresh Tokens anzufordern, um einen Benutzer auszuloggen, oder um die Signatur eines Token zu validieren. OpenID Provider können Benutzer selbst oder über einen externen Identity Provider wie Google, Github, oder Stack Overflow authentifizieren [7] [6]. Dementsprechend werden die Accountdaten lokal oder bei dem externen Identity Provider gespeichert.
 
 Der OpenID Provider ist auch für das managen der Client verantwortlich. Zum Beispiel müssen sich Clients beim OpenID Provider registrieren, um am SSO teilzunehmen. Zusätzlich kann der OpenID Provider festlegen, auf welche anderen Clients, z.B. Backend Services, und auf welche Informationen und Ressourcen, z.B. Claims, ein Client zugriff hat (TODO: src?).
 
 
-\subsection{Tokens}
+\subsection{Tokens} \label{EB_Tokens}
 
 Beim SSO mit OpenID Connect werden verschiedene Arten von Tokens eingesetzt. Bei OpenID Connect haben Tokens das JSON Web Token (JWT) Format. Tokens werden vom OpenID Provider erstellt und mit der JSON Web Signature vom OpenID Provider signiert [5]. Tokens können optional über JSON Web Encryption verschlüsselt werden. Da Tokens bei Webanwendungen üblicherweise über HTTPS übertragen werden und deshalb bereits verschlüsselt sind, ist eine erneute Verschlüsselung mit JSON Web Encryption dort nicht erforderlich. Der OpenID Provider kann verschiedene Arten von Token ausgeben, mit jeweils verschiedenen Zielgruppen und Anwendungsfällen.
 
@@ -116,7 +118,7 @@ Der ID Token enthält Claims über die Authentifizierung des Benutzers. Wenn vom
 }
 \end{lstlisting}
 
-Ein Beispiel Claim für die Authentifizierung des Benutzers ist \emph{auth\_time}, welches den Zeitpunkt der Authentisierung in Unixzeit (Epoch) angibt. Der interessierte Leser findet eine Definition für die meisten hier gezeigten Claims unter TODO [7]. Einen Teil dieser Claims werden später noch näher erläutert, TODO:check if right: wie z.B. die nonce in Sektion TODO.
+Ein Beispiel Claim für die Authentifizierung des Benutzers ist \textit{auth\_time}, welches den Zeitpunkt der Authentisierung in Unixzeit (Epoch) angibt. Der interessierte Leser findet eine Definition für die meisten hier gezeigten Claims unter TODO [7]. Einen Teil dieser Claims werden später noch näher erläutert, TODO:check if right: wie z.B. die nonce in Sektion TODO.
 
 Der ID Token ist nur für den Client, der an der Authentifizierung des Benutzers beteiligt war, gedacht. Dieser Client kann durch den ID Token die Benutzer Erfahrung anpassen [8], z.B. mit einer Willkommensnachricht mit dem Namen des Benutzers. Der ID Token sollte nicht für die Authorisierung verwendet werden, z.B. um geschützte Ressourcen von einem Back-End Service abzurufen. Das ist die Aufgabe des im nächsten Abschnitt geschiebenen Access Token.
 
@@ -144,9 +146,9 @@ Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token kei
 }
 \end{lstlisting}
 
-Der \emph{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \emph{profile} Scope Zugriff auf die Benutzer Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim UserInfo Endpunkt [11]. 
+Der \textit{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat [11] [9]. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \textit{profile} Scope Zugriff auf die Benutzer Claims 'name', 'family\_name', 'preferred\_username', und weiteren beim UserInfo Endpunkt [11]. 
 
-Der \emph{aud} (Audience) Claim gibt an, für welche Clients der Access Token bestimmt ist. Erhält ein Client einen Access Token und dieser Client ist nicht in der \emph{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden.
+Der \textit{aud} (Audience) Claim gibt an, für welche Clients der Access Token bestimmt ist. Erhält ein Client einen Access Token und dieser Client ist nicht in der \textit{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden.
 % Hier oder später das beispiel von https://www.keycloak.org/docs/latest/server_admin/#_audience
 %Erhält ein Client ein Access Token, dann ist ihm nicht bekannt, ob der Sender 
 %Das kann zu Problemen führen, wenn nicht alle Clients vertrauenswürdig sind.
@@ -162,11 +164,11 @@ ID, Access, und Refresh Token haben eine Verfallszeit. Diese Verfallszeit ist im
 
 Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein Benutzer kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt einen Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann der Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der Benutzer kann weiterhin neue Access Tokens anforder. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Benutzers zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewägt werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer um möglicherweise auf geschützte Ressourcen des Benutzers zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion TODO näher erläutert.
 
-\subsection{Abläufe}
+\subsection{Abläufe} \label{EB_Abläufe}
 
 Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benutzers zum Einsatz. Wie in der Einleitung in Sektion TODO beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann.
 
-\subsubsection{Authentifizierung eines Benutzers}
+\subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung eines Benutzers}
 
 Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt.
 
@@ -188,13 +190,13 @@ Als erstes wird der Autorization Request vorbereitet. Diese Anfrage enthält meh
 
 \begin{lstlisting}[caption=Beispiel Autorization Request, captionpos=b, label=EBAutorizationRequest]
 GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
-client_id=react-frontend
-&redirect_uri=https%3A%2F%2Freactfrontend.com%2F
-&state=0909ff6a-53b2-4253-8690-aff72d2cfff1
-&response_mode=fragment
-&response_type=code
-&scope=openid%20profile
-&nonce=67bad316-d8c1-45d1-9559-2a1c4726ce91
+        client_id=react-frontend
+        &redirect_uri=https%3A%2F%2Freactfrontend.com%2F
+        &state=0909ff6a-53b2-4253-8690-aff72d2cfff1
+        &response_mode=fragment
+        &response_type=code
+        &scope=openid%20profile
+        &nonce=67bad316-d8c1-45d1-9559-2a1c4726ce91
 \end{lstlisting}
 
 Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, also den OpenID Provider, gesendet. Bei dieser Anfrage handelt es sich um eine GET HTTP-Anfrage. Das bedeutet, dass der Benutzer nach Schritt 2 nicht auf der Website des Clients, sondern auf der Website des OpenID Provider ist. Dies ist im Hinblick auf die Sicherheit wichtig, da sich der Benutzer im dritten Schritt authentisieren muss und seine Anmeldeinformationen wie z.B. Benutzername und Passwort eingeben muss. Da dies nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Benutzers vom Client abgeschirmt [15]. Das bedeutet, dass der Client keine Informationen über die Anmeldeinformationen des Benutzers hat. Der Client erhält nur die Tokens.
@@ -207,9 +209,9 @@ In Schritt 5 und 6 wird der Benutzer bzw. der Browser zur redirect\_uri umgeleit
 
 \begin{lstlisting}[caption=Beispiel Redirect URI, captionpos=b, label=EBBeispielRedirectURI]
 https://reactfrontend.com/#
-state=0909ff6a-53b2-4253-8690-aff72d2cfff1&
-code=50342949-85bb-47ba-84ab-ed890b088226.0d9f3aa9-9e37-4c
-b7-a589-06972b3cf410.ef40a086-7a64-4b49-b3f0-11dc5cf92a68
+        state=0909ff6a-53b2-4253-8690-aff72d2cfff1&
+        code=50342949-85bb-47ba-84ab-ed890b088226.0d9f3aa9-9e37-4c
+        b7-a589-06972b3cf410.ef40a086-7a64-4b49-b3f0-11dc5cf92a68
 \end{lstlisting}
 
 Durch das im Authorization Request aus Schritt 1 angegebene 'response\_mode=fragment' werden die Informationen über das URI Fragment übermittelt. Die in der Redirect URI zurückgegebene 'state' muss dieselbe sein wie in der Autorization Request [20]. Das verhindert CSRF, was später in Sektion TODO näher erläutert wird.
@@ -327,6 +329,170 @@ SSL/HTTPS, Lifespan,
 
 Hashing
 
+\subsection{...}
+
+\section{Umsetzung von SSO innerhalb einer Beispielwebanwendung}
+
+% TODO: könnte man auch in mehrere subsections packen
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=.8\textwidth]{Images/Ebert/ArchitectureDiagram.png}
+	\caption{Beispielwebanwendung Architektur und Abläufe Überblick}
+	\label{fig:EB_Beispielwebanwendung Architektur und Abläufe Überblick}
+\end{figure}
+
+Abbildung \ref{fig:EB_Beispielwebanwendung Architektur und Abläufe Überblick} zeigt einen Überblick über die Architektur und die Abläufe der implementierten Beispielwebanwendung. Jedes Rechteck stellt eine Komponente dar. Jede Komponente läuft in einem separaten Docker Container. Pfeile stellen Abläufe bzw. Interaktionen zwischen Komponenten dar. Die Richtung der Pfeile gibt an, von welcher Komponente der Ablauf ausgeht. Zum Beispiel startet das Frontend den Ablauf 'Zugriff auf geschützte Ressourcen', indem das Frontend eine HTTP Post Anfrage an das Backend sendet. Die Namen und Funktionsweisen der Abläufe in Abbildung \ref{fig:EB_Beispielwebanwendung Architektur und Abläufe Überblick} korrespondieren mit den in Sektion \ref{EB_Abläufe} beschriebenen Abläufen. 
+
+Alle Docker Container werden mit Docker Compose gestartet und konfiguriert. Docker Compose ist ein Tool für Multi-Container-Anwendungen [40]. Über Docker Compose wird ein Netzwerk erstellt und konfiguriert. Dadurch können die Komponenten untereinander kommunizieren. Außerdem kann der Benutzer dadurch über den Browser mit den Komponenten kommunizieren. Über Docker Compose wird ebenfalls ein persistenten Speicher für die Komponente DB (Datenbank) aufgesetzt und es werden Umgebungsvariablen für die Anwendungen in den Containern gesetzt.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/srcDirectoryStructure.PNG}
+	\caption{Übersicht Struktur des Git-Verzeichnisses}
+	\label{fig:EB_Struktur des Git-Verzeichnisses}
+\end{figure}
+
+In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des Git-Verzeichnisses zu sehen, welches wir für dieses Beispiel erstellt haben. Dieses Git Repository kann unter [41] geclont werden. Um das Beispiel zu starten, muss Docker, docker-compose, und das Git Repository [41] heruntergeladen bzw. installiert werden. Außerdem muss, wie in der README.md näher beschrieben, der Pfad zum postgres\_data Ordner in der .env Datei gesetzt werden.
+
+Als Alternative zur manuellen Installation des letzten Absatzes kann die von uns erstelle VMWare VM unter TODO verwendet werden. Benutzername und Passwort für die VM sind 'user' und '12345'. Das Git Repository TODO ist im Ordner TODO(after VM ready).
+
+Die docker-compose.yml Datei enthält die Konfiguration für Docker Compose. In .env wird der Pfad zum postgres\_data Ordner gesetzt, sowie das Adminpasswort für Keycloak. Im Beispiel ist Keycloak bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. Diese Konfiguration ist in der Datenbank bzw. dem postgres\_db Ordner gespeichert. Die Ordner react\_app und react\_app2 enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben bei der GUI identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner service enthalten. 
+
+Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter [42] hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen.
+
+Im Root Folder des geklonten Git Repositories TODO kann der Befehl 'docker-compose up' ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter localhost:3000 und Frontend 2 unter localhost:3001 erreichbar. Im Folgenden wird die Implementierung und Konfiguration der Komponenten und Abläufe näher erläutert.
+% TODO: also upload vm to some place and say as an alternative there is a vmware VM with these prerequisites installed.
+% TODO: should run docker-compose down before shutting down the VM/PC and next start again run docker-compose up
+
+\subsection{Keycloak}
+
+Der Keycloak Server ist unter 'localhost:8080' erreichbar. Die Security Admin Console ist eine GUI zum Konfigurieren von Keycloak für Keycloak Administratoren. Über 'localhost:8080/auth/admin/' ist diese GUI erreichbar. Im Beispiel kann man sich dort mit dem Benutzernamen 'admin' und Passwort 'iuq123' anmelden. Als Alternative zur GUI kann Keycloak auch über die sogenannte Admin CLI konfiguriert werden.
+
+\subsubsection{Realms}
+
+Keycloak hat ein Konzept namens Realms. Jeder Realm hat eine Menge von Clients und Benutzern. Ein Realm ist eine Sandbox. Die Clients und Benutzer eines Realms sind isoliert von Clients und Benutzern anderer Realms [46].
+
+Beim ersten Start von Keycloak erstellt Keycloak einen vordefinierten Realm. Dieser wird master Realm genannt. Der master Realm enthält unter anderem den Keycloak Administrator Benutzer. Außerdem fügt Keycloak die Security Admin Console und Admin CLI automatisch als Clients dem master Realm hinzu. Aus Sicherheitsgründen sollten weitere Benutzer und Clients in einem neuen Realm konfiguriert werden, damit versehentliche Änderungen der Realmeinstellungen weniger schwerwiegend sind [47]. Es können auch weitere Administrator Benutzer für Realms erstellt werden. Administrator Benutzer im Master Realm haben Zugriff auf alle Realms,  Administrator Benutzer in anderen Realm haben nur auf ihren eigenen Realm Zugriff [47].
+
+Für das Beispiel wurde ein neuer Realm mit dem Namen 'Test' erstellt. In der Security Admin Console ist der Test Realm standardmäßig ausgewählt. Dort kann in der linken Navigationsleiste unter Realm Settings der ausgewählte Realm konfiguriert werden. Zum Beispiel kann dort im Tokens Tab die Verfallszeit des Access Tokens gesetzt werden. Weiter kann im Login Tab eingestellt werden, dass alle Anfragen an Keycloak über SSL verschlüsselt werden müssen. % TODO: if we talk about that threat model: Add pic of Security Defenses Tab?
+
+\subsubsection{Clients}
+
+In der linken Navigationsleiste der Security Admin Console können unter Clients alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: react-example, react-example2, service1, service2. Die Konfiguration der Clients kann unter 'Edit' angezeigt werden.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakClientConfig.PNG}
+	\caption{Keycloak react-example Client Konfiguration}
+	\label{fig:EB_Keycloak react-example Client Konfiguration}
+\end{figure}
+
+In Abbildung \ref{fig:EB_Keycloak react-example Client Konfiguration} ist die Konfiguration des react-example Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak react-example Client Konfiguration}:
+\begin{itemize}
+\item \emph{Client ID:} react-example ist die Client ID für Frontend 1.
+\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung eines Users} beschriebene Schritt 4.
+\item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
+\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die erste Art von Clients, also z.B. für Frontend Applikationen. Backend 1 und 2 haben die Client ID service1 und service2. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf 'bearer-only' gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
+\item \emph{Valid Redirect URIs:} TODO nach threat model...
+\item \emph{Web Origins:} Dadurch ist für diesen Client der HTTP Header 'Access-Control-Allow-Origin: http://localhost:3000' in Nachrichten von Keycloak zum Client enthalten. Dieses Feld muss auf die URL des Frontends gesetzt werden, um Cross-Origin Resource Sharing (CORS) zu erlauben. Ansonsten akzeptiert der Browser eingehende Anfragen bzw. Redirects von Keycloak nicht.
+\end{itemize}
+
+\subsubsection{Client Scopes}
+
+In der linken Navigationsleiste der Security Admin Console kann auf die Keycloak Client Scopes zugegriffen werden. Für ein Keycloak Client Scope können beliebig viele sogenannte Protocol Mapper definiert werden. Mit Protocol Mapper können die Claims von z.B. dem ID und Access Token und die zurückgegebenen Claims des UserInfo Endpunkts konfiguriert werden. Dazu gehört unter anderem das Hinzufügen weiterer Scopes im 'scopes' Claim und weiterer Audiences im 'aud' Claim des Access Token. Es können auch neue Claims erstellt werden, welche dem ID oder Access Token hinzugefügt, oder vom UserInfo Endpunkt zurückgegeben werden. Über Protocol Mapper können Benutzern auch Rollen für Role Based Access Control zugewiesen werden. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung und Definition} erläutert, wird Role Based Access Control in dieser Arbeit jedoch nicht näher betrachtet. 
+
+Im Folgenden werden zwei Beispiele für Keycloak Client Scopes gezeigt. Im ersten Beispiel werden die zwei Backend Clients mit Client ID 'service1' und 'service2' dem 'aud' Claim des Access Tokens hinzugefügt. Unter 'Client Scopes' und 'Create' wird dafür, wie in Abbildung \ref{fig:EB_Keycloak Client Scope für Audience Claim} gezeigt, ein neuer Client Scope erstellt mit dem Namen \textit{backend\_audience} erstellt. Ein wichtiges Feld in \ref{fig:EB_Keycloak Client Scope für Audience Claim} ist \textit{Include In Token Scope}. Ist dieses Feld 'ON', dann ist der Name des Client Scope im 'scopes' Claim des Access Token enthalten. In diesem Fall ist das Feld \textit{OFF}, da nur der 'aud' Claim angepasst werden soll.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudClientScope.PNG}
+	\caption{Keycloak Client Scope für Audience Claim}
+	\label{fig:EB_Keycloak Client Scope für Audience Claim}
+\end{figure}
+
+Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mapper vom Typ 'Audience' erstellt, jeweils einen Protocol Mapper für jeden Backend Client. Die Konfiguration für den ersten Backend Client wird in Abbildung \ref{fig:EB_Keycloak Protocol Mapper für Audience Claim} gezeigt. Im \textit{Included Client Audience} Feld kann aus einer Liste aller Clients der Client ausgewählt werden, welcher dem 'aud' Claim hinzugefügt werden soll. Für den zweiten Protocol Mapper ist an dieser Stelle der Client mit der ID 'service2' eingetragen. Über die \textit{Add to ID token} und \textit{Add to access token} Felder wird festgelegt, dass die Änderung nur beim 'aud' Claim des Access Token stattfinden soll.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudProtocolMapper.PNG}
+	\caption{Keycloak Protocol Mapper für Audience Claim}
+	\label{fig:EB_Keycloak Protocol Mapper für Audience Claim}
+\end{figure}
+
+Abschließend kann der Client Scope einem oder mehreren Clients hinzugefügt werden. Die im Client Scope definierten Änderungen werden bei den ausgewählten Clients angewandt. In diesem Beispiel sollen die 'aud' Claims der Access Tokens an die zwei Frontend Applikationen angepasst werden. In Abbildung \ref{fig:EB_Keycloak Client Scope einem Client zuweisen} wird das Hinzufügen des 'backend\_audience' Client Scope zum react-example (Frontend 1) Clients gezeigt. Im 'Client Scopes' Tab des Frontend Clients wird dazu der \textit{backend\_audience} Client Scope ausgewählt. Dieser kann dann mit \textit{Add selected} der Liste der zugewiesenen Standard Client Scopes für den Client hinzugefügt werden.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakAddAudClientScope.PNG}
+	\caption{Keycloak Client Scope einem Client zuweisen}
+	\label{fig:EB_Keycloak Client Scope einem Client zuweisen}
+\end{figure}
+
+Im zweiten Beispiel soll ein neuer Claim 'GUI\_Color' erstellt werden. Dieser Claim soll im ID Token enthalten sein und vom UserInfo Endpunkt zurückgegeben werden. Die GUI\_Color soll nicht bei allen Benutzern gleich sein, sondern sie soll der Lieblingsfarbe des Benutzers entsprechen.
+
+In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Diese können z.B. in der Security Admin Console, der Admin CLI, oder beim Registrieren des Benutzers gesetzt werden. In Abbildung \ref{fig:EB_Keycloak Client User Attribut} wurde in der linken Navigationsleiste unter 'Users' das 'Attributes' Tab des admin Benutzers ausgewählt und das Attribut \textit{favorite\_color} mit dem Value \textit{blue} hinzugefügt. Dieses Attribut kann über einen Protocol Mapper referenziert werden.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttribute.PNG}
+	\caption{Keycloak Client Benutzer Attribut}
+	\label{fig:EB_Keycloak Client User Attribut}
+\end{figure}
+
+Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scopes ist in Abbildung \ref{fig:EB_Keycloak Client Scope für User Attribut} gezeigt. Anders als im ersten Beispiel ist \textit{Include In Token Scope} auf \textit{ON}, damit der Name des Client Scopes \textit{colors} im 'scopes' Claim des Access Token enthalten ist.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttributeClientScope.PNG}
+	\caption{Keycloak Client Scope für Benutzer Attribut}
+	\label{fig:EB_Keycloak Client Scope für User Attribut}
+\end{figure}
+
+Danach wird diesem Client Scope der in Abbildung \ref{fig:EB_Keycloak Protocol Mapper fuer GUI color Claim} gezeigte Protocol Mapper hinzugefügt. Als \textit{Mapper Type} wird in diesem Fall \textit{User Attribute} ausgewählt. Das \textit{User Attribute} Feld enthält den Namen des für den Benutzer angelegten Attributs. \textit{Token Claim Name} setzt den Key des Claims auf \textit{GUI\_color}. \textit{Add to ID token} und \textit{Add to userinfo} ist beides auf \textit{ON}, damit der Claim sowohl im ID Token enthalten ist als auch vom UserInfo Endpunkt zurückgegeben werden kann. Die Value dieses Claims ist dann der Wert des \textit{favourite\_color} Attributes des authentifizierten Benutzers. Wenn für einen Benutzer kein 'favourite\_color' Attribut hinzugefügt ist, dann ist der Claim nicht im ID Token und nicht in Antworten des UserInfo Endpunkts enthalten. Wie im ersten Beispiel muss der Client Scope den zwei Fontend Clients hinzugefügt werden.
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewClaimProtocolMapper.PNG}
+	\caption{Keycloak Protocol Mapper für GUI color Claim}
+	\label{fig:EB_Keycloak Protocol Mapper fuer GUI color Claim}
+\end{figure}
+
+
+
+\subsection{Frontend}
+
+Unser Frontend verwendet das Web Framework ReactJS [43]. Für Keycloak gibt es sogenannte Adapter. Diese Adapter sind für verschiedenen Programmiersprachen und Systeme wie ReactJS verfügbar. Im Frontend wird der Adapter mit dem Namen react-keycloak verwendet [45]. Ein Adapter ist mehr als eine Programmbibliothek [43]. Die Adapter sind eng in das System, wie z.B. ReactJS, integriert [43]. Zum Beispiel implementiert der Adapter den Authorization Code Flow zur Authentifizierung eines Benutzers. Authentifiziert sich der Benutzer das erste Mal, dann kann dieser Ablauf mit dem Aufruf der login() Funktion initiiert werden. Wenn sich der Benutzer bereits bei einem anderen Client authentifiziert hat, führt der Adapter den Authorization Code Flow beim Aufrufen der Website im Hintergrund aus, um den Benutzer ohne erneute Eingabe von Anmeldeinformationen wie Benutzernamen und Passwort zu authentifizieren. Im nachfolgenden Beispiel wird das anhand Screenshots der Applikation noch einmal ausführlicher beschrieben. Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung.
+
+\subsection{Backend}
+
+% TODO: backend should check if its in aud. can pass client id via env. am i missing sth else that i said clients should do and that im not doing?
+% weil ich online token veri mache, ist nach 'Logout All' auch alle Tokens invalide
+
+% now add pics and explain what we can see in pic. maybe add code?
+
+
+
+- show img logged out
+- show img logged in
+- show img tokens
+- end user;; frontend läuft dann im browser
+- Über das Klicken des 'Login' Buttons wirdd er '...' initiiert. Im Hintergrund... dann sind wir bei Schritt ..
+- logged out bild zeigen und beschreiben was man sieht. 'Rechte Seite der TopNavigationsBar ist ein Button um Login zu ... je 1 button für POST and je backend
+- show cookie for keycloak
+- Bei login form bild: sagen dass wir jetzt auf localhost:8000 sind, nicht localhost:3000, und das das die seite von keycloak ist.
+
+
+explain raect frontend. use keycloak react adapter. backend with flask. keycloak can use other db's too such as ...
+bild wenn logged out
+bild fehlermeldung vom backend server 401
+bild wenn erfolg von backend server
+source code vom backend code, frontend code?
+- keycloak all clients and client config in keycloak admin console
+
+\section{Zusammenfassung und Ausblick}
+
+TODO
 
 
 
@@ -369,7 +535,15 @@ Hashing
 % [36] https://www.npmjs.com/package/@react-keycloak/web
 % [37] https://www.keycloak.org/docs/latest/server_admin/index.html#openid-connect-vs-saml
 % [38] https://www.researchgate.net/publication/257743941_A_Survey_on_Single_Sign-On_Techniques
-% [39]
+% [39] https://github.com/keycloak/keycloak
+% [40] https://github.com/docker/compose
+
+% [42] https://hub.docker.com/u/danielebert00
+% [43] https://reactjs.org/
+% [44] https://www.keycloak.org/docs/latest/securing_apps/
+% [45] https://www.npmjs.com/package/@react-keycloak/web
+% [46] https://www.keycloak.org/docs/latest/server_admin/#core-concepts-and-terms
+% [47] https://www.keycloak.org/docs/latest/server_admin/#the-master-realm
 
 
 
