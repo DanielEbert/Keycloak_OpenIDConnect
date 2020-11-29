@@ -70,11 +70,17 @@ TODO: hier 1 absatz zusammenfassung der subsection
 
 \subsubsection{Endbenutzer} \label{EB_End-Benutzer}
 
-Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifieriert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
+Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifiziert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
 
-\subsubsection{Client} \label{EB_Client}
+\subsubsection{Clients} \label{EB_Client}
 
-Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt zwei Arten von Clients. Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf [2] [3]. Das ist zum Beispiel die Frontend Applikation, welche im Webbrowser auf dem PC oder Smartphone des Benutzers läuft, und geschützte Ressourcen vom Backend Server anfordert. Die zweite Art sind Clients, die am Single-Sign on teilnehmen [3]. Das können z.B. Backend Services sein, wo Benutzer Ressourcen abrufen können, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Dadurch müssen sich Benutzer nicht mehrmals registrieren und einloggen. Clients dieser Art können auch als Resource Server fungieren, wenn sie Ressourcen des Benutzers speichern und hosten.
+Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt drei Arten von Clients \cite{OAuth2inAction}.
+
+Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf [2] [3]. Das sind zum Beispiel die Frontend- oder Browser-Anwendungen, welche vollständig im Webbrowser laufen und geschützte Ressourcen vom Backend Server anfordern. Obwohl der Code für die Anwendung von einem Web-Server bedient werden muss, wird der Code selbst nicht auf dem Server ausgeführt und der Web-Server behält nichts vom Laufzeitstatus der Anwendung bei \cite{OAuth2inAction}. Stattdessen geschieht alles, was die Anwendung betrifft, auf dem Computer des Endbenutzers in dessen Local Storage des Web-Browsers \cite{OAuth2inAction}.
+
+Bei der zweiten Art handelt es sich um Backend-Anwendungen, die auf einem entfernten Server ausgeführt werden und auf die über einen Web-Browser oder ein Frontend zugegriffen wird \cite{OAuth2inAction}. Die Konfiguration der Anwendung und ihr Laufzeitzustand werden auf dem Web-Server gehalten und die Browser-Verbindung wird in der Regel über ein Session-Cookie hergestellt. Diese Clients können Ressourcen bereitstellen, welche für die authentifizierten und autorisierten Benutzer beschränkt sind.
+
+Die dritte Art sind native Anwendungen, die direkt auf dem Gerät des Endbenutzers laufen \cite{OAuth2inAction}. Sie werden in dieser Arbeit nicht behandelt und werden nur der Vollständigkeit halber erwähnt.
 
 \subsubsection{OpenID Provider}
 
@@ -293,7 +299,7 @@ Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Se
 \end{comment}
 
 
-In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine gute Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
 
 \subsection{OAuth 2.0 zur Authentifizierung}
 
@@ -307,6 +313,7 @@ Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wur
 
 Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
 
+\begin{comment}
 \subsection{Brute-Force}
 
 Password Policies, Max Login Failures
@@ -330,6 +337,14 @@ SSL/HTTPS, Lifespan,
 Hashing
 
 \subsection{...}
+\end{comment}
+
+
+
+
+
+
+
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung}
 
