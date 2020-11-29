@@ -47,6 +47,7 @@ services:
       dockerfile: ./Dockerfile
     image: danielebert00/backendservice:1
     environment:
+      client_ID: service1
       PORT: 5001
     ports:
       - "5001:5001"
@@ -56,6 +57,7 @@ services:
       dockerfile: ./Dockerfile
     image: danielebert00/backendservice:1
     environment:
+      client_ID: service2
       PORT: 5002
     ports:
       - "5002:5002"
