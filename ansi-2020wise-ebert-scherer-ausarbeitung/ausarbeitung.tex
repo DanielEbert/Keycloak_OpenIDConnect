@@ -299,7 +299,9 @@ Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Se
 \end{comment}
 
 
-In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert und aufgeführt wie diese gemildert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+
+Ein großer Teil der Sicherheit von OpenID Connect basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
 
 \subsection{OAuth 2.0 zur Authentifizierung}
 
