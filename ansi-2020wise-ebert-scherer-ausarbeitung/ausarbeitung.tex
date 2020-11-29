@@ -301,7 +301,7 @@ Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Se
 
 In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert und aufgeführt wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
 
-Ein großer Teil der Sicherheit von OpenID Connect basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. 
+Ein großer Teil der Sicherheit von OpenID Connect und OAuth 2.0 basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. Die Protokolle selbst sind frei von Kryptographie.
 % Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
 
 Obwohl OAuth 2.0 und OpenID Connect ein Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. In der Tat muss alles korrekt eingesetzt und verwaltet werden.
@@ -332,9 +332,9 @@ Diese Schwachstelle basiert auf einem Angriff, der als als Mixup Attack bekannt 
 
 
 
-\subsection{Client Schwachstellen}
+\subsection{Client-Frontend Schwachstellen}
 
-In dieser Sektion werden häufige Angriffen auf Clients präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
+In dieser Sektion werden häufige Angriffen auf Client-Frontends präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
 
 Der Client hat ein paar Dinge, die er schützen muss. Wenn er ein Client Geheimnis hat, muss er sicherstellen, dass dieses an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Da er Access- und Refresh-Tokens sammelt, muss er ebenfalls sicherstellen, dass diese nicht Komponenten außerhalb der Clients selbst zur Verfügung gestellt werden. Der Client muss auch darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
 
@@ -375,8 +375,31 @@ Zugriffstoken werden an Ressourcenserver meist durch Übergabe des Inhaber-Token
 
 Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Zugriffstoken offengelegt, da der Referrer die gesamte URL enthält  \cite{OAuth2inAction}. Die Verwendung des Standard-Autorisierungs-Headers vermeidet diese Art von Problemen, da das Zugriffstoken nicht in der URL erscheint \cite{OAuth2inAction}.
 
+\subsection{Client-Backend Schwachstellen}
 
+In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
 
+% Die geschützten Ressourcen des Servers sind in mehrfacher Hinsicht verwundbar. Die erste und offensichtlichste ist, dass Access Tokens durchsickern können, wodurch ein Angreifer Daten über geschützte Ressourcen erhält. Dies kann durch Token-Hijacking geschehen, wie bereits in der vorigen Sektion gezeigt wurde oder das Token eine schwache Entropie hat. \cite{OAuth2inAction}
+
+% \subsubsection{Endpunktschwachstellen}
+
+Wenn eine REST-API eingesetzt wird, bei der die Antwort auf das Ergebnis von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt ist anfällig für Cross-Site-Scripting (XSS)-Angriffe, wenn der Ressourcenserver access\_token als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
+
+Ist der Endpunkt für XSS anfällig ist, kann ein Angreifer eine bösartige URI fälschen, die auf die geschützte Ressource verweist: Wenn das Opfer darauf klickt, ist der Angriff abgeschlossen, wodurch die Ausführung des JavaScript erzwungen wird \cite{OAuth2inAction}. Der bösartige XSS-Code kann beispielsweise Daten extrahieren, um dem Angreifer die Möglichkeit zu geben, sich als authentifizierter Benutzer auszugeben. 
+
+Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. Des Weiteren kann der richtige Content-Type in einer HTTP-Antwort zusätzlichen Schutz bieten. Wird beispielsweise der Content-Type \texttt{application/json} verwendet, wird die Antwort in JSON zurückgegeben und somit der XSS-Code nicht vom Browser ausgeführt. Ein weiterer nützlicher Response-Header, der von allen Browsern unterstützt wird, ist X-Content-Type-Options: nosniff. Dieser Sicherheitsheader verhindert, dass die Browser MIME Sniffing für eine Antwort verwenden, die vom angegebenen Content-Type abweicht. Ebenso kann der Sicherheitsheader ist X-XSS-Protection gesetzt werden, der automatisch den XSS-Filter aktiviert, welcher in den meisten neueren Webbrowsern eingebaut ist. Ein weiterer nützlicher Response-Header gegen XSS ist Content-Security-Policy (CSP), der in modernen Browsern deklariert, welche dynamischen Ressourcen über einen HTTP-Header geladen werden dürfen.
+
+Die letzte Gegenmaßnahme, die ein Ressourcen-Server implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token enthält, welches über den Authorization: Bearer Header gesendet werden soll \cite{OAuth2inAction}.
+
+% Eventuell CORS noch hinzufügen
+
+\subsection{Authorization Server Schwachstellen}
+
+das Internet ist für uns alle Neuland
+
+\subsection{Token Schwachstellen}
+
+zwischendurch einen Moment innehalten, schweigen, nachdenken, Pause machen
 
 
 
