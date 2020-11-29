@@ -168,7 +168,7 @@ Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein 
 
 Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benutzers zum Einsatz. Wie in der Einleitung in Sektion TODO beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann.
 
-\subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung eines Benutzers}
+\subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung_eines_Benutzers}
 
 Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients [13]. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt.
 
@@ -287,7 +287,7 @@ In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit 
 
 Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
 
-https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
+% https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
 
 % https://www.nds.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/13/OIDCSecurity_1.pdf
 \end{comment}
@@ -335,7 +335,7 @@ Hashing
 
 % TODO: könnte man auch in mehrere subsections packen
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{Images/Ebert/ArchitectureDiagram.png}
 	\caption{Beispielwebanwendung Architektur und Abläufe Überblick}
@@ -346,7 +346,7 @@ Abbildung \ref{fig:EB_Beispielwebanwendung Architektur und Abläufe Überblick} 
 
 Alle Docker Container werden mit Docker Compose gestartet und konfiguriert. Docker Compose ist ein Tool für Multi-Container-Anwendungen [40]. Über Docker Compose wird ein Netzwerk erstellt und konfiguriert. Dadurch können die Komponenten untereinander kommunizieren. Außerdem kann der Benutzer dadurch über den Browser mit den Komponenten kommunizieren. Über Docker Compose wird ebenfalls ein persistenten Speicher für die Komponente DB (Datenbank) aufgesetzt und es werden Umgebungsvariablen für die Anwendungen in den Containern gesetzt.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/srcDirectoryStructure.PNG}
 	\caption{Übersicht Struktur des Git-Verzeichnisses}
@@ -381,7 +381,7 @@ Für das Beispiel wurde ein neuer Realm mit dem Namen 'Test' erstellt. In der Se
 
 In der linken Navigationsleiste der Security Admin Console können unter Clients alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: react-example, react-example2, service1, service2. Die Konfiguration der Clients kann unter 'Edit' angezeigt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakClientConfig.PNG}
 	\caption{Keycloak react-example Client Konfiguration}
@@ -391,7 +391,7 @@ In der linken Navigationsleiste der Security Admin Console können unter Clients
 In Abbildung \ref{fig:EB_Keycloak react-example Client Konfiguration} ist die Konfiguration des react-example Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak react-example Client Konfiguration}:
 \begin{itemize}
 \item \emph{Client ID:} react-example ist die Client ID für Frontend 1.
-\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung eines Users} beschriebene Schritt 4.
+\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebene Schritt 4.
 \item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
 \item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die erste Art von Clients, also z.B. für Frontend Applikationen. Backend 1 und 2 haben die Client ID service1 und service2. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf 'bearer-only' gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
 \item \emph{Valid Redirect URIs:} TODO nach threat model...
@@ -400,11 +400,11 @@ In Abbildung \ref{fig:EB_Keycloak react-example Client Konfiguration} ist die Ko
 
 \subsubsection{Client Scopes}
 
-In der linken Navigationsleiste der Security Admin Console kann auf die Keycloak Client Scopes zugegriffen werden. Für ein Keycloak Client Scope können beliebig viele sogenannte Protocol Mapper definiert werden. Mit Protocol Mapper können die Claims von z.B. dem ID und Access Token und die zurückgegebenen Claims des UserInfo Endpunkts konfiguriert werden. Dazu gehört unter anderem das Hinzufügen weiterer Scopes im 'scopes' Claim und weiterer Audiences im 'aud' Claim des Access Token. Es können auch neue Claims erstellt werden, welche dem ID oder Access Token hinzugefügt, oder vom UserInfo Endpunkt zurückgegeben werden. Über Protocol Mapper können Benutzern auch Rollen für Role Based Access Control zugewiesen werden. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung und Definition} erläutert, wird Role Based Access Control in dieser Arbeit jedoch nicht näher betrachtet. 
+In der linken Navigationsleiste der Security Admin Console kann auf die Keycloak Client Scopes zugegriffen werden. Für ein Keycloak Client Scope können beliebig viele sogenannte Protocol Mapper definiert werden. Mit Protocol Mapper können die Claims von z.B. dem ID und Access Token und die zurückgegebenen Claims des UserInfo Endpunkts konfiguriert werden. Dazu gehört unter anderem das Hinzufügen weiterer Scopes im 'scopes' Claim und weiterer Audiences im 'aud' Claim des Access Token. Es können auch neue Claims erstellt werden, welche dem ID oder Access Token hinzugefügt, oder vom UserInfo Endpunkt zurückgegeben werden. Über Protocol Mapper können Benutzern auch Rollen für Role Based Access Control zugewiesen werden. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung} erläutert, wird Role Based Access Control in dieser Arbeit jedoch nicht näher betrachtet. 
 
 Im Folgenden werden zwei Beispiele für Keycloak Client Scopes gezeigt. Im ersten Beispiel werden die zwei Backend Clients mit Client ID 'service1' und 'service2' dem 'aud' Claim des Access Tokens hinzugefügt. Unter 'Client Scopes' und 'Create' wird dafür, wie in Abbildung \ref{fig:EB_Keycloak Client Scope für Audience Claim} gezeigt, ein neuer Client Scope erstellt mit dem Namen \textit{backend\_audience} erstellt. Ein wichtiges Feld in \ref{fig:EB_Keycloak Client Scope für Audience Claim} ist \textit{Include In Token Scope}. Ist dieses Feld 'ON', dann ist der Name des Client Scope im 'scopes' Claim des Access Token enthalten. In diesem Fall ist das Feld \textit{OFF}, da nur der 'aud' Claim angepasst werden soll.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudClientScope.PNG}
 	\caption{Keycloak Client Scope für Audience Claim}
@@ -413,7 +413,7 @@ Im Folgenden werden zwei Beispiele für Keycloak Client Scopes gezeigt. Im erste
 
 Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mapper vom Typ 'Audience' erstellt, jeweils einen Protocol Mapper für jeden Backend Client. Die Konfiguration für den ersten Backend Client wird in Abbildung \ref{fig:EB_Keycloak Protocol Mapper für Audience Claim} gezeigt. Im \textit{Included Client Audience} Feld kann aus einer Liste aller Clients der Client ausgewählt werden, welcher dem 'aud' Claim hinzugefügt werden soll. Für den zweiten Protocol Mapper ist an dieser Stelle der Client mit der ID 'service2' eingetragen. Über die \textit{Add to ID token} und \textit{Add to access token} Felder wird festgelegt, dass die Änderung nur beim 'aud' Claim des Access Token stattfinden soll.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudProtocolMapper.PNG}
 	\caption{Keycloak Protocol Mapper für Audience Claim}
@@ -422,7 +422,7 @@ Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mappe
 
 Abschließend kann der Client Scope einem oder mehreren Clients hinzugefügt werden. Die im Client Scope definierten Änderungen werden bei den ausgewählten Clients angewandt. In diesem Beispiel sollen die 'aud' Claims der Access Tokens an die zwei Frontend Applikationen angepasst werden. In Abbildung \ref{fig:EB_Keycloak Client Scope einem Client zuweisen} wird das Hinzufügen des 'backend\_audience' Client Scope zum react-example (Frontend 1) Clients gezeigt. Im 'Client Scopes' Tab des Frontend Clients wird dazu der \textit{backend\_audience} Client Scope ausgewählt. Dieser kann dann mit \textit{Add selected} der Liste der zugewiesenen Standard Client Scopes für den Client hinzugefügt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakAddAudClientScope.PNG}
 	\caption{Keycloak Client Scope einem Client zuweisen}
@@ -433,7 +433,7 @@ Im zweiten Beispiel soll ein neuer Claim 'GUI\_Color' erstellt werden. Dieser Cl
 
 In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Diese können z.B. in der Security Admin Console, der Admin CLI, oder beim Registrieren des Benutzers gesetzt werden. In Abbildung \ref{fig:EB_Keycloak Client User Attribut} wurde in der linken Navigationsleiste unter 'Users' das 'Attributes' Tab des admin Benutzers ausgewählt und das Attribut \textit{favorite\_color} mit dem Value \textit{blue} hinzugefügt. Dieses Attribut kann über einen Protocol Mapper referenziert werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttribute.PNG}
 	\caption{Keycloak Client Benutzer Attribut}
@@ -442,7 +442,7 @@ In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Di
 
 Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scopes ist in Abbildung \ref{fig:EB_Keycloak Client Scope für User Attribut} gezeigt. Anders als im ersten Beispiel ist \textit{Include In Token Scope} auf \textit{ON}, damit der Name des Client Scopes \textit{colors} im 'scopes' Claim des Access Token enthalten ist.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttributeClientScope.PNG}
 	\caption{Keycloak Client Scope für Benutzer Attribut}
@@ -451,7 +451,7 @@ Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scope
 
 Danach wird diesem Client Scope der in Abbildung \ref{fig:EB_Keycloak Protocol Mapper fuer GUI color Claim} gezeigte Protocol Mapper hinzugefügt. Als \textit{Mapper Type} wird in diesem Fall \textit{User Attribute} ausgewählt. Das \textit{User Attribute} Feld enthält den Namen des für den Benutzer angelegten Attributs. \textit{Token Claim Name} setzt den Key des Claims auf \textit{GUI\_color}. \textit{Add to ID token} und \textit{Add to userinfo} ist beides auf \textit{ON}, damit der Claim sowohl im ID Token enthalten ist als auch vom UserInfo Endpunkt zurückgegeben werden kann. Die Value dieses Claims ist dann der Wert des \textit{favourite\_color} Attributes des authentifizierten Benutzers. Wenn für einen Benutzer kein 'favourite\_color' Attribut hinzugefügt ist, dann ist der Claim nicht im ID Token und nicht in Antworten des UserInfo Endpunkts enthalten. Wie im ersten Beispiel muss der Client Scope den zwei Fontend Clients hinzugefügt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewClaimProtocolMapper.PNG}
 	\caption{Keycloak Protocol Mapper für GUI color Claim}
