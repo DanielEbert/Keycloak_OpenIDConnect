@@ -54,7 +54,6 @@ def validate_token(token):
 @app.route("/", methods = ['POST'])
 def hello():
   token = extract_token(request.headers)
-  return token
   if token is None:
     return "FAILED", 402
   return validate_token(token)
