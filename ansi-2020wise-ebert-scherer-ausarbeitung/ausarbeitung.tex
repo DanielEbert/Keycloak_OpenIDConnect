@@ -70,11 +70,17 @@ TODO: hier 1 absatz zusammenfassung der subsection
 
 \subsubsection{Endbenutzer} \label{EB_End-Benutzer}
 
-Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifieriert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
+Endbenutzer, oder kurz Benutzer, sind Entitäten, die in der Lage sind, sich in das Keycloak System einzuloggen. Der Endbenutzer ist der menschliche Teilnehmer. Informationen über den Benutzer und über die Authentifizierung des Benutzers können in Claims gespeichert werden. Claims sind Key-Value Paare. Diese Keys und Values können beliebig gewählt werden. In OpenID Connect gibt es allerdings Standardclaims wie zum Beispiel 'sub', 'iss', 'email', und 'address' mit einer vorgeschriebenen Beschreibung und teilweise mit einer vorgeschriebenen Funktion. Zum Beispiel ist 'sub' eine Identifikationsnummer für den Benutzer vom Issuer ('iss'). Ein Issuer weist eine 'sub' nur einmal zu. Aus diesem Grund können andere Teilnehmer, wie z.B. der Client, mit der Kombination von 'sub' und 'iss' einen Benutzer eindeutig identifizieren. Im Beispiel in Kapitel TODO gibt es nur einen Issuer (eine Keycloak Instanz), wodurch Benutzer allein durch 'sub' eindeutig identifiziert werden können. Für andere Claims wie z.B. 'email' fordert das OpenID Connect Protokoll diese Einzigartigkeit nicht.
 
-\subsubsection{Client} \label{EB_Client}
+\subsubsection{Clients} \label{EB_Client}
 
-Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt zwei Arten von Clients. Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf \cite{EB2} \cite{EB3}. Das ist zum Beispiel die Frontend Applikation, welche im Webbrowser auf dem PC oder Smartphone des Benutzers läuft, und geschützte Ressourcen vom Backend Server anfordert. Die zweite Art sind Clients, die am Single-Sign on teilnehmen \cite{EB3}. Das können z.B. Backend Services sein, wo Benutzer Ressourcen abrufen können, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Dadurch müssen sich Benutzer nicht mehrmals registrieren und einloggen. Clients dieser Art können auch als Resource Server fungieren, wenn sie Ressourcen des Benutzers speichern und hosten.
+Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern können. Es gibt drei Arten von Clients \cite{OAuth2inAction}.
+
+Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf \cite{EB2} \cite{EB3}. Das sind zum Beispiel die Frontend- oder Browser-Anwendungen, welche vollständig im Webbrowser laufen und geschützte Ressourcen vom Backend Server anfordern. Obwohl der Code für die Anwendung von einem Web-Server bedient werden muss, wird der Code selbst nicht auf dem Server ausgeführt und der Web-Server behält nichts vom Laufzeitstatus der Anwendung bei \cite{OAuth2inAction}. Stattdessen geschieht alles, was die Anwendung betrifft, auf dem Computer des Endbenutzers in dessen Local Storage des Web-Browsers \cite{OAuth2inAction}.
+
+Bei der zweiten Art handelt es sich um Backend-Anwendungen, die auf einem entfernten Server ausgeführt werden und auf die über einen Web-Browser oder ein Frontend zugegriffen wird \cite{OAuth2inAction}. Die Konfiguration der Anwendung und ihr Laufzeitzustand werden auf dem Web-Server gehalten und die Browser-Verbindung wird in der Regel über ein Session-Cookie hergestellt. Diese Clients können Ressourcen bereitstellen, welche für die authentifizierten und autorisierten Benutzer beschränkt sind und können auch als Resource Server bezeichnet werden.
+
+Die dritte Art sind native Anwendungen, die direkt auf dem Gerät des Endbenutzers laufen \cite{OAuth2inAction}. Sie werden in dieser Arbeit nicht behandelt und werden nur der Vollständigkeit halber erwähnt.
 
 \subsubsection{OpenID Provider}
 
@@ -168,7 +174,7 @@ Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein 
 
 Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benutzers zum Einsatz. Wie in der Einleitung in Sektion TODO beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann.
 
-\subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung eines Benutzers}
+\subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung_eines_Benutzers}
 
 Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist. Er ist optimiert für vertrauenswürdige Clients \cite{EB13}. Der Ablauf arbeitet mit URL-Umleitungen. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt.
 
@@ -287,13 +293,18 @@ In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit 
 
 Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
 
-https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
+% https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
 
 % https://www.nds.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/13/OIDCSecurity_1.pdf
 \end{comment}
 
 
-In dieser Sektion werden mögliche Schwachstellen erläutert und wie diese gemildert werden können. Eine gute Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert und aufgeführt wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+
+Ein großer Teil der Sicherheit von OpenID Connect basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. 
+% Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
+
+Obwohl OAuth 2.0 und OpenID Connect ein Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. In der Tat muss alles korrekt eingesetzt und verwaltet werden.
 
 \subsection{OAuth 2.0 zur Authentifizierung}
 
@@ -307,35 +318,73 @@ Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wur
 
 Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
 
-\subsection{Brute-Force}
+\begin{comment}
+% mladenov2016security beschreibt primät Angriffe und keine Threats oder Vulnerabilities
+\subsection{Spezifikationsschwachstellen}
 
-Password Policies, Max Login Failures
+In dieser Sektion werden Schwachstellen mit bösartigen Endpunkten beschrieben. Es muss beachtet werden, dass alle folgenden Schwachstellen auf der Tatsache basieren, dass ein Angreifer den Client zur Verwendung eines bösartigen Endpunkts zwingen kann.
 
-\subsection{Clickjacking}
+\subsubsection{Broken Benutzerauthentifizierung}
 
-Content-Security-Policy, X-FRAME\_OPTIONS
 
-\subsection{SSL/HTTPS}
+Diese Schwachstelle basiert auf einem Angriff, der als als Mixup Attack bekannt ist. Die Idee hinter dem Angriff besteht darin, den Informationsfluss in der Discovery und Dynamic Registration Phase so zu beeinflussen, dass der Angreifer Zugang zu sensiblen Informationen erhält. Der Angreifer verfolgt den Diebstahl sensibler Informationen wie des Authorization Codes, des Access Tokens, des ID-Tokens und/oder der Client-Anmeldedaten, die zur Authentifizierung verwendet werden.
+\end{comment}
 
-Verwenden von SSL/TLS
 
-\subsection{CSRF}
 
-\subsection{Kompromittierte Access und Refresh Tokens}
+\subsection{Client Schwachstellen}
 
-SSL/HTTPS, Lifespan, 
+In dieser Sektion werden häufige Angriffen auf Clients präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
 
-\subsection{Password database Kompromittierung}
+Der Client hat ein paar Dinge, die er schützen muss. Wenn er ein Client Geheimnis hat, muss er sicherstellen, dass dieses an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Da er Access- und Refresh-Tokens sammelt, muss er ebenfalls sicherstellen, dass diese nicht Komponenten außerhalb der Clients selbst zur Verfügung gestellt werden. Der Client muss auch darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
 
-Hashing
+\subsubsection{Cross-Site-Request-Forgery}
 
-\subsection{...}
+% Gute Erklärung: https://www.youtube.com/watch?v=_xrhWLqX1j0
+% Der Client erzeugt das Token nicht der Server? - Ist sonst anders
+
+Cross-Site-Request-Forgery (CSRF) tritt auf, wenn der Browser des Benutzers veranlasst wird eine unerwünschte Aktion durch eine Anfrage an eine Webanwendung auszuführen, auf der der Benutzer gerade per Cookie authentifiziert ist. Wenn ein Benutzer bei einer Anwendung angemeldet ist, kann ein Angreifer den Browser des Benutzers manipulieren, sodass er eine Anfrage stellt an die das Cookie automatisch angehängt wird und die Anfrage als angemeldeter Benutzer ausgeführt wird. 
+
+Um den Angriff durchzuführen, kann der Angreifer einfach einen OAuth-Flow starten und einen Authorization Code vom Authorization Server erhalten. Der Angreifer veranlasst den Client des Opfers, den Authorization Code des Angreifers in einer bösartigen Anfrage zu verwenden, um den Code gegen ein Zugriffstoken einzutauschen. Der Ressourcenbesitzer hätte somit seine Client-Anwendung mit dem Autorisierungskontext des Angreifers verbunden. Dies hat katastrophale Folgen, wenn das OAuth-Protokoll zur Authentifizierung verwendet wird. \cite{OAuth2inAction}
+
+Die wirksamste Mitigation ist das Hinzufügen eines unvorhersehbaren Elements oder State-Tokens in jeder Anfrage. Der Zustandsparameter des Authorization Codes kann zur Vermeidung von CSRF verwendet werden. Dieser Parameter wird vom Client bei der Initialisierung der Session erstellt und an den Authorization Server gesendet, welcher diesen zurück sendet, um den Status zwischen jeder Anfrage und Antwort aufrechtzuerhalten. Versucht nun ein Angreifer dem Benutzer eine bösartige URL unterzuschieben, wird überprüft ob die URL dieses State-Token enthält. Ist nicht das State-Token nicht enthalten, verwirft der Client des Benutzers die URL des Angreifers und CSRF ist nicht mehr möglich. \cite{OAuth2inAction}
+
+Das generierte State-Token kann in einem State-Cookie gespeichert werden.
+
+Keycloak implementiert diesen Teil der Spezifikation vollständig, so dass alle Anmeldungen geschützt sind. Die Keycloak Admin Console ist eine reine JavaScript/HTML5-Anwendung, die REST-Aufrufe an die Keycloak Admin REST-API des Backend macht. Diese Aufrufe erfordern alle eine Bearer-Token-Authentifizierung und werden über JavaScript-Ajax-Aufrufe durchgeführt. CSRF ist hier nicht anwendbar. \cite{keycloakDocs}
+
+Der einzige Teil von Keycloak, der für CSRF anfällig ist, sind die Seiten zur Verwaltung der Benutzerkonten. Um dieses Problem zu entschärfen, setzt Keycloak ein Status-Cookie und bettet den Wert dieses Status-Cookies auch in versteckte Formularfelder oder Abfrageparameter in Aktionslinks ein. Dieser Abfrage- oder Formularparameter wird gegen das Status-Cookie geprüft, um zu verifizieren, dass der Aufruf durch den Benutzer erfolgt ist. \cite{keycloakDocs}
+
+\subsubsection{Registrierung der redirect\_uri}
+
+Es ist äußerst wichtig, bei der Auswahl der registrierten redirect\_uri besonders darauf zu achten, dass die redirect\_uri so spezifisch wie möglich ist. Wenn die redirect\_uri nicht spezifisch ist, werden Token-Hijacking-Angriffe möglich. Wenn es möglich ist zu allgemeine redirect\_uri zu registrieren, ist es für einem Angreifer möglich, sich als ein Client auszugeben, der einen breiteren Zugriffsbereich hat \cite{keycloakDocs}. Dies könnte zum Beispiel passieren, wenn zwei Clients die gleiche Domain besitzen \cite{keycloakDocs}.
+
+Der Hauptgrund dafür ist, dass Autorisierungsserver manchmal unterschiedliche redirect\_uri Validierungsrichtlinien verwenden. Die einzige zuverlässig sichere Validierungsmethode, die der Autorisierungsserver anwenden sollte, ist die exakte Übereinstimmung \cite{OAuth2inAction}. Alle anderen möglichen Lösungen, die auf Regular Expressions basieren oder Unterverzeichnisse des registrierten redirect\_uri zulassen, sind suboptimal und gefährlich \cite{OAuth2inAction}.
+
+% Eventuell die allowing subdirectory method for matching the redirect_uri aufführen
+
+%TODO OAuth in Action Seite 128 - 134
+
+\subsubsection{Diebstahl von Tokens}
+
+Das Ziel eines Angreifers ist der Diebstahl eines Zugriffstokens. Mit dem Zugriffstoken kann der Angreifer alle Arten von Operationen durchführen, für die er nicht autorisiert ist. 
+
+Zugriffstoken werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens im Header (\texttt{Authorization: Bearer <Access Token>}) gesendet. Jedoch definiert RFC 6750 weitere Methoden wie Bearer-Token übergeben werden können \cite{RFC6750}. Einer davon ist der URI-Abfrageparameter, der es ermöglicht Access Tokens im URI über dem Abfrageparameter access\_token zu senden. Diese Methode kann zum Stehlen von Access Tokens verwendet werden. 
+
+% TODO siehe OAuth in Action Seite 128 - 134
+
+Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Zugriffstoken offengelegt, da der Referrer die gesamte URL enthält  \cite{OAuth2inAction}. Die Verwendung des Standard-Autorisierungs-Headers vermeidet diese Art von Problemen, da das Zugriffstoken nicht in der URL erscheint \cite{OAuth2inAction}.
+
+
+
+
+
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung}
 
 % TODO: könnte man auch in mehrere subsections packen
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{Images/Ebert/ArchitectureDiagram.png}
 	\caption{Beispielwebanwendung Architektur und Abläufe Überblick}
@@ -346,7 +395,7 @@ Abbildung \ref{fig:EB_Beispielwebanwendung Architektur und Abläufe Überblick} 
 
 Alle Docker Container werden mit Docker Compose gestartet und konfiguriert. Docker Compose ist ein Tool für Multi-Container-Anwendungen \cite{EB40}. Über Docker Compose wird ein Netzwerk erstellt und konfiguriert. Dadurch können die Komponenten untereinander kommunizieren. Außerdem kann der Benutzer dadurch über den Browser mit den Komponenten kommunizieren. Über Docker Compose wird ebenfalls ein persistenten Speicher für die Komponente DB (Datenbank) aufgesetzt und es werden Umgebungsvariablen für die Anwendungen in den Containern gesetzt.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/srcDirectoryStructure.PNG}
 	\caption{Übersicht Struktur des Git-Verzeichnisses}
@@ -381,7 +430,7 @@ Für das Beispiel wurde ein neuer Realm mit dem Namen 'Test' erstellt. In der Se
 
 In der linken Navigationsleiste der Security Admin Console können unter Clients alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: frontend1, frontend2, service1, service2. Die Konfiguration der Clients kann unter 'Edit' angezeigt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakClientConfig.PNG}
 	\caption{Keycloak frontend1 Client Konfiguration}
@@ -390,12 +439,12 @@ In der linken Navigationsleiste der Security Admin Console können unter Clients
 
 In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfiguration des frontend1 Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak frontend1 Client Konfiguration}:
 \begin{itemize}
-\item \emph{Client ID:} frontend1 ist die Client ID für Frontend 1.
-\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung eines Benutzers} beschriebene Schritt 4.
-\item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
-\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die erste Art von Clients, also z.B. für Frontend Applikationen. Backend 1 und 2 haben die Client ID service1 und service2. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf 'bearer-only' gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
-\item \emph{Valid Redirect URIs:} TODO nach threat model...
-\item \emph{Web Origins:} Dadurch ist für diesen Client der HTTP Header 'Access-Control-Allow-Origin: http://localhost:3000' in Nachrichten von Keycloak zum Client enthalten. Dieses Feld muss auf die URL des Frontends gesetzt werden, um Cross-Origin Resource Sharing (CORS) zu erlauben. Ansonsten akzeptiert der Browser eingehende Anfragen bzw. Redirects von Keycloak nicht.
+	\item \emph{Client ID:} react-example ist die Client ID für Frontend 1.
+	\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebene Schritt 4.
+	\item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
+	\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die erste Art von Clients, also z.B. für Frontend Applikationen. Backend 1 und 2 haben die Client ID service1 und service2. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf 'bearer-only' gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
+	\item \emph{Valid Redirect URIs:} TODO nach threat model...
+	\item \emph{Web Origins:} Dadurch ist für diesen Client der HTTP Header 'Access-Control-Allow-Origin: http://localhost:3000' in Nachrichten von Keycloak zum Client enthalten. Dieses Feld muss auf die URL des Frontends gesetzt werden, um Cross-Origin Resource Sharing (CORS) zu erlauben. Ansonsten akzeptiert der Browser eingehende Anfragen bzw. Redirects von Keycloak nicht.
 \end{itemize}
 
 \subsubsection{Client Scopes}
@@ -404,7 +453,7 @@ In der linken Navigationsleiste der Security Admin Console kann auf die Keycloak
 
 Im Folgenden werden zwei Beispiele für Keycloak Client Scopes gezeigt. Im ersten Beispiel werden die zwei Backend Clients mit Client ID 'service1' und 'service2' dem 'aud' Claim des Access Tokens hinzugefügt. Unter 'Client Scopes' und 'Create' wird dafür, wie in Abbildung \ref{fig:EB_Keycloak Client Scope für Audience Claim} gezeigt, ein neuer Client Scope erstellt mit dem Namen \textit{backend\_audience} erstellt. Ein wichtiges Feld in \ref{fig:EB_Keycloak Client Scope für Audience Claim} ist \textit{Include In Token Scope}. Ist dieses Feld 'ON', dann ist der Name des Client Scope im 'scopes' Claim des Access Token enthalten. In diesem Fall ist das Feld \textit{OFF}, da nur der 'aud' Claim angepasst werden soll.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudClientScope.PNG}
 	\caption{Keycloak Client Scope für Audience Claim}
@@ -413,7 +462,7 @@ Im Folgenden werden zwei Beispiele für Keycloak Client Scopes gezeigt. Im erste
 
 Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mapper vom Typ 'Audience' erstellt, jeweils einen Protocol Mapper für jeden Backend Client. Die Konfiguration für den ersten Backend Client wird in Abbildung \ref{fig:EB_Keycloak Protocol Mapper für Audience Claim} gezeigt. Im \textit{Included Client Audience} Feld kann aus einer Liste aller Clients der Client ausgewählt werden, welcher dem 'aud' Claim hinzugefügt werden soll. Für den zweiten Protocol Mapper ist an dieser Stelle der Client mit der ID 'service2' eingetragen. Über die \textit{Add to ID token} und \textit{Add to access token} Felder wird festgelegt, dass die Änderung nur beim 'aud' Claim des Access Token stattfinden soll.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewAudProtocolMapper.PNG}
 	\caption{Keycloak Protocol Mapper für Audience Claim}
@@ -422,7 +471,7 @@ Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mappe
 
 Abschließend kann der Client Scope einem oder mehreren Clients hinzugefügt werden. Die im Client Scope definierten Änderungen werden bei den ausgewählten Clients angewandt. In diesem Beispiel sollen die 'aud' Claims der Access Tokens an die zwei Frontend Applikationen angepasst werden. In Abbildung \ref{fig:EB_Keycloak Client Scope einem Client zuweisen} wird das Hinzufügen des 'backend\_audience' Client Scope zum frontend1 Clients gezeigt. Im 'Client Scopes' Tab des frontend1 Clients wird dazu der \textit{backend\_audience} Client Scope ausgewählt. Dieser kann dann mit \textit{Add selected} der Liste der zugewiesenen Standard Client Scopes für den Client hinzugefügt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakAddAudClientScope.PNG}
 	\caption{Keycloak Client Scope einem Client zuweisen}
@@ -433,7 +482,7 @@ Im zweiten Beispiel soll ein neuer Claim 'GUI\_Color' erstellt werden. Dieser Cl
 
 In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Diese können z.B. in der Security Admin Console, der Admin CLI, oder beim Registrieren des Benutzers gesetzt werden. In Abbildung \ref{fig:EB_Keycloak Client User Attribut} wurde in der linken Navigationsleiste unter 'Users' das 'Attributes' Tab des admin Benutzers ausgewählt und das Attribut \textit{favorite\_color} mit dem Value \textit{blue} hinzugefügt. Dieses Attribut kann über einen Protocol Mapper referenziert werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttribute.PNG}
 	\caption{Keycloak Client Benutzer Attribut}
@@ -442,7 +491,7 @@ In Keycloak können Benutzer Attribute haben. Attribute sind Key-Value Paare. Di
 
 Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scopes ist in Abbildung \ref{fig:EB_Keycloak Client Scope für User Attribut} gezeigt. Anders als im ersten Beispiel ist \textit{Include In Token Scope} auf \textit{ON}, damit der Name des Client Scopes \textit{colors} im 'scopes' Claim des Access Token enthalten ist.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewUserAttributeClientScope.PNG}
 	\caption{Keycloak Client Scope für Benutzer Attribut}
@@ -451,7 +500,7 @@ Davor wird ein neuer Client Scope erzeugt. Die Konfiguration dieses Client Scope
 
 Danach wird diesem Client Scope der in Abbildung \ref{fig:EB_Keycloak Protocol Mapper fuer GUI color Claim} gezeigte Protocol Mapper hinzugefügt. Als \textit{Mapper Type} wird in diesem Fall \textit{User Attribute} ausgewählt. Das \textit{User Attribute} Feld enthält den Namen des für den Benutzer angelegten Attributs. \textit{Token Claim Name} setzt den Key des Claims auf \textit{GUI\_color}. \textit{Add to ID token} und \textit{Add to userinfo} ist beides auf \textit{ON}, damit der Claim sowohl im ID Token enthalten ist als auch vom UserInfo Endpunkt zurückgegeben werden kann. Die Value dieses Claims ist dann der Wert des \textit{favourite\_color} Attributes des authentifizierten Benutzers. Wenn für einen Benutzer kein 'favourite\_color' Attribut hinzugefügt ist, dann ist der Claim nicht im ID Token und nicht in Antworten des UserInfo Endpunkts enthalten. Wie im ersten Beispiel muss der Client Scope den zwei Fontend Clients hinzugefügt werden.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakNewClaimProtocolMapper.PNG}
 	\caption{Keycloak Protocol Mapper für GUI color Claim}
