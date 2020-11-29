@@ -43,7 +43,7 @@ services:
       - "3001:3001"
   backendservice1:
     build:
-      context: ./service1
+      context: ./service
       dockerfile: ./Dockerfile
     image: danielebert00/backendservice:1
     environment:
@@ -52,7 +52,7 @@ services:
       - "5001:5001"
   backendservice2:
     build:
-      context: ./service1
+      context: ./service
       dockerfile: ./Dockerfile
     image: danielebert00/backendservice:1
     environment:
