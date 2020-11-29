@@ -104,10 +104,10 @@ Der ID Token enthält Claims über die Authentifizierung des Benutzers. Wenn vom
 	"auth_time": 1606057896,
 	"jti": "c7e74c3e-dc1c-4790-bc47-4b787abe86dd",
 	"iss": "http://keycloak/auth/realms/ExampleRealm",
-	"aud": "react-frontend",
+	"aud": "frontend1",
 	"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
 	"typ": "ID",
-	"azp": "react-frontend",
+	"azp": "frontend1",
 	"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
 	"email_verified": false,
 	"name": "Tom Smith",
@@ -140,7 +140,7 @@ Abgesehen von der ID des Benutzers, dem 'sub' claim, sollte der Access Token kei
 	],
 	"sub": "85dd2d59-2ed9-407e-a745-b2f676095d4b",
 	"typ": "Bearer",
-	"azp": "react-frontend",
+	"azp": "frontend1",
 	"nonce": "33f922fc-eacc-4ad0-81f7-580e865177df",
 	"scope": "openid email profile"
 }
@@ -190,8 +190,8 @@ Als erstes wird der Autorization Request vorbereitet. Diese Anfrage enthält meh
 
 \begin{lstlisting}[caption=Beispiel Autorization Request, captionpos=b, label=EBAutorizationRequest]
 GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
-        client_id=react-frontend
-        &redirect_uri=https%3A%2F%2Freactfrontend.com%2F
+        client_id=frontend1
+        &redirect_uri=https%3A%2F%2Ffrontend.com%2F
         &state=0909ff6a-53b2-4253-8690-aff72d2cfff1
         &response_mode=fragment
         &response_type=code
@@ -208,7 +208,7 @@ Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 siche
 In Schritt 5 und 6 wird der Benutzer bzw. der Browser zur redirect\_uri umgeleitet. Diese URI ist im Authorization Request von Schritt 1 spezifiziert worden. Die URI enthält einen vom OpenID Provider erstellten Code im Query-String oder im URI Fragment. Dieser Code ist für den Client opak. Seine Struktur wird also nur vom OpenID Provider verstanden. Der Code enthält Informationen über die Authentifizierung der vorherigen Schritte. Dazu gehören z.B. welche Scopes im Access Token enthalten sein werden. Der Code hat eine kurze Verfallszeit [21]. Im Folgenden wird eine beispielhafte Redirect URI gezeigt.
 
 \begin{lstlisting}[caption=Beispiel Redirect URI, captionpos=b, label=EBBeispielRedirectURI]
-https://reactfrontend.com/#
+https://frontend.com/#
         state=0909ff6a-53b2-4253-8690-aff72d2cfff1&
         code=50342949-85bb-47ba-84ab-ed890b088226.0d9f3aa9-9e37-4c
         b7-a589-06972b3cf410.ef40a086-7a64-4b49-b3f0-11dc5cf92a68
@@ -357,7 +357,7 @@ In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des G
 
 Als Alternative zur manuellen Installation des letzten Absatzes kann die von uns erstelle VMWare VM unter TODO verwendet werden. Benutzername und Passwort für die VM sind 'user' und '12345'. Das Git Repository TODO ist im Ordner TODO(after VM ready).
 
-Die docker-compose.yml Datei enthält die Konfiguration für Docker Compose. In .env wird der Pfad zum postgres\_data Ordner gesetzt, sowie das Adminpasswort für Keycloak. Im Beispiel ist Keycloak bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. Diese Konfiguration ist in der Datenbank bzw. dem postgres\_db Ordner gespeichert. Die Ordner react\_app und react\_app2 enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben bei der GUI identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner service enthalten. 
+Die docker-compose.yml Datei enthält die Konfiguration für Docker Compose. In .env wird der Pfad zum postgres\_data Ordner gesetzt, sowie das Adminpasswort für Keycloak. Im Beispiel ist Keycloak bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. Diese Konfiguration ist in der Datenbank bzw. dem postgres\_db Ordner gespeichert. Die Ordner frontend1 und frontend2 enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben bei der GUI identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner service enthalten. 
 
 Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter [42] hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen.
 
@@ -379,18 +379,18 @@ Für das Beispiel wurde ein neuer Realm mit dem Namen 'Test' erstellt. In der Se
 
 \subsubsection{Clients}
 
-In der linken Navigationsleiste der Security Admin Console können unter Clients alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: react-example, react-example2, service1, service2. Die Konfiguration der Clients kann unter 'Edit' angezeigt werden.
+In der linken Navigationsleiste der Security Admin Console können unter Clients alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: frontend1, frontend2, service1, service2. Die Konfiguration der Clients kann unter 'Edit' angezeigt werden.
 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/KeycloakClientConfig.PNG}
-	\caption{Keycloak react-example Client Konfiguration}
-	\label{fig:EB_Keycloak react-example Client Konfiguration}
+	\caption{Keycloak frontend1 Client Konfiguration}
+	\label{fig:EB_Keycloak frontend1 Client Konfiguration}
 \end{figure}
 
-In Abbildung \ref{fig:EB_Keycloak react-example Client Konfiguration} ist die Konfiguration des react-example Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak react-example Client Konfiguration}:
+In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfiguration des frontend1 Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak frontend1 Client Konfiguration}:
 \begin{itemize}
-\item \emph{Client ID:} react-example ist die Client ID für Frontend 1.
+\item \emph{Client ID:} frontend1 ist die Client ID für Frontend 1.
 \item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung eines Users} beschriebene Schritt 4.
 \item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
 \item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die erste Art von Clients, also z.B. für Frontend Applikationen. Backend 1 und 2 haben die Client ID service1 und service2. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf 'bearer-only' gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
@@ -420,7 +420,7 @@ Für den Client Scope werden im 'Mappers' Tab über 'Create' zwei Protocol Mappe
 	\label{fig:EB_Keycloak Protocol Mapper für Audience Claim}
 \end{figure}
 
-Abschließend kann der Client Scope einem oder mehreren Clients hinzugefügt werden. Die im Client Scope definierten Änderungen werden bei den ausgewählten Clients angewandt. In diesem Beispiel sollen die 'aud' Claims der Access Tokens an die zwei Frontend Applikationen angepasst werden. In Abbildung \ref{fig:EB_Keycloak Client Scope einem Client zuweisen} wird das Hinzufügen des 'backend\_audience' Client Scope zum react-example (Frontend 1) Clients gezeigt. Im 'Client Scopes' Tab des Frontend Clients wird dazu der \textit{backend\_audience} Client Scope ausgewählt. Dieser kann dann mit \textit{Add selected} der Liste der zugewiesenen Standard Client Scopes für den Client hinzugefügt werden.
+Abschließend kann der Client Scope einem oder mehreren Clients hinzugefügt werden. Die im Client Scope definierten Änderungen werden bei den ausgewählten Clients angewandt. In diesem Beispiel sollen die 'aud' Claims der Access Tokens an die zwei Frontend Applikationen angepasst werden. In Abbildung \ref{fig:EB_Keycloak Client Scope einem Client zuweisen} wird das Hinzufügen des 'backend\_audience' Client Scope zum frontend1 Clients gezeigt. Im 'Client Scopes' Tab des frontend1 Clients wird dazu der \textit{backend\_audience} Client Scope ausgewählt. Dieser kann dann mit \textit{Add selected} der Liste der zugewiesenen Standard Client Scopes für den Client hinzugefügt werden.
 
 \begin{figure}[!h]
 	\centering

@@ -29,16 +29,16 @@ services:
       - "8080:8080"
   frontend1:
     build:
-      context: ./frontend1
+      context: ./react_app
       dockerfile: ./Dockerfile
-    image: danielebert00/reactfrontend3000:2
+    image: danielebert00/reactfrontend3000:1
     ports:
       - "3000:3000"
   frontend2:
     build:
-      context: ./frontend2
+      context: ./react_app2
       dockerfile: ./Dockerfile
-    image: danielebert00/reactfrontend3001:2
+    image: danielebert00/reactfrontend3001:1
     ports:
       - "3001:3001"
   backendservice1:
