@@ -30,7 +30,13 @@ def extract_token(request_headers):
 def validate_token(token):
   # Decode Access Token without validating it.
   # Validation will be done via Keycloak.
-  decoded_token = jwt.decode(token, verify=False)
+  # If frontend has no access token set, client will send
+  # 'undefined' in headerAuth[1], which will raise an
+  # Exception in jwt.decode
+  try:
+    decoded_token = jwt.decode(token, verify=False)
+  except Exception:
+    return 'FAILED', 402
   # Invalid if this client's ID is not in 'aud' claim
   if 'aud' not in decoded_token:
     return 'FAILED: no "aud" claim in token', 402
@@ -48,6 +54,7 @@ def validate_token(token):
 @app.route("/", methods = ['POST'])
 def hello():
   token = extract_token(request.headers)
+  return token
   if token is None:
     return "FAILED", 402
   return validate_token(token)

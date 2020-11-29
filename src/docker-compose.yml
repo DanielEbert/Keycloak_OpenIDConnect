@@ -45,7 +45,7 @@ services:
     build:
       context: ./service
       dockerfile: ./Dockerfile
-    image: danielebert00/backendservice:1
+    image: danielebert00/backendservice:2
     environment:
       client_ID: service1
       PORT: 5001
@@ -55,7 +55,7 @@ services:
     build:
       context: ./service
       dockerfile: ./Dockerfile
-    image: danielebert00/backendservice:1
+    image: danielebert00/backendservice:2
     environment:
       client_ID: service2
       PORT: 5002
