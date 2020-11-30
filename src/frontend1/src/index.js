@@ -5,37 +5,30 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { ReactKeycloakProvider } from '@react-keycloak/web'
-
 import Keycloak from 'keycloak-js'
 
+// Keycloak Server and Client Configuration via the Keycloak instance
 const keycloak = Keycloak({
   url: 'http://localhost:8080/auth',
   realm: 'Test',
   clientId: 'frontend1'
 })
 
-const eventLogger = (event, error) => {
-  //console.log('onKeycloakEvent', event, error)
-}
-
-const tokenLogger = (tokens) => {
-  //console.log('onKeycloakTokens', tokens)
-}
-
 ReactDOM.render(
   <React.StrictMode>
+    {/*ReactKeycloakProvider is from the Keycloak Adapter.
+       ReactKeycloakProvider enables the use of the useKeycloak() function
+       in the App component and components used in App. useKeycloak()
+       is used in multiple locations such as in the './App.js' file.
+       useKeycloak is also explained in './App.js'.*/}
     <ReactKeycloakProvider
       authClient={keycloak}
-      onEvent={eventLogger}
-      onTokens={tokenLogger}
     >
+      {/*Render the App component, located in './App.js'*/}
       <App />
     </ReactKeycloakProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

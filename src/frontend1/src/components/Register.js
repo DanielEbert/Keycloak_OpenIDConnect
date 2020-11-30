@@ -3,9 +3,11 @@ import { useCallback } from 'react'
 
 import { useKeycloak } from '@react-keycloak/web'
 
+// explained in ./nav.js
 const Register = () => {
   const { keycloak } = useKeycloak()
   
+  // keycloak.register() is invoked if the anchor element is clicked
   const register = useCallback(() => {
     keycloak.register()
   }, [keycloak])

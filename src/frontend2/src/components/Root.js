@@ -5,16 +5,11 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Typography from '@material-ui/core/Typography';
-
-
 import { makeStyles } from '@material-ui/core/styles';
-
-
 import { useKeycloak } from '@react-keycloak/web'
 
 
-// example from https://material-ui.com/components/modal/
+// style from https://material-ui.com/components/modal/
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -29,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Root = () => {
   const { keycloak } = useKeycloak()
+
+  // React.useState is like a class variable. Note that 'Root' is a function.
+  // React.useState is a React Hook (https://reactjs.org/docs/hooks-intro.html)
+  // IDToken is a variable, updateIDToken is a function which sets IDToken to
+  // the first argument passed to updateIDToken. The default value for
+  // IDToken is keycloak.idTokenParsed
   const [IDToken, updateIDToken] = React.useState(keycloak.idTokenParsed)
   const [accessToken, updateAccessToken] = React.useState(keycloak.tokenParsed)
   const [refreshToken, updateRefreshToken] = React.useState(keycloak.refreshTokenParsed)
@@ -37,12 +38,20 @@ const Root = () => {
 
   const classes = useStyles();
  
+  // The keycloak adapter allows us the define custom functions which are invoked
+  // when some event happens. In this case, the following function is invoked
+  // if the adapter has successfully retrieved new tokens via keycloaks token endpoint.
+  // We update the State defined above, so that the UI is rerendered with the
+  // updated token values
   keycloak.onAuthRefreshSuccess = function() { 
     updateIDToken(keycloak.idTokenParsed)
     updateAccessToken(keycloak.tokenParsed)
     updateRefreshToken(keycloak.refreshTokenParsed)
   }
 
+  // The responses from the Backend are shown in a modal (which is like a popup).
+  // The modal is rendered if onOpenModal is invoked and not rendered when
+  // onCloseModal is invoked.
   const onOpenModal = () => {
     openModal(true);
   };
@@ -51,9 +60,16 @@ const Root = () => {
     openModal(false);
   };
 
+  // Send an HTTP POST Request to url. url will be one of the two backend services.
+  // keycloak.token will contain the Access Token if the user is authenticated.
+  // Otherwise it will return the string 'undefined'
+  // The '.then(...)' block is executed if the HTTP response status code is 200.
+  // Otherwise the '.catch(...) block is executed'. In both cases the modal is
+  // opened and the modal displays the HTTP response message body, response code,
+  // and url.
   const getServiceData = (url) => {
     axios.post(url, {
-      'blablabla': 'aaaa'
+      'example': 'data'
     }, {
       headers: { Authorization: "Bearer " + keycloak.token }
     })
@@ -77,17 +93,6 @@ const Root = () => {
     })
   }
 
-  const x = () => {
-    return <div style={{position: 'absolute', left: '50%', top: '50%',
-                        transform: 'translate(-50%, -50%)'}} 
-                className={classes.paper}>
-      <h5>Request to {modalContent["url"]}</h5>
-      <div className="divider"></div>
-      <p>Returned with Status Code {modalContent["return_code"]}</p> 
-      <p>Service has authorized {modalContent["data"]}</p>
-    </div>
-  }
-
   return(
     <div className="Root container">
         <div className="container">
@@ -95,18 +100,30 @@ const Root = () => {
             <h3 className="center">Request Resources</h3>
             <div className="divider"></div>
             <div className='center' style={{marginTop:'25px'}}>
+              {/*The two buttons to send a message to the backend,
+                 explained above in getServiceData()*/}
               <button className="btn" style={{marginRight: '25px'}} onClick={() => 
                 getServiceData('http://localhost:5001')}>Get Service 1 Data
               </button>
               <button className="btn" style={{marginRight: '25px'}} onClick={() => 
                 getServiceData('http://localhost:5002')}>Get Service 2 Data
               </button>
+              {/*The modal/popup, explained above*/}
               <Modal open={modalIsOpen} onClose={onCloseModal}>
-                {x()}
+                 <div style={{position: 'absolute', left: '50%', top: '50%',
+                              transform: 'translate(-50%, -50%)'}} 
+                      className={classes.paper}>
+                  <h5>Request to {modalContent["url"]}</h5>
+                  <div className="divider"></div>
+                  <p>Returned with Status Code {modalContent["return_code"]}</p> 
+                  <p>Service has authorized {modalContent["data"]}</p>
+                </div> 
               </Modal>
             </div>
           </div>
         </div>
+        {/*If a user is authenticated, the ID, access, and refresh Token are
+           rendered in decoded form.*/}
         {keycloak.authenticated ? 
           <div className="container">
             <div className="row" style={{marginTop:'25px'}}>

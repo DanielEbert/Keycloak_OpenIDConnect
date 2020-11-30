@@ -21,6 +21,8 @@ Wait ~1 minute for everything to start and open localhost:3000 in your favorite 
 
 ### Build react-example and react-example2 Docker Images locally
 
+(Note: If you use our VM, the Images are build locally alraedy)
+
 As mentioned in the text, the Docker Images were built, uploaded to Dockerhub, and are automatically downloaded when 'docker-compose up' is executed. If you want to build the Docker Images for react-example and react-example2 locally, you need to execute the following:
 ~~~console
 Install npm

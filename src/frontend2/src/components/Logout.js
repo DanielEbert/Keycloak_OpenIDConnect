@@ -3,9 +3,11 @@ import { useCallback } from 'react'
 
 import { useKeycloak } from '@react-keycloak/web'
 
+// explained in ./nav.js
 const Logout = () => {
   const { keycloak } = useKeycloak()
   
+  // keycloak.logout() is invoked if the anchor element is clicked
   const logout = useCallback(() => {
     keycloak.logout()
   }, [keycloak])
