@@ -435,7 +435,8 @@ Die docker-compose.yml Datei enthält die Konfiguration für Docker Compose. In 
 
 Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen.
 
-Im Root Folder des geklonten Git Repositories TODO kann der Befehl 'docker-compose up' ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter localhost:3000 und Frontend 2 unter localhost:3001 erreichbar. Im Folgenden wird die Implementierung und Konfiguration der Komponenten und Abläufe näher erläutert.
+Im Root Folder des geklonten Git Repositories TODO kann der Befehl 'docker-compose up' ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter localhost:3000 und Frontend 2 unter localhost:3001 erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Abläufe gezeigt und näher erläutert. Da der Umfang dieser Arbeit 20 Seiten netto betagen soll, wird unser Quellcode in dieser Sektion nicht im Detail erläutert. Für interessierte Leser haben wir stattdessen den Quellcode im Git Repository TODO ausführlich kommentiert.
+
 % TODO: also upload vm to some place and say as an alternative there is a vmware VM with these prerequisites installed.
 % TODO: should run docker-compose down before shutting down the VM/PC and next start again run docker-compose up
 
