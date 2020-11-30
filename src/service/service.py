@@ -13,11 +13,14 @@ REALM_NAME = 'Test'
 app = Flask(__name__)
 CORS(app)
 
+# This clients ID is passed via an environment variable
 if 'client_ID' not in os.environ:
   raise Exception('client_ID environment variable required')
 client_ID = os.environ['client_ID']
 
 def extract_token(request_headers):
+  # The client expects a bearer token in the HTTP Authorization header
+  # in the form 'Authorization: Bearer <TOKEN>'
   if not 'Authorization' in request_headers:
     return None
   headerAuth = request_headers['Authorization'].split()

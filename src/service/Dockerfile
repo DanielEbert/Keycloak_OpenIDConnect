@@ -4,6 +4,7 @@ FROM python:3
 RUN apt-get update && apt-get install -y netcat inetutils-inetd
 RUN echo '\n127.0.0.1:8080 stream tcp nowait root /bin/nc nc keycloak 8080' >> /etc/inetd.conf
 
+# Install the python packages in requirements.txt, such as flask and PyJWT
 COPY ./requirements.txt /
 RUN pip install -r /requirements.txt
 COPY ./service.py /
