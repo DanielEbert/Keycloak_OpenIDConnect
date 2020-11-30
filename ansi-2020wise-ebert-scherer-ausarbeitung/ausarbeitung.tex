@@ -246,7 +246,7 @@ Der in dieser Sektion vorgestellte Prozess ermöglicht den Zugriff auf Ressource
 
 Bearer Token bedeutet, dass jeder, der im Besitz des Tokens ist, den Token wie jeder andere einsetzten kann \cite{EB29}. Das bedeutet, dass der Ressourcen Server den Token an andere Clients senden kann, um von diesen Ressourcen abzurufen. Das kann z.B. in einer Microservice Architektur vorkommen \cite{EB31}. Aus diesem Grund sollte man aus Sicherheitsgründen, vor allem wenn es möglicherweise nicht vertrauenswürdige Clients gibt, die erlaubten Scopes im Access Tokens analysieren und diese so weit wie möglich beschränken. Außerdem kann, wie in Sektion \ref{EB_AccessToken} beschrieben ist, über den Audience Claim im Access Token angegeben werden, für welche Clients der Access Token bestimmt ist. Der Ressourcen Server sollte validieren, dass seine Client ID im Audience Claim enthalten ist, bevor er angeforderte geschützte Daten zurücksendet \cite{EB30}.
 
-\subsubsection{Validieren des Access Token}
+\subsubsection{Validieren des Access Token} \label{Validieren des Access Token}
 
 Außer der im letzten Abschnitt erläuterten Validierung des Audience Claims müssen weitere Informationen überprüft werden, bevor geschützte Daten vom Ressourcen Server herausgegeben werden. Dazu gehört die Überprüfung, ob der Token bereits abgelaufen ist. Außerdem kann ein Ressourcen Server, basierend auf den erlaubten Scopes des Access Tokens, Entscheidungen treffen. Zum Beispiel kann er die Herausgabe geschützter Daten aufgrund nicht vorhandener erlaubten Scopes verweigern.
 
@@ -556,40 +556,66 @@ Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung. Ist ein
 	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendIDTokenExample.PNG}
 	\caption{Frontend Client GUI - Token}
 	\label{fig:EB_Token}
-\end{figure} 
+\end{figure}
+
+Durch die erfolgreichen Authentifizierung mit dem Authorization Code Flow hat Keycloak den in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebenen KEYCLOAK\_IDENTITY Cookie für Keycloak's Authorization Endpunkt gesetzt. Dieser Cookie enthält einen ID Token. In Abbildung \ref{fig:EB_ID Token Cookie für Keycloak} ist manuell zum Authorization Endpunkt navigiert worden und über die Chrome Developer Console kann der Cookie angezeigt werden. Dadurch wird, wie in Abbildung \ref{fig:EB_Snapshot nach Aufruf des zweiten Frontends} gezeigt, der Benutzer beim Aufruf des zweiten Frontend Clients automatisch authentisiert.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendCookieForKeycloak.PNG}
+	\caption{ID Token Cookie für Keycloak}
+	\label{fig:EB_ID Token Cookie für Keycloak}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=1\textwidth]{Images/Ebert/FrontendOpenSecondFrontend.PNG}
+	\caption{Snapshot nach Aufruf des zweiten Frontends}
+	\label{fig:EB_Snapshot nach Aufruf des zweiten Frontends}
+\end{figure}
 
 % TODO: sollte ich hier interessante abschnitte des codes zeigen? oder einfach nur auf code verweisen mit dem hinweis, dass der code dokumentiert ist? code ist wirklich nicht interessant, vor allem wenn man keine react kenntnisse hat, und ist meistens nur 1 zeile. code des backends ist mehr interessant
 
 
 \subsection{Backend} \label{EB_Backend}
 
-% TODO: backend should check if its in aud. can pass client id via env. am i missing sth else that i said clients should do and that im not doing?
+Die zwei Backend Services lauschen auf verschiedenen Ports, sind aber im Hinblick auf die Funktionsweise gleich. Sie sind in Python geschrieben und verwenden das Web Framework Flask \cite{EB48}. Flask-CORS, eine Erweiterung von Flask, wird verwendet, um CORS für die Sender aller eingehenden Anfragen zu erlauben \cite{EB49}. PyJWT implementiert den JSON Web Token (JWT) Standard (RFC 7519 \cite{EB50}) \cite{EB51}. Das Backend verwendet PyJWT um Access Tokens zu decodieren.
+
+Eingehende Anfragen werden in zwei Schritten abgearbeitet. Im ersten Schritt wird der Access bzw. Bearer Token aus dem HTTP Authorization Header extrahiert. Schlägt dies fehl, z.B. wenn die Anfrage keinen HTTP Authorization Header enthält, dann wird der Text 'FAILED' im HTTP Message Body mit Statuscode 402 zurückgegeben. Andernfalls wird der extrahierte Token an die in der folgenden Auflistung gezeigten Funktion übergeben.
+
+\begin{lstlisting}[caption=Token Validierung im Backend, captionpos=b, language=python]
+def validate_token(token):
+  # Decode Access Token without validating it.
+  try:
+    decoded_token = jwt.decode(token, verify=False)
+  except Exception:
+    return 'FAILED', 402
+  # Invalid if this client's ID is not in 'aud' claim
+  if 'aud' not in decoded_token:
+    return 'FAILED: no "aud" claim in token', 402
+  if client_ID not in decoded_token['aud']:
+    return f'FAILED: {client_ID} not in "aud" claim', 402
+  # Online Signatur Validation
+  url = (f'http://{KEYCLOAK_HOST}/auth/realms/{REALM_NAME}' +
+          '/protocol/openid-connect/userinfo')
+  headers = {"Authorization": f'Bearer {token}'}
+  r = requests.get(url, headers=headers)
+  if r.status_code != 200:
+    return 'Invalid signature', 402
+  r_json = json.loads(r.text)
+  return f'subject identifier (sub): {r_json["sub"]}', 200
+\end{lstlisting} % TODO: schauen dass das Listing nicht gerade über 3 Seiten geht
+
+Dabei wird der Token als Erstes über die PyJWT Bibliothek dekodiert. Die Signatur des Tokens wird dort noch nicht validiert. Danach überprüft, ob der Token einen 'aud' Claim enthält und ob die ID des jeweiligen Backend Clients im 'aud' Claim enthalten ist. Die Motivation hinter dieser Überprüfung wurde in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} erläutert. Für die Validierung der Signatur wird die in Sektion \ref{Validieren des Access Token} beschriebene Online Validierung eingesetzt, bei der der Token über Keycloak validiert wird. Dabei wird eine Anfrage an Keycloak's UserInfo Endpunkt mit dem Token im HTTP Authorization Header als Bearer Token gesendet. Bei valider Signatur liefert die Keycloak Anfrage den Statuscode 200 und die für den UserInfo Endpunkt und den Access Token zugelassenen Claims im HTTP Message Body zurück. 
+
+Die Funktion gibt einen Tuple mit zwei Elementen zurück. Das erste Element wird als HTTP Message Body und das zweite Element als Statuscode an den Sender der Anfrage an das Backend zurückgesendet. Bei nicht erfolgreicher Validierung des Tokens wird der Statuscode 402 mit Fehlermeldung im HTTP Message Body zurückgegeben. Andernfalls wird die ID des Benutzers des Access Token und Statuscode 200 zurückgegeben.
+
 % weil ich online token veri mache, ist nach 'Logout All' auch alle Tokens invalide
-
-% now add pics and explain what we can see in pic. maybe add code?
-
-
-
-- show img logged out
-- show img logged in
-- show img tokens
-- end user;; frontend läuft dann im browser
-- Über das Klicken des 'Login' Buttons wirdd er '...' initiiert. Im Hintergrund... dann sind wir bei Schritt ..
-- logged out bild zeigen und beschreiben was man sieht. 'Rechte Seite der TopNavigationsBar ist ein Button um Login zu ... je 1 button für POST and je backend
-- show cookie for keycloak
-- Bei login form bild: sagen dass wir jetzt auf localhost:8000 sind, nicht localhost:3000, und das das die seite von keycloak ist.
-
-
-explain raect frontend. use keycloak react adapter. backend with flask. keycloak can use other db's too such as ...
-bild wenn logged out
-bild fehlermeldung vom backend server 401
-bild wenn erfolg von backend server
-source code vom backend code, frontend code?
-- keycloak all clients and client config in keycloak admin console
 
 \section{Zusammenfassung und Ausblick}
 
 TODO
+
 
 
 
