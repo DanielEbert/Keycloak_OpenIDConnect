@@ -42,6 +42,7 @@ def validate_token(token):
     return 'FAILED: no "aud" claim in token', 402
   if client_ID not in decoded_token['aud']:
     return f'FAILED: {client_ID} not in "aud" claim', 402
+  # Online Signatur Validation
   url = f'http://{KEYCLOAK_HOST}/auth/realms/{REALM_NAME}/protocol/openid-connect/userinfo'
   headers = {"Authorization": f'Bearer {token}'}
   r = requests.get(url, headers=headers)
