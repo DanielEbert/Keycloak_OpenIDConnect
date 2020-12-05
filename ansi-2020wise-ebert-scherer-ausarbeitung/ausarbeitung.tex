@@ -375,9 +375,9 @@ Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren,
 
 In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
 
-% Die geschützten Ressourcen des Servers sind in mehrfacher Hinsicht verwundbar. Die erste und offensichtlichste ist, dass Access Tokens durchsickern können, wodurch ein Angreifer Daten über geschützte Ressourcen erhält. Dies kann durch Token-Hijacking geschehen, wie bereits in der vorigen Sektion gezeigt wurde oder das Token eine schwache Entropie hat. \cite{OAuth2inAction}
+Die geschützten Ressourcen des Client-Backends sind in mehrfacher Hinsicht verwundbar. Die erste entsteht durch Endpunktschwachstellen und die zweite durch Token Replays.
 
-% \subsubsection{Endpunktschwachstellen}
+\subsubsection{Endpunktschwachstellen}
 
 Wenn eine REST-API eingesetzt wird, bei der die Antwort auf das Ergebnis von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt ist anfällig für Cross-Site-Scripting (XSS)-Angriffe, wenn der Ressourcenserver access\_token als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
 
@@ -387,11 +387,27 @@ Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. De
 
 Die letzte Gegenmaßnahme, die ein Ressourcen-Server implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token enthält, welches über den Authorization: Bearer Header gesendet werden soll \cite{OAuth2inAction}.
 
-% Eventuell CORS noch hinzufügen
+% Eventuell CORS noch hinzufügen - Seite 148 - 151
+
+\subsubsection{Token Replays}
+
+In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token bekommt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine relativ kurze Lebensdauer hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist, oder kurz davor steht. \cite{OAuth2inAction}
+
+OIDC und OAuth 2.0 sind frei von Kryptographie. Stattdessen verlassen sich die Protokolle vollständig auf das Vorhandensein von Transport Layer Security (TLS) über die verschiedenen Verbindungen hinweg. Aus diesem Grund gilt es die Verwendung von TLS im gesamten System so weit wie möglich durchzusetzen. \cite{OAuth2inAction}
+
+Dabei kann HTTP Strict Trans-port Security (HSTS) helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten, niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
 
 \subsection{Authorization Server Schwachstellen}
 
 das Internet ist für uns alle Neuland
+
+
+
+
+
+
+
+
 
 \subsection{Token Schwachstellen}
 
