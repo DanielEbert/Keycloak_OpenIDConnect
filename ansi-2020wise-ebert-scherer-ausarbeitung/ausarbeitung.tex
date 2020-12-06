@@ -395,7 +395,7 @@ In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token
 
 OIDC und OAuth 2.0 sind frei von Kryptographie. Stattdessen verlassen sich die Protokolle vollständig auf das Vorhandensein von Transport Layer Security (TLS) über die verschiedenen Verbindungen hinweg. Aus diesem Grund gilt es die Verwendung von TLS im gesamten System so weit wie möglich durchzusetzen. \cite{OAuth2inAction}
 
-Dabei kann HTTP Strict Trans-port Security (HSTS) helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten, niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
+Dabei kann HTTP Strict Transport Security (HSTS) helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten, niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
 
 \subsection{Authorization Server Schwachstellen}
 
