@@ -324,6 +324,9 @@ In dieser Sektion werden Schwachstellen mit bösartigen Endpunkten beschrieben. 
 
 
 Diese Schwachstelle basiert auf einem Angriff, der als als Mixup Attack bekannt ist. Die Idee hinter dem Angriff besteht darin, den Informationsfluss in der Discovery und Dynamic Registration Phase so zu beeinflussen, dass der Angreifer Zugang zu sensiblen Informationen erhält. Der Angreifer verfolgt den Diebstahl sensibler Informationen wie des Authorization Codes, des Access Tokens, des ID-Tokens und/oder der Client-Anmeldedaten, die zur Authentifizierung verwendet werden.
+
+Wäre das einfachste und möglicherweise das Beste
+% https://tools.ietf.org/html/rfc6749#section-10
 \end{comment}
 
 
@@ -405,7 +408,29 @@ Für den Authorization Server gelten alle allgemeinen Sicherheitsmaßnahmen für
 
 \subsubsection{Session Hijacking}
 
+In der Sektion \ref{EB_Authentifizierung_eines_Benutzers} wird erklärt, dass der Client einen Redirect-Schritt unternehmen muss, um an ein Access Token vom Authorization Server zu gelangen. Dieser Redirect veranlasst den Browser, eine Anfrage an den Client zu stellen, einschließlich des Authorization Codes.
+
+% Kann abweichen je nachdem ob die Client vertraulich sind oder nicht
+% Beispiel siehe OAuth in Action Seite 155
+
+Wichtig für diese Schwachstelle ist es, dass vertrauliche Clients verwendet werden. Da bei ihnen der Authorization Code den Server verlässt und zum Benutzer gelangt, so dass er in der Browser-Historie verbleibt.
+
+Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit seinen eigenen Anmeldedaten anmelden, manipuliert jedoch den Redirect zum Client und injiziert den Authorization Code aus der Session des vorherigen Benutzers, der im Browser-Verlauf gespeichert ist. Das Resultat ist, dass der Angreifer dann Zugriff auf die Ressource des ursprünglichen Benutzers hat.
+
+Als Mitigation gegen diese Schwachstelle empfiehlt die OAuth 2.0 Spezifikation, dass Authorization Codes nur einmal vom Client verwendet werden dürfen \cite{OAuthAuthorizationResponse}. Wenn ein Authorization Code mehr als einmal verwendet wird, muss der Authorization Server die Anfrage ablehnen und sollte alle Access Tokens zurücknehmen, die zuvor auf der Grundlage dieses Authorization Codes ausgegeben wurden \cite{OAuthAuthorizationResponse}.
+
 \subsubsection{Redirect URI Manipulation}
+
+
+
+
+
+
+
+
+
+
+
 
 \subsubsection{Client Impersonation}
 
