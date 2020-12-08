@@ -1,6 +1,8 @@
 % !TeX root = ansi-2020wise-ebert-scherer-ausarbeitung.tex
 % TODO: am Ende mit Grammatikchecker testen
 
+% TODO wir geben die Quelle "The OAuth 2.0 Authorization Framework" merhmals an, als Kapitel/Sektionen und einmal komplett - glaube die Quelle ist ein Techreport
+
 \chapter{Single Sign On bei Webanwendungen}
 \chapterauthor{Daniel Ebert und Sebastian Scherer}
 
@@ -176,7 +178,8 @@ Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Abl
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
 % good step description: https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd
-% client secret beim token exchange?
+% client secret beim token exchange? - Sebastian: client_secret + authorization code = access token
+% TODO wo speichern wir das client_secret - wichtig für threat model: Client Impersonation
 % https://connect2id.com/learn/openid-connect Code flow: step 1
 % https://openid.net/specs/openid-connect-basic-1_0.html#ProtocolElements
 
@@ -419,24 +422,28 @@ Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit se
 
 Als Mitigation gegen diese Schwachstelle empfiehlt die OAuth 2.0 Spezifikation, dass Authorization Codes nur einmal vom Client verwendet werden dürfen \cite{OAuthAuthorizationResponse}. Wenn ein Authorization Code mehr als einmal verwendet wird, muss der Authorization Server die Anfrage ablehnen und sollte alle Access Tokens zurücknehmen, die zuvor auf der Grundlage dieses Authorization Codes ausgegeben wurden \cite{OAuthAuthorizationResponse}.
 
-\subsubsection{Redirect URI Manipulation}
+\subsubsection{Redirection URI Manipulation}
 
+Bei der Verwendung des Authorization Code Flows \ref{EB_Authentifizierung_eines_Benutzers} kann der Client über den Parameter "redirect\_uri" einen Redirect-URI angeben. Wenn ein Angreifer den Wert des Redirect-URIs manipulieren kann, kann er den Authorization Server veranlassen, den Benutzer einer Ressource zu einem URI unter der Kontrolle des Angreifers mit dem Authorization Code umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
 
+Ein Angreifer kann einen Account bei einem Client erstellen und den Authorization Flow einleiten. Wenn der Benutzer des Angreifers an den Authorization Server gesendet wird, um Zugriff zu gewähren, greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers. Der Angreifer trickst dann den Benutzer einer Ressource aus, dem manipulierten Link zu folgen, um den Zugriff auf den Client zu autorisieren. \cite{OAuthAuthorizationSecurityConsiderations}
 
+Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anfrage gestellt, welche dieser autorisiert. Das Opfer wird dann an einen Ressourcen-Endpunkt unter der Kontrolle des Angreifers mit dem Authorization Code umgeleitet. Der Angreifer schließt den Autorisierung Flow ab, indem er den Authorization Code an den Client, unter Verwendung der ursprünglichen Redirect-URI, sendet. Der Client tauscht den Authorization Code mit einem Access Token und verknüpft es mit dem Client-Account des Angreifers, welcher nun Zugang zu den geschützten Ressourcen erhalten kann. \cite{OAuthAuthorizationSecurityConsiderations}
 
+Um dieser Schwachstelle entgegenzuwirken, muss der Authorization Server sicherstellen, dass der Redirect-URI, der zum Erhalt des Authorization Codes verwendet wird, mit dem Redirect-URI identisch ist, welcher beim Austausch des Authorization Codes gegen ein Access Token bereitgestellt wird. Der Authorization Server muss von Clients verlangen, ihre Redirect-URIs zu registrieren.  Wenn in der Anfrage ein Redirect-URI angegeben wird, muss der Authorization Server diesen gegen den registrierten Wert der Redirect-URI validieren. \cite{OAuthAuthorizationSecurityConsiderations}
 
-
-
-
-
-
-
-
-\subsubsection{Client Impersonation}
+%\subsubsection{Client Impersonation}
 
 % https://www.microsoft.com/security/blog/2019/09/26/how-to-prevent-phishing-attacks-dmarc-office-365/
-% Difference between Spoofing and Impersonation: Spoofing is when the sender is attempting to send mail from, or on behalf of, the exact target domain. Impersonation is when the sender if attempting to send mail that is a lookalike, or visually similar, to a targeted domain, targeted user, or targeted brand.
+% Difference between Spoofing and Impersonation: Spoofing is when the sender is attempting to send mail from, or on behalf of, the exact target domain. Impersonation is when the sender is attempting to send mail that is a lookalike, or visually similar, to a targeted domain, targeted user, or targeted brand.
 
+% Wir benutzen Authorization Code Grant Flow - wo/wie wird der Client beim Authorizazion Server angemeldet - client id, secret
+% https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
+% Es werden keine Client Credentials verwendet, da Authorization Code Grant Flow
+% client id, secret im Authorization Code Grant Flow: https://auth0.com/docs/flows/authorization-code-flow#how-it-works
+% wenn wir client_secret nicht mir authorization code binden, ist das ein mega threat, siehe OAuth in Action "9.4 Client Impersonation"
+% verstehe nicht wie das client secret gespeichert werden soll
+% sicher nicht so: https://wordpress.stackexchange.com/questions/298532/where-to-store-oauth-2-0-client-id-and-secret
 
 \subsubsection{Open Redirector}
 
