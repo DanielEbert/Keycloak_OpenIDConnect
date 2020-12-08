@@ -447,6 +447,13 @@ Um dieser Schwachstelle entgegenzuwirken, muss der Authorization Server sicherst
 
 \subsubsection{Open Redirector}
 
+Der Authorization Server und der Client-Redirect-Endpunkt können so konfiguriert sein, sodass sie als offene Redirector funktionieren. Ein offener Redirector ist ein Endpunkt, der einen Parameter verwendet, um einen Benutzer ohne jegliche Validierung automatisch an den durch den Parameterwert angegebenen Ort umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
+
+Offene Redirects können bei Phishing-Angriffen verwendet werden oder von einem Angreifer, um Benutzer dazu zu bringen, bösartige Seiten zu besuchen, indem die URI eines bekannten Ziels verwendet wird. \cite{OAuthAuthorizationSecurityConsiderations}
+
+Wenn der Authorization Server dem Client erlaubt, nur einen Teil der Redirect-URI zu registrieren, kann ein Angreifer darüber hinaus einen vom Client betriebenen offenen Redirector verwenden, um eine Redirect-URI zu konstruieren, die die Authorization Server-Validierung umgeht und Authorization Codes oder Access Tokens auf einen Endpunkt unter der Kontrolle des Angreifers sendet. \cite{OAuthAuthorizationSecurityConsiderations}
+
+Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster registrieren müssen. Jedes Mal, wenn ein Client Keycloak um eine Umleitung anfragt, überprüft Keycloak den Redirect-URI anhand der Liste der gültigen registrierten URI-Muster. Um offene Redirect-Angriffe abzuschwächen, müssen Clients möglichst spezifische URI-Muster verwenden. \cite{keycloakDocs}
 
 \subsection{Token Schwachstellen}
 
