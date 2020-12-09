@@ -178,11 +178,7 @@ Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Abl
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
 % good step description: https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd
-% client secret beim token exchange? - Sebastian: client_secret + authorization code = access token
-% TODO wo speichern wir das client_secret - wichtig für threat model: Client Impersonation
-% https://connect2id.com/learn/openid-connect Code flow: step 1
-% https://openid.net/specs/openid-connect-basic-1_0.html#ProtocolElements
-
+% client secret beim token exchange?
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/AuthorizationCodeFlow.png}
@@ -295,6 +291,9 @@ Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Se
 % https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
 
 % https://www.nds.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/13/OIDCSecurity_1.pdf
+
+% Wäre das einfachste und möglicherweise das Beste
+% https://tools.ietf.org/html/rfc6749#section-10
 \end{comment}
 
 
@@ -316,23 +315,6 @@ Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wur
 %TODO eventuell die Pitfalls von OAuth 2.0 for authentication aufführen - OAuth 2.0 in action Seite 242, Kapitel 13.4 ff
 
 Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
-
-\begin{comment}
-% mladenov2016security beschreibt primät Angriffe und keine Threats oder Vulnerabilities
-\subsection{Spezifikationsschwachstellen}
-
-In dieser Sektion werden Schwachstellen mit bösartigen Endpunkten beschrieben. Es muss beachtet werden, dass alle folgenden Schwachstellen auf der Tatsache basieren, dass ein Angreifer den Client zur Verwendung eines bösartigen Endpunkts zwingen kann.
-
-\subsubsection{Broken Benutzerauthentifizierung}
-
-
-Diese Schwachstelle basiert auf einem Angriff, der als als Mixup Attack bekannt ist. Die Idee hinter dem Angriff besteht darin, den Informationsfluss in der Discovery und Dynamic Registration Phase so zu beeinflussen, dass der Angreifer Zugang zu sensiblen Informationen erhält. Der Angreifer verfolgt den Diebstahl sensibler Informationen wie des Authorization Codes, des Access Tokens, des ID-Tokens und/oder der Client-Anmeldedaten, die zur Authentifizierung verwendet werden.
-
-Wäre das einfachste und möglicherweise das Beste
-% https://tools.ietf.org/html/rfc6749#section-10
-\end{comment}
-
-
 
 \subsection{Client-Frontend Schwachstellen}
 
@@ -378,6 +360,7 @@ Zugriffstoken werden an Ressourcenserver meist durch Übergabe des Inhaber-Token
 Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Zugriffstoken offengelegt, da der Referrer die gesamte URL enthält  \cite{OAuth2inAction}. Die Verwendung des Standard-Autorisierungs-Headers vermeidet diese Art von Problemen, da das Zugriffstoken nicht in der URL erscheint \cite{OAuth2inAction}.
 
 \subsection{Client-Backend Schwachstellen}
+% Eventuell Name zu Geschütze Ressourcen Schwachstellen und die andere section zu client allgemein - am besten ganz weg
 
 In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
 
@@ -433,7 +416,6 @@ Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anf
 Um dieser Schwachstelle entgegenzuwirken, muss der Authorization Server sicherstellen, dass der Redirect-URI, der zum Erhalt des Authorization Codes verwendet wird, mit dem Redirect-URI identisch ist, welcher beim Austausch des Authorization Codes gegen ein Access Token bereitgestellt wird. Der Authorization Server muss von Clients verlangen, ihre Redirect-URIs zu registrieren.  Wenn in der Anfrage ein Redirect-URI angegeben wird, muss der Authorization Server diesen gegen den registrierten Wert der Redirect-URI validieren. \cite{OAuthAuthorizationSecurityConsiderations}
 
 %\subsubsection{Client Impersonation}
-
 % https://www.microsoft.com/security/blog/2019/09/26/how-to-prevent-phishing-attacks-dmarc-office-365/
 % Difference between Spoofing and Impersonation: Spoofing is when the sender is attempting to send mail from, or on behalf of, the exact target domain. Impersonation is when the sender is attempting to send mail that is a lookalike, or visually similar, to a targeted domain, targeted user, or targeted brand.
 
@@ -457,7 +439,63 @@ Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster r
 
 \subsection{Token Schwachstellen}
 
-zwischendurch einen Moment innehalten, schweigen, nachdenken, Pause machen
+Die Schwachstellen der vorausgegangenen wurden Schwachstellen aufgeführt, die es meist zum Ziel hatten ein Access Token oder einen Authorization Code zu erhalten. In dieser Sektion soll gezeigt werden welche Schwachstellen der Umgang mit den Tokens und Codes hat und wie diese Risiken minimiert werden können. 
+
+\subsubsection{Bearer Token}
+% https://tools.ietf.org/html/rfc6750#section-5
+% https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
+
+Die OAuth 2.0 und OIDC-Spezifikationen verwenden Bearer-Token, sodass jeder, der im Besitz des Tokens dieses verwenden kann, unabhängig davon wer er ist. Diese Bearer verwenden alle Klartextzeichen und benötigen daher TLS als Grundlage für die Sicherheit. \cite{OAuthAuthorizationSecurityConsiderations}
+
+In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Token aus Clients gestohlen werden können. Bearer-Access Token für Clients sind transparent, damit keine kryptographischen Operationen durchgeführt werden müssen. Gelangt ein Angreifer an ein Access Token, ist er in der Lage, auf alle Ressourcen zuzugreifen, die in den Anwendungsbereich dieses speziellen Tokens fallen.
+
+Wird ein Bearer-Token verwendet, müssen keine zusätzliche Sicherheitselemente im Besitz sein, wie z.B. kryptographisches Schlüsselmaterial. Abgesehen vom Token-Hijacking, welches in den vorherigen Sektionen bereits behandelt wurde, gibt es die folgenden Bedrohungen. Diese sind in vielen anderen tokenbasierten Protokollen ebenfalls zu finden:
+
+\begin{itemize}
+	\item Token Modification: Ein Angreifer kann ein gefälschtes Token herstellen oder ein vorhandenes gültiges Token modifizieren, wodurch der Client-Ressourcenserver veranlasst wird, dem Client unangemessenen Zugriff zu gewähren. Beispielsweise kann ein Angreifer ein Token herstellen, um Zugang zu Informationen zu erhalten, die er zuvor nicht einsehen konnte. Alternativ könnte die Gültigkeit des Tokens selbst verlängern. \cite{RFC6750}
+	
+	\item Token Replay: Es wird ein altes, abgelaufenes Token wiederverwendet, um an valide Daten vom Ressourcenserver zu gelangen. Der Ressourcenserver sollte in diesem Fall einen Fehler zurückgeben. \cite{RFC6750}
+	
+	\item Token Redirect: Ein Angreifer verwendet ein Access-Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten, der fälschlicherweise glaubt, dass das Token für ihn gültig ist. \cite{RFC6750}
+	
+	\item Token Disclosure: Ein Token könnte sensible Informationen über das System enthalten und der Angreifer könnte an Informationen gelangen, für die er nicht berechtigt ist. \cite{RFC6750}
+\end{itemize}
+
+Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann. \cite{OAuthAuthorizationSecurityConsiderations}
+
+Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist es das Access Token im Transient Memory zu belassen. Browser löschen dann das Access Token wenn der Browser vom Benutzer geschlossen wird. 
+
+Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tokens abgemildert werden, durch Verwendung einer digitalen Signatur oder eines Message Authentication Codes (MAC). Der OAuth 2.0 Standard spezifiziert weder die Kodierung noch den Inhalt des Tokens, diese müssen selbst bestimmt werden. Der Schutz der Token-Integrität muss ausreichend sein, um eine Veränderung des Tokens zu verhindern. \cite{RFC6750}
+
+Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server die Identität der vorgesehenen Empfänger in das Token aufnimmt \cite{RFC6750}.
+
+Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger. \cite{RFC6750}
+
+\subsubsection{Authorization Token}
+
+% OAuth in Action chapter 10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
