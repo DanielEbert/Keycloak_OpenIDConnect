@@ -441,13 +441,13 @@ Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster r
 
 Die Schwachstellen der vorausgegangenen wurden Schwachstellen aufgeführt, die es meist zum Ziel hatten ein Access Token oder einen Authorization Code zu erhalten. In dieser Sektion soll gezeigt werden welche Schwachstellen der Umgang mit den Tokens und Codes hat und wie diese Risiken minimiert werden können. 
 
-\subsubsection{Bearer Token}
+% \subsubsection{Bearer Token}
 % https://tools.ietf.org/html/rfc6750#section-5
 % https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
 
 Die OAuth 2.0 und OIDC-Spezifikationen verwenden Bearer-Token, sodass jeder, der im Besitz des Tokens dieses verwenden kann, unabhängig davon wer er ist. Diese Bearer verwenden alle Klartextzeichen und benötigen daher TLS als Grundlage für die Sicherheit. \cite{OAuthAuthorizationSecurityConsiderations}
 
-In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Token aus Clients gestohlen werden können. Bearer-Access Token für Clients sind transparent, damit keine kryptographischen Operationen durchgeführt werden müssen. Gelangt ein Angreifer an ein Access Token, ist er in der Lage, auf alle Ressourcen zuzugreifen, die in den Anwendungsbereich dieses speziellen Tokens fallen.
+In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Tokens oder Authorization Tokens aus Clients gestohlen werden können. Bearer-Token für Clients sind transparent, damit keine kryptographischen Operationen durchgeführt werden müssen. Gelangt ein Angreifer an ein Token, ist er in der Lage, auf alle Ressourcen zuzugreifen, die in den Anwendungsbereich dieses speziellen Tokens fallen.
 
 Wird ein Bearer-Token verwendet, müssen keine zusätzliche Sicherheitselemente im Besitz sein, wie z.B. kryptographisches Schlüsselmaterial. Abgesehen vom Token-Hijacking, welches in den vorherigen Sektionen bereits behandelt wurde, gibt es die folgenden Bedrohungen. Diese sind in vielen anderen tokenbasierten Protokollen ebenfalls zu finden:
 
@@ -456,14 +456,14 @@ Wird ein Bearer-Token verwendet, müssen keine zusätzliche Sicherheitselemente 
 	
 	\item Token Replay: Es wird ein altes, abgelaufenes Token wiederverwendet, um an valide Daten vom Ressourcenserver zu gelangen. Der Ressourcenserver sollte in diesem Fall einen Fehler zurückgeben. \cite{RFC6750}
 	
-	\item Token Redirect: Ein Angreifer verwendet ein Access-Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten, der fälschlicherweise glaubt, dass das Token für ihn gültig ist. \cite{RFC6750}
+	\item Token Redirect: Ein Angreifer verwendet ein Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten, der fälschlicherweise glaubt, dass das Token für ihn gültig ist. \cite{RFC6750}
 	
 	\item Token Disclosure: Ein Token könnte sensible Informationen über das System enthalten und der Angreifer könnte an Informationen gelangen, für die er nicht berechtigt ist. \cite{RFC6750}
 \end{itemize}
 
-Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann. \cite{OAuthAuthorizationSecurityConsiderations}
+Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken \cite{OAuthAuthorizationSecurityConsiderations}. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann \cite{OAuthAuthorizationSecurityConsiderations}. Diese Gegenmaßnahme wird insofern durch Keycloak unterstützt, dass in Umgebungen zwischen den einzelnen Services, unter denen das Vertrauen gering ist, der Empfängerkreis der Tokens limitiert werden kann \cite{keycloakDocs}. 
 
-Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist es das Access Token im Transient Memory zu belassen. Browser löschen dann das Access Token wenn der Browser vom Benutzer geschlossen wird. 
+Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist es das Token im Transient Memory zu belassen. Browser löschen dann das Token wenn der Browser vom Benutzer geschlossen wird.
 
 Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tokens abgemildert werden, durch Verwendung einer digitalen Signatur oder eines Message Authentication Codes (MAC). Der OAuth 2.0 Standard spezifiziert weder die Kodierung noch den Inhalt des Tokens, diese müssen selbst bestimmt werden. Der Schutz der Token-Integrität muss ausreichend sein, um eine Veränderung des Tokens zu verhindern. \cite{RFC6750}
 
@@ -471,26 +471,10 @@ Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server 
 
 Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger. \cite{RFC6750}
 
-\subsubsection{Authorization Token}
-
+%TODO prüfen ob nötig?
+%\subsubsection{Authorization Token}
 % OAuth in Action chapter 10
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% Eventuell die Basic Keycloak threats hinzufügen, wie IP/Port Restriction
 
 
 
