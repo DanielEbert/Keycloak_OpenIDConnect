@@ -35,7 +35,7 @@ def validate_token(token):
   # Validation will be done via Keycloak.
   # If frontend has no access token set, client will send
   # 'undefined' in headerAuth[1], which will raise an
-  # Exception in jwt.decode
+  # Exception in jwt.decode.
   try:
     decoded_token = jwt.decode(token, verify=False)
   except Exception:
@@ -47,7 +47,9 @@ def validate_token(token):
     return f'FAILED: {client_ID} not in "aud" claim', 402
   # Online Signatur Validation
   url = f'http://{KEYCLOAK_HOST}/auth/realms/{REALM_NAME}/protocol/openid-connect/userinfo'
+  # Sets the HTTP header Authorization Bearer manually with the access token
   headers = {"Authorization": f'Bearer {token}'}
+  # Request the keycloak authorization server whether the token is valid
   r = requests.get(url, headers=headers)
   if r.status_code != 200:
     return 'Invalid signature', 402
