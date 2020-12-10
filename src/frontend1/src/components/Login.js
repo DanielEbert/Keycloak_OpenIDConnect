@@ -1,20 +1,34 @@
-import * as React from 'react'
-import { useCallback } from 'react'
+import * as React from "react";
+import { useCallback } from "react";
 
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from "@react-keycloak/web";
 
-// explained in ./nav.js
+/**
+ * Login component explained in ./nav.js.
+ */
 const Login = () => {
-  const { keycloak } = useKeycloak()
-  
-  // keycloak.login() is invoked if the anchor element is clicked
+  /**
+   * Component requires access to Keycloak.
+   */
+  const { keycloak } = useKeycloak();
+
+  /**
+   * keycloak.login() is invoked when the anchor element is clicked.
+   */
   const login = useCallback(() => {
-    keycloak.login()
-  }, [keycloak])
+    keycloak.login();
+  }, [keycloak]);
 
+  /**
+   * Returns a button with the login event handler.
+   */
   return (
-    <li><a className="black-text" onClick={login} href="#top">Login</a></li>
-  )
-}
+    <li>
+      <a className="black-text" onClick={login} href="#top">
+        Login
+      </a>
+    </li>
+  );
+};
 
-export default Login
+export default Login;

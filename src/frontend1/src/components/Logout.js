@@ -1,20 +1,35 @@
-import * as React from 'react'
-import { useCallback } from 'react'
+import * as React from "react";
+import { useCallback } from "react";
 
-import { useKeycloak } from '@react-keycloak/web'
+import { useKeycloak } from "@react-keycloak/web";
 
-// explained in ./nav.js
+/**
+ * Logout component.
+ * Explained in ./nav.js.
+ */
 const Logout = () => {
-  const { keycloak } = useKeycloak()
-  
-  // keycloak.logout() is invoked if the anchor element is clicked
+  /**
+   * Component requires access to Keycloak.
+   */
+  const { keycloak } = useKeycloak();
+
+  /**
+   * On click keycloak.logout() is invoked.
+   */
   const logout = useCallback(() => {
-    keycloak.logout()
-  }, [keycloak])
+    keycloak.logout();
+  }, [keycloak]);
 
+  /**
+   * Returns a button with the logout event handler.
+   */
   return (
-    <li><a className="black-text" onClick={logout} href="#top">Logout</a></li>
-  )
-}
+    <li>
+      <a className="black-text" onClick={logout} href="#top">
+        Logout
+      </a>
+    </li>
+  );
+};
 
-export default Logout 
+export default Logout;

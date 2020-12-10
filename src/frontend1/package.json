@@ -10,6 +10,8 @@
     "@testing-library/react": "^11.1.2",
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.0",
+    "better-docs": "^2.3.2",
+    "jsdoc": "^3.6.6",
     "keycloak-js": "^11.0.3",
     "materialize-css": "^1.0.0",
     "react": "^17.0.1",
@@ -22,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "docs": "rm -rf ./docs/* && jsdoc -c jsdoc.conf.json"
   },
   "eslintConfig": {
     "extends": [
