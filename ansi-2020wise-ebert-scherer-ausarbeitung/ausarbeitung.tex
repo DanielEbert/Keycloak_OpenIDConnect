@@ -172,26 +172,51 @@ ID-, Access- und Refresh Token haben eine Verfallszeit \cite{EB60} \cite{EB58}. 
 
 Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein Benutzer kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt ein Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann das Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der Benutzer kann weiterhin neue Access Tokens anfordern. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Benutzers zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewägt werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer um möglicherweise auf geschützte Ressourcen des Benutzers zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion \ref{Validieren des Access Token} näher erläutert.
 
-\subsection{Abläufe} \label{EB_Abläufe}
+\subsection{Protokoll-Abläufe} \label{EB_Abläufe}
 
-Bei SSO kommen verschiedene Abläufe z.B. für die Authentifizierung eines Benutzers zum Einsatz. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung} beschrieben, gibt es verschiedene Protokolle und auch mehrere Alternativen innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Alternativen erläutert. Diese Sektion soll eine Übersicht über die wichtigsten Abläufe von SSO bei Webanwendungen bieten. Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann. % TODO: die alternativen sind aus sicherheitsgründen immer schlechter, darum kann der letzte satz eigentlich weg.
+Bei SSO kommen verschiedene Abläufe oder \textit{Authorization Grants} zum Einsatz. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung} beschrieben, gibt es verschiedene Protokolle und auch mehrere Varianten innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Varianten erläutert. Diese Sektion soll kurz eine Übersicht über die wichtigsten Abläufe von SSO und OIDC bei Webanwendungen bieten, die aus dem OAuth 2.0 stammen.
+
+\begin{itemize}
+	\item Authorization \cite[Sec. 1.3]{RFC6749}
+	
+	\item Implicit \cite[Sec. 1.3]{RFC6749}
+	
+	\item Resource Owner Password Credentials \cite[Sec. 1.3]{RFC6749}
+	
+	\item Client Credentials \cite[Sec. 1.3]{RFC6749}
+\end{itemize}
+
+%TODO werden sie erwäht? - meinst du die OIDC flows: implicit, authorization, resource owner password credentials, ...  oder oidc, saml
+% Da wir uns für oidc entschieden haben würde ich wenn du die anderen flows(implicit, ...) willst, könnten wir die hier kurz aufführen
+% Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann. 
+% TODO: die alternativen sind aus sicherheitsgründen immer schlechter, darum kann der letzte satz eigentlich weg.
+
+Der \textit{Authorization Code Flow} wird in der nächsten Sektion ausführlich beschrieben, da dieser am besten zum Use Case unseres praktischen Beispiels passt und der meist verwendete Ablauf ist.
+
+\subsection{Authorization Code Flow}
 
 \subsubsection{Authentifizierung eines Benutzers} \label{EB_Authentifizierung_eines_Benutzers}
 
-Der Authorization Code Flow ist der empfohlene und am häufigsten verwendete Ablauf um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist \cite{EB63}. Er ist optimiert für vertrauenswürdige Clients \cite{EB13}. Der Ablauf arbeitet mit URL-Umleitungen \cite{EB12}. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können \cite{EB12}. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flow. Der Authorization Server Endpunkt, Token Endpoint, und UserInfo Endpoint werden vom OpenID Provider bereitgestellt \cite{EB12} \cite{EB65}.
+Der \textit{Authorization Code Flow} ist der Empfohlene, um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist \cite{EB63}. 
+
+% TODO nutzen wir nicht public clients, habs auch nicht in der quelle gefunden
+% Er ist optimiert für vertrauenswürdige Clients \cite{EB13}. 
+
+Der Ablauf arbeitet mit \textit{Uniform Resource Identifier (URI)-Redirects} \cite{EB12}. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können \cite{EB12}. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Die Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flows. Der \textit{Authorization Server}, \textit{Token}- und \textit{UserInfo-Endpoint} werden vom OpenID Provider bereitgestellt \cite{EB12} \cite{EB65}.
 
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
 % good step description: https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd
-% client secret beim token exchange?
+% client secret beim token exchange? -nein da der client im browser des users läuft
+% alternativ graphik, ist nicht besser: https://backstage.forgerock.com/docs/am/6/oidc1-guide/
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/Ebert/AuthorizationCodeFlow.png}
-	\caption{OpenID Connect Authorization Code Flow Übersicht \cite{EB12}}
+	\caption{OIDC Authorization Code Flow Übersicht \cite{EB12}}
 	\label{fig:EB_AuthorizationCodeFlow}
 \end{figure} 
 
-Als erstes wird der Autorization Request vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String. Einer davon ist die Identifikationsnummer des Clients \cite{EB14}. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes. Der 'openid' Scope muss immer in der Liste der gewünschten Scopes angegeben werden \cite{EB14}. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine 'redirect\_uri' angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Benutzers zu dieser URI geleitet \cite{EB14}. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage eine 'state' enthalten werden. Diese kann vor Cross-Site Request Forgery (CSRF) schützen \cite{EB14}. Ebenfalls optional kann eine 'nonce' angegeben werden, welche vor Replay Angriffen schützen kann \cite{EB14}. 'state' und 'nonce' werden später in Schritt 6 und 8 näher betrachtet. Listing \ref{EBAutorizationRequest} zeigt ein Beispiel für einen Autorization Request. Über den 'response\_type=code' wird der Authorization Code Flow ausgewählt. Mit 'response\_mode=fragment' wird festgelegt, dass später ein Code per URI Fragment übertragen wird \cite{EB64}. Letzteres wird später in Schritt 5 und 6 näher erläutert.
+Als erstes wird der \textit{Autorization Request} vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String, einer davon ist die Identifikationsnummer des Clients \texttt{client\_id} \cite{EB14}. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes  der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes \texttt{scope}. Der \texttt{openid} Scope muss immer in der Liste der gewünschten Scopes angegeben werden \cite{EB14}. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine \texttt{redirect\_uri} angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Benutzers zu dieser URI geleitet \cite{EB14}. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage ein \texttt{state} hinzugefügt werden, dieser kann vor \textit{Cross-Site Request Forgery (CSRF)} schützen \cite{EB14}. Ebenfalls optional kann eine \texttt{nonce} angegeben werden, welche vor Replay Angriffen schützen kann \cite{EB14}. \texttt{state} und \texttt{nonce} werden später in Schritt 6 und 8 näher betrachtet. Listing \ref{EBAutorizationRequest} zeigt ein Beispiel für einen Autorization Request. Über den \texttt{response\_type=code} wird der Authorization Code Flow ausgewählt. Mit \texttt{response\_mode=fragment} wird festgelegt, dass später ein Code per URI Fragment übertragen wird \cite{EB64}. Letzteres wird später in Schritt 5 und 6 näher erläutert.
 
 \begin{lstlisting}[caption=Beispiel Autorization Request, captionpos=b, label=EBAutorizationRequest]
 GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
@@ -204,9 +229,9 @@ GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
         &nonce=67bad316-d8c1-45d1-9559-2a1c4726ce91
 \end{lstlisting}
 
-Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, also den OpenID Provider, gesendet. Bei dieser Anfrage handelt es sich um eine GET HTTP-Anfrage. Das bedeutet, dass der Benutzer nach Schritt 2 nicht auf der Website des Clients, sondern auf der Website des OpenID Provider ist. Dies ist im Hinblick auf die Sicherheit wichtig, da sich der Benutzer im dritten Schritt authentisieren muss und seine Anmeldeinformationen wie z.B. Benutzername und Passwort eingeben muss. Da dies nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Benutzers vom Client abgeschirmt \cite{EB15}. Das bedeutet, dass der Client keine Informationen über die Anmeldeinformationen des Benutzers hat. Der Client erhält nur die Tokens.
+Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, also den OpenID Provider, gesendet. Bei dieser Anfrage handelt es sich um eine GET HTTP-Anfrage. Was bedeutet, dass der Benutzer nach Schritt 2 nicht auf der Website des Clients, sondern auf der Website des OpenID Provider ist. Dies ist im Hinblick auf die Sicherheit wichtig, da sich der Benutzer im dritten Schritt authentisieren muss und seine Anmeldeinformationen wie z.B. Benutzername und Passwort eingeben muss. Da dies nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Benutzers vom Client abgeschirmt \cite{EB15}. Das bedeutet, dass der Client keine Informationen über die Anmeldeinformationen des Benutzers hat. Der Client erhält nur die Tokens.
 
-Das OpenID Connect Protkoll schreibt nicht vor, mit welchen Methoden der OpenID Provider den Benutzer in Schritt 3 authentifiziert \cite{EB16}. Als sicherere Alternative zu Benutzername und Passwort könnte hier z.B. auch eine Zwei-Faktor-Authentifizierung eingesetzt werden. Auch die Methode, wenn der Benutzer bereits authentifiziert ist, wird vom OpenID Connect Protokoll nicht vorgeschrieben. Zum Beispiel implementiert Keycloak das über HTTP Cookies. Nach einer erfolgreichen Authentifizierung, wird ein ID Token als KEYCLOAK\_IDENTITY Cookie für Keycloak's Authorization Endpunkt gesetzt \cite{EB17}. Bei Anfragen an Keycloak's Authorization Endpunkt ist dieser Token automatisch enthalten. Der Ablauf für bereits authentifizierte Benutzer ist dann größtenteil gleich wie der für nicht authentifizierte Benutzer. Allerdings wird der Benutzer dann in Schritt 3 durch den Token, und nicht durch die Eingabe von z.B. Benutzername und Passwort authentifiziert.
+OIDC schreibt nicht vor, mit welchen Methoden der OpenID Provider den Benutzer in Schritt 3 authentifiziert \cite{EB16}. Als sicherere Alternative zu Benutzername und Passwort könnte hier z.B. auch eine Zwei-Faktor-Authentifizierung eingesetzt werden. Auch die Methode, wenn der Benutzer bereits authentifiziert ist, wird vom OpenID Connect Protokoll nicht vorgeschrieben. Zum Beispiel implementiert Keycloak das über HTTP Cookies. Nach einer erfolgreichen Authentifizierung, wird ein ID Token als KEYCLOAK\_IDENTITY Cookie für Keycloak's Authorization Endpunkt gesetzt \cite{EB17}. Bei Anfragen an Keycloak's Authorization Endpunkt ist dieser Token automatisch enthalten. Der Ablauf für bereits authentifizierte Benutzer ist dann größtenteil gleich wie der für nicht authentifizierte Benutzer. Allerdings wird der Benutzer dann in Schritt 3 durch den Token, und nicht durch die Eingabe von z.B. Benutzername und Passwort authentifiziert.
 
 Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 sicherstellen, dass der Client zum Zugriff auf die von ihm gewünschten Scopes berechtigt ist. Im vorhinein kann der Administrator des OpenID Providers die erlaubten Scopes für jeden Client festlegen \cite{EB68}. Optional kann in diesem Schritt auch ein interaktiver Dialog mit dem Benutzer stattfinden \cite{EB18}. Dabei wird dem Benutzer die Liste der gewünschten Scopes angezeigt. Der Benutzer hat hier die Möglichkeit, den Scopes zuzustimmen oder die Authentifizierung abzubrechen.
 
