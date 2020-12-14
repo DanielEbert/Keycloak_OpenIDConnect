@@ -392,23 +392,28 @@ Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. De
 
 Die letzte Gegenmaßnahme, die ein Client implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token  enthält\cite{OAuth2inAction}. 
 
-Daher muss das Access Token über den Authorization: Bearer Header gesendet werden. In Keycloak wird die Authentifizierung über Authorization Header erzwungen \cite{keycloakDocs}.
+Daher muss das Access Token über den Authorization Header gesendet werden. In Keycloak wird die Authentifizierung über Authorization Header erzwungen \cite{keycloakDocs}.
 
 % TODO Eventuell CORS noch hinzufügen - Seite 148 - 151
 
 \subsubsection{Token Replays}
 
-In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token bekommt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine relativ kurze Lebensdauer hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist, oder kurz davor steht. \cite{OAuth2inAction}
+In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token durch XSS zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token besitzt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine relativ kurze Lebensdauer hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist oder kurz davor steht. \cite{OAuth2inAction}
 
-OIDC und OAuth 2.0 sind frei von Kryptographie. Stattdessen verlassen sich die Protokolle vollständig auf das Vorhandensein von Transport Layer Security (TLS) über die verschiedenen Verbindungen hinweg. Aus diesem Grund gilt es die Verwendung von TLS im gesamten System so weit wie möglich durchzusetzen. \cite{OAuth2inAction}
+OIDC und OAuth 2.0 sind frei von Kryptographie. Stattdessen verlassen sich die Protokolle vollständig auf das Vorhandensein von TLS über die verschiedenen Verbindungen hinweg. Aus diesem Grund gilt es die Verwendung von TLS im gesamten System so weit wie möglich durchzusetzen.
 
-Dabei kann HTTP Strict Transport Security (HSTS) helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten, niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
+Dabei kann \textit{HTTP Strict Transport Security (HSTS)} helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten und niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
+
+Jedoch sollte nicht alleine auf HSTS vertraut werden, da es User-Agents gibt, die diesen Header nicht unterstützen und daher in den Produktion nur HTTPS, beziehungsweise TLS, eingesetzt werden.
 
 \subsection{Authorization Server Schwachstellen}
 
-Der Authorization Server ist die komplexeste Komponente im SSO-System und daher am schwersten zu sichern. In dieser Sektion werden Schwachstellen präsentiert und gezeigt wie diese mitigiert werden müssen.
+Der Authorization Server ist die komplexeste Komponente im SSO- und ODIC-System, daher am schwersten zu sichern. In dieser Sektion werden dessen Schwachstellen präsentiert und gezeigt wie diese mitigiert werden müssen.
 
-Für den Authorization Server gelten alle allgemeinen Sicherheitsmaßnahmen für den Einsatz sicherer Webserver. Besonders hervorzuheben sind Server-Logs, die Verwendung von Transport Layer Security (TLS) und eine sichere Hosting-Umgebung mit angemessenen Konto-Zugriffskontrollen.
+Für den Authorization Server gelten alle allgemeinen Sicherheitsmaßnahmen für den Einsatz sicherer Webserver. Besonders hervorzuheben sind Server-Logs, die Verwendung von TLS und eine sichere Hosting-Umgebung mit angemessenen Konto-Zugriffskontrollen.
+
+%TODO Eventuell die Basic Keycloak threats hinzufügen, wie IP/Port Restriction
+% https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation
 
 \subsubsection{Session Hijacking}
 
@@ -488,17 +493,6 @@ Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tok
 Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server die Identität der vorgesehenen Empfänger in das Token aufnimmt \cite{RFC6750}.
 
 Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger. \cite{RFC6750}
-
-%TODO prüfen ob nötig?
-%\subsubsection{Authorization Token}
-% OAuth in Action chapter 10
-% Eventuell die Basic Keycloak threats hinzufügen, wie IP/Port Restriction
-
-
-
-
-
-
 
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung} \label{EB_Beispielwebanwendung}
