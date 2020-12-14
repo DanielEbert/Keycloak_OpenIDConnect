@@ -299,14 +299,15 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 
 \section{Threat Model}
 \begin{comment}
-Hauptquellen - steht fast das gleiche drin:
+%TODO remove at the end
+% Hauptquellen - steht fast das gleiche drin:
 % https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation
 
 % https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation
 
-In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit IP Restriction aufgeführt.
+% In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit IP Restriction aufgeführt.
 
-Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
+% Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
 
 % https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
 
@@ -316,13 +317,11 @@ Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Se
 % https://tools.ietf.org/html/rfc6749#section-10
 \end{comment}
 
-
 In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert und aufgeführt wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
 
-Ein großer Teil der Sicherheit von OpenID Connect und OAuth 2.0 basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. Die Protokolle selbst sind frei von Kryptographie.
-% Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
+Ein großer Teil der Sicherheit von OpenID Connect und OAuth 2.0 basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. Die Protokolle selbst sind frei von Kryptographie. Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
 
-Obwohl OAuth 2.0 und OpenID Connect ein Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. In der Tat muss alles korrekt eingesetzt und verwaltet werden.
+Obwohl OAuth 2.0 und OpenID Connect ein Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. Sie müssen korrekt eingesetzt und verwaltet werden.
 
 \subsection{OAuth 2.0 zur Authentifizierung}
 
@@ -336,67 +335,66 @@ Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wur
 
 Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
 
-\subsection{Client-Frontend Schwachstellen}
+\subsection{Client Schwachstellen}
 
-In dieser Sektion werden häufige Angriffen auf Client-Frontends präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
+In dieser Sektion werden häufige Angriffen auf Clientss präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
 
-Der Client hat ein paar Dinge, die er schützen muss. Wenn er ein Client Geheimnis hat, muss er sicherstellen, dass dieses an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Da er Access- und Refresh-Tokens sammelt, muss er ebenfalls sicherstellen, dass diese nicht Komponenten außerhalb der Clients selbst zur Verfügung gestellt werden. Der Client muss auch darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
+Der Client hat Geheimnisse, wie Access- und Refresh-Tokens, für die er sicherstellen muss, dass diese an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Des Weiteren muss der Client darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
 
 \subsubsection{Cross-Site-Request-Forgery}
 
 % Gute Erklärung: https://www.youtube.com/watch?v=_xrhWLqX1j0
 % Der Client erzeugt das Token nicht der Server? - Ist sonst anders
 
-Cross-Site-Request-Forgery (CSRF) tritt auf, wenn der Browser des Benutzers veranlasst wird eine unerwünschte Aktion durch eine Anfrage an eine Webanwendung auszuführen, auf der der Benutzer gerade per Cookie authentifiziert ist. Wenn ein Benutzer bei einer Anwendung angemeldet ist, kann ein Angreifer den Browser des Benutzers manipulieren, sodass er eine Anfrage stellt an die das Cookie automatisch angehängt wird und die Anfrage als angemeldeter Benutzer ausgeführt wird. 
+Cross-Site-Request-Forgery (CSRF) tritt auf, wenn der Browser des Benutzers veranlasst wird eine unerwünschte Aktion durch eine Anfrage an eine Webanwendung auszuführen, auf der der Benutzer gerade per Cookie authentifiziert ist. Wenn ein Benutzer bei einer Anwendung angemeldet ist, kann ein Angreifer den Browser des Benutzers manipulieren, sodass er eine Anfrage stellt, an die das Cookie automatisch angehängt wird und die Anfrage als angemeldeter Benutzer ausgeführt wird. 
 
-Um den Angriff durchzuführen, kann der Angreifer einfach einen OAuth-Flow starten und einen Authorization Code vom Authorization Server erhalten. Der Angreifer veranlasst den Client des Opfers, den Authorization Code des Angreifers in einer bösartigen Anfrage zu verwenden, um den Code gegen ein Zugriffstoken einzutauschen. Der Ressourcenbesitzer hätte somit seine Client-Anwendung mit dem Autorisierungskontext des Angreifers verbunden. Dies hat katastrophale Folgen, wenn das OAuth-Protokoll zur Authentifizierung verwendet wird. \cite{OAuth2inAction}
+Um den Angriff durchzuführen, kann der Angreifer einfach einen OAuth-Flow starten und einen Authorization Code vom Authorization Server erhalten. Der Angreifer veranlasst den Client des Opfers, den Authorization Code des Angreifers in einer bösartigen Anfrage zu verwenden, um den Code gegen einen Access Code einzutauschen. Der Ressourcenbesitzer hätte somit seine Client-Anwendung mit dem Autorisierungskontext des Angreifers verbunden. Dies hat katastrophale Folgen, wenn das OAuth-Protokoll zur Authentifizierung verwendet wird. \cite{OAuth2inAction}
 
-Die wirksamste Mitigation ist das Hinzufügen eines unvorhersehbaren Elements oder State-Tokens in jeder Anfrage. Der Zustandsparameter des Authorization Codes kann zur Vermeidung von CSRF verwendet werden. Dieser Parameter wird vom Client bei der Initialisierung der Session erstellt und an den Authorization Server gesendet, welcher diesen zurück sendet, um den Status zwischen jeder Anfrage und Antwort aufrechtzuerhalten. Versucht nun ein Angreifer dem Benutzer eine bösartige URL unterzuschieben, wird überprüft ob die URL dieses State-Token enthält. Ist nicht das State-Token nicht enthalten, verwirft der Client des Benutzers die URL des Angreifers und CSRF ist nicht mehr möglich. \cite{OAuth2inAction}
+Die wirksamste Mitigation ist das Hinzufügen eines unvorhersehbaren Elements oder State-Tokens in jeder Anfrage. Der Zustandsparameter des Authorization Codes kann zur Vermeidung von CSRF verwendet werden. Dieser Parameter wird vom Client bei der Initialisierung der Session erstellt und an den Authorization Server gesendet, welcher diesen zurück sendet, um den Status zwischen jeder Anfrage und Antwort aufrechtzuerhalten. Versucht nun ein Angreifer dem Benutzer eine bösartige URL unterzuschieben, wird überprüft ob die URL dieses State-Token enthält. Ist das State-Token nicht enthalten, verwirft der Client des Benutzers die URL des Angreifers und CSRF ist nicht mehr möglich. \cite{OAuth2inAction}
 
-Das generierte State-Token kann in einem State-Cookie gespeichert werden.
+Dieses State-Token wurde in Sektion \ref{EB_Authentifizierung_eines_Benutzers} bereits gezeigt. Das generierte State-Token kann in einem State-Cookie gespeichert werden.
 
-Keycloak implementiert diesen Teil der Spezifikation vollständig, so dass alle Anmeldungen geschützt sind. Die Keycloak Admin Console ist eine reine JavaScript/HTML5-Anwendung, die REST-Aufrufe an die Keycloak Admin REST-API des Backend macht. Diese Aufrufe erfordern alle eine Bearer-Token-Authentifizierung und werden über JavaScript-Ajax-Aufrufe durchgeführt. CSRF ist hier nicht anwendbar. \cite{keycloakDocs}
+Keycloak implementiert diesen Teil der Spezifikation vollständig, so dass alle Anmeldungen geschützt sind. Die Keycloak Admin Console ist eine reine JavaScript/HTML5-Anwendung, die REST-Anfragen an die Keycloak Admin REST-API des Backend macht. Diese Anfragen erfordern alle eine Bearer-Token-Authentifizierung und werden über JavaScript-Ajax-Anfragen durchgeführt. CSRF ist hier nicht anwendbar. \cite{keycloakDocs}
 
-Der einzige Teil von Keycloak, der für CSRF anfällig ist, sind die Seiten zur Verwaltung der Benutzerkonten. Um dieses Problem zu entschärfen, setzt Keycloak ein Status-Cookie und bettet den Wert dieses Status-Cookies auch in versteckte Formularfelder oder Abfrageparameter in Aktionslinks ein. Dieser Abfrage- oder Formularparameter wird gegen das Status-Cookie geprüft, um zu verifizieren, dass der Aufruf durch den Benutzer erfolgt ist. \cite{keycloakDocs}
+Der einzige Teil von Keycloak, der für CSRF anfällig ist, sind die Seiten zur Verwaltung der Benutzerkonten. Um dieses Problem zu entschärfen, setzt Keycloak ein Status-Cookie und bettet den Wert dieses Status-Cookies auch in versteckte Formularfelder oder Abfrageparameter in Aktionslinks ein. Dieser Abfrage- oder Formularparameter wird gegen das Status-Cookie geprüft, um zu verifizieren, dass die Anfrage durch den Benutzer erfolgt ist. \cite{keycloakDocs}
 
-\subsubsection{Registrierung der redirect\_uri}
+\subsubsection{Registrierung der \texttt{redirect\_uri}}
 
-Es ist äußerst wichtig, bei der Auswahl der registrierten redirect\_uri besonders darauf zu achten, dass die redirect\_uri so spezifisch wie möglich ist. Wenn die redirect\_uri nicht spezifisch ist, werden Token-Hijacking-Angriffe möglich. Wenn es möglich ist zu allgemeine redirect\_uri zu registrieren, ist es für einem Angreifer möglich, sich als ein Client auszugeben, der einen breiteren Zugriffsbereich hat \cite{keycloakDocs}. Dies könnte zum Beispiel passieren, wenn zwei Clients die gleiche Domain besitzen \cite{keycloakDocs}.
+Es ist äußerst wichtig, bei der Auswahl der registrierten \texttt{redirect\_uri} besonders darauf zu achten, dass die \texttt{redirect\_uri} so spezifisch wie möglich ist. Wenn die \texttt{redirect\_uri} nicht spezifisch ist, werden Token-Hijacking-Angriffe möglich. Wenn es möglich ist zu allgemeine \texttt{redirect\_uri} zu registrieren, ist es für einem Angreifer möglich, sich als ein Client auszugeben, welcher einen breiteren Zugriffsbereich hat \cite{keycloakDocs}. Dies könnte zum Beispiel passieren, wenn zwei Clients die gleiche Domain besitzen \cite{keycloakDocs}.
 
-Der Hauptgrund dafür ist, dass Autorisierungsserver manchmal unterschiedliche redirect\_uri Validierungsrichtlinien verwenden. Die einzige zuverlässig sichere Validierungsmethode, die der Autorisierungsserver anwenden sollte, ist die exakte Übereinstimmung \cite{OAuth2inAction}. Alle anderen möglichen Lösungen, die auf Regular Expressions basieren oder Unterverzeichnisse des registrierten redirect\_uri zulassen, sind suboptimal und gefährlich \cite{OAuth2inAction}.
+Der Hauptgrund dafür ist, dass Authorization Server unterschiedliche \texttt{redirect\_uri} Validierungsrichtlinien verwenden können. Die einzige zuverlässig sichere Validierungsmethode, die der Authorization Server anwenden sollte, ist die exakte Übereinstimmung \cite{OAuth2inAction}. Alle anderen möglichen Lösungen, die auf Regular Expressions basieren oder Unterverzeichnisse des registrierten \texttt{redirect\_uri} zulassen, sind suboptimal und gefährlich \cite{OAuth2inAction}.
 
 % Eventuell die allowing subdirectory method for matching the redirect_uri aufführen
-
-%TODO OAuth in Action Seite 128 - 134
+%TODO eventuell OAuth in Action Seite 128 - 134
 
 \subsubsection{Diebstahl von Tokens}
 
-Das Ziel eines Angreifers ist der Diebstahl eines Zugriffstokens. Mit dem Zugriffstoken kann der Angreifer alle Arten von Operationen durchführen, für die er nicht autorisiert ist. 
+Das Hauptziel eines Angreifers ist der Diebstahl eines Access Tokens. Mit dem Access Token kann der Angreifer alle Arten von Operationen durchführen, für die er nicht autorisiert ist. 
 
-Zugriffstoken werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens im Header (\texttt{Authorization: Bearer <Access Token>}) gesendet. Jedoch definiert RFC 6750 weitere Methoden wie Bearer-Token übergeben werden können \cite{RFC6750}. Einer davon ist der URI-Abfrageparameter, der es ermöglicht Access Tokens im URI über dem Abfrageparameter access\_token zu senden. Diese Methode kann zum Stehlen von Access Tokens verwendet werden. 
+Access Token werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens im Header (\texttt{Authorization: Bearer <Access Token>}) gesendet, jedoch definiert RFC 6750 weitere Methoden \cite{RFC6750}. Einer davon ist der URI-Abfrageparameter, der es ermöglicht Access Tokens im URI über dem Abfrageparameter \texttt{access\_token} zu senden. Diese Methode kann zum Stehlen von Access Tokens verwendet werden. 
 
-% TODO siehe OAuth in Action Seite 128 - 134
+% TODO eventuell siehe OAuth in Action Seite 128 - 134
 
-Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Zugriffstoken offengelegt, da der Referrer die gesamte URL enthält  \cite{OAuth2inAction}. Die Verwendung des Standard-Autorisierungs-Headers vermeidet diese Art von Problemen, da das Zugriffstoken nicht in der URL erscheint \cite{OAuth2inAction}.
+Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Access Token offengelegt, da der Referrer die gesamte URL enthält  \cite{OAuth2inAction}. Die Verwendung des Authorization Headers vermeidet diese Art von Problemen, da das Access Token nicht in der URL erscheint \cite{OAuth2inAction}.
 
-\subsection{Client-Backend Schwachstellen}
+% \subsection{Client-Backend Schwachstellen}
 % Eventuell Name zu Geschütze Ressourcen Schwachstellen und die andere section zu client allgemein - am besten ganz weg
-
-In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
-
-Die geschützten Ressourcen des Client-Backends sind in mehrfacher Hinsicht verwundbar. Die erste entsteht durch Endpunktschwachstellen und die zweite durch Token Replays.
+% In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
+% Die geschützten Ressourcen des Client-Backends sind in mehrfacher Hinsicht verwundbar. Die erste entsteht durch Endpunktschwachstellen und die zweite durch Token Replays.
 
 \subsubsection{XSS bei Endpunkten}
 
-Wenn eine REST-API eingesetzt wird, bei der die Antwort auf das Ergebnis von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt ist anfällig für Cross-Site-Scripting (XSS)-Angriffe, wenn der Ressourcenserver access\_token als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
+Wenn eine REST-API eingesetzt wird, bei der die Antwort von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt ist anfällig für Cross-Site-Scripting (XSS)-Angriffe, wenn der Ressourcenserver \texttt{access\_token} als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
 
-Ist der Endpunkt für XSS anfällig ist, kann ein Angreifer eine bösartige URI fälschen, die auf die geschützte Ressource verweist: Wenn das Opfer darauf klickt, ist der Angriff abgeschlossen, wodurch die Ausführung des JavaScript erzwungen wird \cite{OAuth2inAction}. Der bösartige XSS-Code kann beispielsweise Daten extrahieren, um dem Angreifer die Möglichkeit zu geben, sich als authentifizierter Benutzer auszugeben. 
+Ist der Endpunkt für XSS anfällig ist, kann ein Angreifer eine bösartige URI fälschen, die auf die geschützte Ressource verweist. Sollte das Opfer diese Aufrufen, ist der Angriff abgeschlossen, wodurch die Ausführung des JavaScripts erzwungen wird \cite{OAuth2inAction}. Der bösartige XSS-Code kann beispielsweise Daten extrahieren, um dem Angreifer die Möglichkeit zu geben, sich als authentifizierter Benutzer auszugeben. 
 
-Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. Des Weiteren kann der richtige Content-Type in einer HTTP-Antwort zusätzlichen Schutz bieten. Wird beispielsweise der Content-Type \texttt{application/json} verwendet, wird die Antwort in JSON zurückgegeben und somit der XSS-Code nicht vom Browser ausgeführt. Ein weiterer nützlicher Response-Header, der von allen Browsern unterstützt wird, ist X-Content-Type-Options: nosniff. Dieser Sicherheitsheader verhindert, dass die Browser MIME Sniffing für eine Antwort verwenden, die vom angegebenen Content-Type abweicht. Ebenso kann der Sicherheitsheader ist X-XSS-Protection gesetzt werden, der automatisch den XSS-Filter aktiviert, welcher in den meisten neueren Webbrowsern eingebaut ist. Ein weiterer nützlicher Response-Header gegen XSS ist Content-Security-Policy (CSP), der in modernen Browsern deklariert, welche dynamischen Ressourcen über einen HTTP-Header geladen werden dürfen.
+Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. Des Weiteren kann der richtige \textit{Content-Type} in einer HTTP-Antwort zusätzlichen Schutz bieten. Wird beispielsweise der Content-Type \texttt{application/json} verwendet, wird die Antwort in JSON zurückgegeben und somit der XSS-Code nicht vom Browser ausgeführt. Ein weiterer nützlicher Response-Header, der von allen Browsern unterstützt wird, ist \texttt{X-Content-Type-Options: nosniff}. Dieser Sicherheitsheader verhindert, dass die Browser \textit{MIME Sniffing} für eine Antwort verwenden, die vom angegebenen Content-Type abweicht. Ebenso kann der Sicherheitsheader ist \texttt{X-XSS-Protection} gesetzt werden, der automatisch den XSS-Filter aktiviert, welcher in den meisten neueren Webbrowsern eingebaut ist. Ein weiterer nützlicher Response-Header gegen XSS ist \texttt{Content-Security-Policy (CSP)}, der in modernen Browsern deklariert, welche dynamischen Ressourcen über einen HTTP-Header geladen werden dürfen.
 
-Die letzte Gegenmaßnahme, die ein Ressourcen-Server implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token enthält, welches über den Authorization: Bearer Header gesendet werden soll \cite{OAuth2inAction}.
+Die letzte Gegenmaßnahme, die ein Client implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token  enthält\cite{OAuth2inAction}. 
 
-% Eventuell CORS noch hinzufügen - Seite 148 - 151
+Daher muss das Access Token über den Authorization: Bearer Header gesendet werden. In Keycloak wird die Authentifizierung über Authorization Header erzwungen \cite{keycloakDocs}.
+
+% TODO Eventuell CORS noch hinzufügen - Seite 148 - 151
 
 \subsubsection{Token Replays}
 
