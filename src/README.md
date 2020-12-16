@@ -31,17 +31,17 @@ Otherwise it is possible that the keycloak container is in a bad state, i.e. it 
 
 ## Developer Notes
 
-### Build react-example and react-example2 Docker Images locally
+### Build frontend1 and frontend2 Docker Images locally
 
 (Note: If you use our VM, the Images are build locally alraedy)
 
-As mentioned in the text, the Docker Images were built, uploaded to Dockerhub, and are automatically downloaded when 'docker-compose up' is executed. If you want to build the Docker Images for react-example and react-example2 locally, you need to execute the following:
+As mentioned in the text, the Docker Images were built, uploaded to Dockerhub, and are automatically downloaded when 'docker-compose up' is executed. If you want to build the Docker Images for frontend 1 and frontend2 locally, you need to execute the following:
 ~~~console
 Install npm
-cd react\_app
+cd frontend1
 npm install
 npm run build
-cd ../react\_app2
+cd frontend2
 npm install
 npm run build
 ~~~
