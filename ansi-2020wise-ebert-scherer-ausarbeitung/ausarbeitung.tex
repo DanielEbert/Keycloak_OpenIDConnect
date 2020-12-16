@@ -418,34 +418,25 @@ In der Sektion \ref{EB_Authentifizierung_eines_Benutzers} wird erklärt, dass de
 
 % Kann abweichen je nachdem ob die Client vertraulich sind oder nicht
 % Beispiel siehe OAuth in Action Seite 155
+% Clients müssen vertraulich sein, Clients in unserem Beispiel sind vertraulich
 
 Wichtig für diese Schwachstelle ist es, dass vertrauliche Clients verwendet werden. Da bei ihnen der Authorization Code den Server verlässt und zum Benutzer gelangt, so dass er in der Browser-Historie verbleibt.
 
-Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit seinen eigenen Anmeldedaten anmelden, manipuliert jedoch den Redirect zum Client und injiziert den Authorization Code aus der Session des vorherigen Benutzers, der im Browser-Verlauf gespeichert ist. Das Resultat ist, dass der Angreifer dann Zugriff auf die Ressource des ursprünglichen Benutzers hat.
+Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit seinen eigenen Anmeldedaten anmelden, manipuliert jedoch den Redirect zum Client und injiziert den Authorization Code aus der Session des Benutzers, der im Browser-Verlauf gespeichert ist. Das Resultat ist, dass der Angreifer dann Zugriff auf die Ressource des ursprünglichen Benutzers hat.
 
 Als Mitigation gegen diese Schwachstelle empfiehlt die OAuth 2.0 Spezifikation, dass Authorization Codes nur einmal vom Client verwendet werden dürfen \cite{OAuthAuthorizationResponse}. Wenn ein Authorization Code mehr als einmal verwendet wird, muss der Authorization Server die Anfrage ablehnen und sollte alle Access Tokens zurücknehmen, die zuvor auf der Grundlage dieses Authorization Codes ausgegeben wurden \cite{OAuthAuthorizationResponse}.
 
+Diese Gegenmaßnahme wird durch Keycloak unterstützt. Ein Authorization Code kann nur einmal verwendet werden und als zusätzliche Maßnahme ist die Lebensdauer für Authorization Codes sehr kurz - einige Sekunden, sodass der Benutzer seinen Authorization Code gegen ein Access Token eintauschen kann \cite[Sec. 19]{keycloakDocs}.
+
 \subsubsection{Redirection URI Manipulation}
 
-Bei der Verwendung des Authorization Code Flows \ref{EB_Authentifizierung_eines_Benutzers} kann der Client über den Parameter "redirect\_uri" einen Redirect-URI angeben. Wenn ein Angreifer den Wert des Redirect-URIs manipulieren kann, kann er den Authorization Server veranlassen, den Benutzer einer Ressource zu einem URI unter der Kontrolle des Angreifers mit dem Authorization Code umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
+Bei der Verwendung des Authorization Code Flows \ref{EB_Authentifizierung_eines_Benutzers} kann der Client über den Parameter \texttt{redirect\_uri} einen Redirect-URI angeben. Wenn ein Angreifer den Wert des Redirect-URIs manipulieren kann, kann er den Authorization Server veranlassen, den Benutzer einer Ressource zu einem URI unter der Kontrolle des Angreifers mit dem Authorization Code des Angreifers umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
 
 Ein Angreifer kann einen Account bei einem Client erstellen und den Authorization Flow einleiten. Wenn der Benutzer des Angreifers an den Authorization Server gesendet wird, um Zugriff zu gewähren, greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers. Der Angreifer trickst dann den Benutzer einer Ressource aus, dem manipulierten Link zu folgen, um den Zugriff auf den Client zu autorisieren. \cite{OAuthAuthorizationSecurityConsiderations}
 
-Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anfrage gestellt, welche dieser autorisiert. Das Opfer wird dann an einen Ressourcen-Endpunkt unter der Kontrolle des Angreifers mit dem Authorization Code umgeleitet. Der Angreifer schließt den Autorisierung Flow ab, indem er den Authorization Code an den Client, unter Verwendung der ursprünglichen Redirect-URI, sendet. Der Client tauscht den Authorization Code mit einem Access Token und verknüpft es mit dem Client-Account des Angreifers, welcher nun Zugang zu den geschützten Ressourcen erhalten kann. \cite{OAuthAuthorizationSecurityConsiderations}
+Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anfrage gestellt, welche dieser autorisiert. Das Opfer wird dann an einen Ressourcen-Endpunkt unter der Kontrolle des Angreifers mit dem Authorization Code umgeleitet. Der Angreifer schließt den Authorization Flow ab, indem er den Authorization Code an den Client, unter Verwendung der ursprünglichen Redirect-URI, sendet. Der Client tauscht den Authorization Code mit einem Access Token und verknüpft es mit dem Client-Account des Angreifers, welcher nun Zugang zu den geschützten Ressourcen erhalten kann. \cite{OAuthAuthorizationSecurityConsiderations}
 
-Um dieser Schwachstelle entgegenzuwirken, muss der Authorization Server sicherstellen, dass der Redirect-URI, der zum Erhalt des Authorization Codes verwendet wird, mit dem Redirect-URI identisch ist, welcher beim Austausch des Authorization Codes gegen ein Access Token bereitgestellt wird. Der Authorization Server muss von Clients verlangen, ihre Redirect-URIs zu registrieren.  Wenn in der Anfrage ein Redirect-URI angegeben wird, muss der Authorization Server diesen gegen den registrierten Wert der Redirect-URI validieren. \cite{OAuthAuthorizationSecurityConsiderations}
-
-%\subsubsection{Client Impersonation}
-% https://www.microsoft.com/security/blog/2019/09/26/how-to-prevent-phishing-attacks-dmarc-office-365/
-% Difference between Spoofing and Impersonation: Spoofing is when the sender is attempting to send mail from, or on behalf of, the exact target domain. Impersonation is when the sender is attempting to send mail that is a lookalike, or visually similar, to a targeted domain, targeted user, or targeted brand.
-
-% Wir benutzen Authorization Code Grant Flow - wo/wie wird der Client beim Authorizazion Server angemeldet - client id, secret
-% https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/
-% Es werden keine Client Credentials verwendet, da Authorization Code Grant Flow
-% client id, secret im Authorization Code Grant Flow: https://auth0.com/docs/flows/authorization-code-flow#how-it-works
-% wenn wir client_secret nicht mir authorization code binden, ist das ein mega threat, siehe OAuth in Action "9.4 Client Impersonation"
-% verstehe nicht wie das client secret gespeichert werden soll
-% sicher nicht so: https://wordpress.stackexchange.com/questions/298532/where-to-store-oauth-2-0-client-id-and-secret
+Um dieser Schwachstelle entgegenzuwirken, stellt der Authorization Server sicher, dass der Redirect-URI, der zum Erhalt des Authorization Codes verwendet wird, mit dem Redirect-URI identisch ist, welcher beim Austausch des Authorization Codes gegen ein Access Token bereitgestellt wird \cite{OAuthAuthorizationSecurityConsiderations}\cite[Sec. 19]{keycloakDocs}. Der Authorization Server muss von Clients verlangen, ihre Redirect-URIs zu registrieren \cite{OAuthAuthorizationSecurityConsiderations}. Wenn in der Anfrage ein Redirect-URI angegeben wird, muss der Authorization Server diesen gegen den registrierten Wert der Redirect-URI validieren \cite[Sec. 19]{keycloakDocs}.
 
 \subsubsection{Open Redirector}
 
@@ -455,41 +446,39 @@ Offene Redirects können bei Phishing-Angriffen verwendet werden oder von einem 
 
 Wenn der Authorization Server dem Client erlaubt, nur einen Teil der Redirect-URI zu registrieren, kann ein Angreifer darüber hinaus einen vom Client betriebenen offenen Redirector verwenden, um eine Redirect-URI zu konstruieren, die die Authorization Server-Validierung umgeht und Authorization Codes oder Access Tokens auf einen Endpunkt unter der Kontrolle des Angreifers sendet. \cite{OAuthAuthorizationSecurityConsiderations}
 
-Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster registrieren müssen. Jedes Mal, wenn ein Client Keycloak um eine Umleitung anfragt, überprüft Keycloak den Redirect-URI anhand der Liste der gültigen registrierten URI-Muster. Um offene Redirect-Angriffe abzuschwächen, müssen Clients möglichst spezifische URI-Muster verwenden. \cite{keycloakDocs}
+Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster registrieren müssen. Jedes Mal, wenn ein Client Keycloak um eine Umleitung anfragt, überprüft Keycloak den Redirect-URI anhand der Liste der gültigen registrierten URI-Muster. Um offene Redirect-Angriffe abzuschwächen, müssen Clients möglichst spezifische URI-Muster verwenden. \cite[Sec. 19]{keycloakDocs}
 
 \subsection{Token Schwachstellen}
 
-Die Schwachstellen der vorausgegangenen wurden Schwachstellen aufgeführt, die es meist zum Ziel hatten ein Access Token oder einen Authorization Code zu erhalten. In dieser Sektion soll gezeigt werden welche Schwachstellen der Umgang mit den Tokens und Codes hat und wie diese Risiken minimiert werden können. 
+Die Schwachstellen der vorausgegangenen Sektionen hatten es meist zum Ziel ein Access Token oder einen Authorization Code zu erhalten. In dieser Sektion soll gezeigt werden welche Schwachstellen der Umgang mit den Tokens und Codes hat und wie diese Risiken minimiert werden können. 
 
 % \subsubsection{Bearer Token}
 % https://tools.ietf.org/html/rfc6750#section-5
 % https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
 
-Die OAuth 2.0 und OIDC-Spezifikationen verwenden Bearer-Token, sodass jeder, der im Besitz des Tokens dieses verwenden kann, unabhängig davon wer er ist. Diese Bearer verwenden alle Klartextzeichen und benötigen daher TLS als Grundlage für die Sicherheit. \cite{OAuthAuthorizationSecurityConsiderations}
+Die OAuth 2.0 und OIDC-Spezifikationen verwenden Bearer-Token, sodass jeder, der im Besitz des Tokens ist, dieses verwenden kann, unabhängig davon wer er ist. Diese Bearer verwenden alle Klartextzeichen und benötigen daher TLS als Grundlage für die Sicherheit. \cite{OAuthAuthorizationSecurityConsiderations}
 
-In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Tokens oder Authorization Tokens aus Clients gestohlen werden können. Bearer-Token für Clients sind transparent, damit keine kryptographischen Operationen durchgeführt werden müssen. Gelangt ein Angreifer an ein Token, ist er in der Lage, auf alle Ressourcen zuzugreifen, die in den Anwendungsbereich dieses speziellen Tokens fallen.
-
-Wird ein Bearer-Token verwendet, müssen keine zusätzliche Sicherheitselemente im Besitz sein, wie z.B. kryptographisches Schlüsselmaterial. Abgesehen vom Token-Hijacking, welches in den vorherigen Sektionen bereits behandelt wurde, gibt es die folgenden Bedrohungen. Diese sind in vielen anderen tokenbasierten Protokollen ebenfalls zu finden:
+In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Tokens oder Authorization Tokens aus Clients gestohlen werden können. Bearer-Token für Clients sind transparent, damit keine kryptographischen Operationen durchgeführt werden müssen. Gelangt ein Angreifer an ein Token, ist er in der Lage, auf alle Ressourcen zuzugreifen, die in den Anwendungsbereich dieses speziellen Tokens fallen. Abgesehen vom Hijacking, welches in den vorherigen Sektionen bereits behandelt wurde, gibt es die folgenden Bedrohungen. Diese sind in vielen anderen tokenbasierten Protokollen ebenfalls zu finden:
 
 \begin{itemize}
-	\item Token Modification: Ein Angreifer kann ein gefälschtes Token herstellen oder ein vorhandenes gültiges Token modifizieren, wodurch der Client-Ressourcenserver veranlasst wird, dem Client unangemessenen Zugriff zu gewähren. Beispielsweise kann ein Angreifer ein Token herstellen, um Zugang zu Informationen zu erhalten, die er zuvor nicht einsehen konnte. Alternativ könnte die Gültigkeit des Tokens selbst verlängern. \cite{RFC6750}
+	\item \textit{Token Modification}: Ein Angreifer kann ein gefälschtes Token herstellen oder ein vorhandenes gültiges Token modifizieren, wodurch der Client-Ressourcenserver veranlasst wird, dem Client unangemessenen Zugriff zu gewähren. Beispielsweise kann ein Angreifer ein Token herstellen, um Zugang zu Informationen zu erhalten, die er zuvor nicht einsehen konnte. Alternativ könnte die Gültigkeit des Tokens selbst verlängert werden. \cite{RFC6750}
 	
-	\item Token Replay: Es wird ein altes, abgelaufenes Token wiederverwendet, um an valide Daten vom Ressourcenserver zu gelangen. Der Ressourcenserver sollte in diesem Fall einen Fehler zurückgeben. \cite{RFC6750}
+	\item \textit{Token Replay}: Es wird ein altes, abgelaufenes Token wiederverwendet, um an valide Daten vom Ressourcenserver zu gelangen. Der Ressourcenserver sollte in diesem Fall einen Fehler zurückgeben. \cite{RFC6750}
 	
-	\item Token Redirect: Ein Angreifer verwendet ein Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten, der fälschlicherweise glaubt, dass das Token für ihn gültig ist. \cite{RFC6750}
+	\item \textit{Token Redirect}: Ein Angreifer verwendet ein Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten Hierbei glaubt das Opfer fälschlicherweise, dass das Token für es gültig ist. \cite{RFC6750}
 	
-	\item Token Disclosure: Ein Token könnte sensible Informationen über das System enthalten und der Angreifer könnte an Informationen gelangen, für die er nicht berechtigt ist. \cite{RFC6750}
+	\item \textit{Token Disclosure}: Ein Token könnte sensible Informationen über das System enthalten und der Angreifer könnte an Informationen gelangen, für die er nicht berechtigt ist. \cite{RFC6750}
 \end{itemize}
 
-Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken \cite{OAuthAuthorizationSecurityConsiderations}. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann \cite{OAuthAuthorizationSecurityConsiderations}. Diese Gegenmaßnahme wird insofern durch Keycloak unterstützt, dass in Umgebungen zwischen den einzelnen Services, unter denen das Vertrauen gering ist, der Empfängerkreis der Tokens limitiert werden kann \cite{keycloakDocs}. 
+Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken \cite{OAuthAuthorizationSecurityConsiderations}. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann \cite{OAuthAuthorizationSecurityConsiderations}. Diese Gegenmaßnahme wird insofern durch Keycloak unterstützt, dass in Umgebungen zwischen den einzelnen Services, unter denen das Vertrauen gering ist, der Empfängerkreis der Tokens limitiert werden kann \cite[Sec. 19]{keycloakDocs}. Dies kann sowohl für die Scopes, als auch für die Audience konfiguriert werden \cite[Sec. 19]{keycloakDocs}.
 
-Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist es das Token im Transient Memory zu belassen. Browser löschen dann das Token wenn der Browser vom Benutzer geschlossen wird.
+Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist das Token im Transient Memory zu belassen. Browser löschen dann das Token wenn der Browser vom Benutzer geschlossen wird.
 
-Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tokens abgemildert werden, durch Verwendung einer digitalen Signatur oder eines Message Authentication Codes (MAC). Der OAuth 2.0 Standard spezifiziert weder die Kodierung noch den Inhalt des Tokens, diese müssen selbst bestimmt werden. Der Schutz der Token-Integrität muss ausreichend sein, um eine Veränderung des Tokens zu verhindern. \cite{RFC6750}
+Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tokens abgemildert werden, durch Verwendung einer digitalen Signatur oder eines Message Authentication Codes (MAC) \cite{RFC6750}. Der OAuth 2.0 Standard spezifiziert weder die Kodierung noch den Inhalt des Tokens, diese müssen selbst bestimmt werden. Der Schutz der Token-Integrität muss ausreichend sein, um eine Veränderung des Tokens zu verhindern  \cite{RFC6750}. In Keycloak werden JWTs verwendet, welche signiert werden \cite[Sec. 19]{keycloakDocs}. 
 
-Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server die Identität der vorgesehenen Empfänger in das Token aufnimmt \cite{RFC6750}.
+Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server die Identität der vorgesehenen Empfänger in das Token aufnimmt \cite{RFC6750}\cite[Sec. 19]{keycloakDocs}. In Keycloak wird durch den \texttt{sub}-Claim die Benutzer-ID mitaufgenommen.
 
-Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger. \cite{RFC6750}
+Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden \cite{RFC6750}. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger \cite{RFC6750}. Da in Keycloak JWTs eingesetzt werden, haben die Tokens automatisch eine Ablaufzeit, welche durch den Keycloak Admin gesetzt werden kann. Des Weiteren können alle Tokens bei einer Kompromittierung widerrufen werden.
 
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung} \label{EB_Beispielwebanwendung}
