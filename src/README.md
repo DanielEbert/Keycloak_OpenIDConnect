@@ -17,6 +17,16 @@ docker-compose up
 Wait ~1 minute for everything to start and open localhost:3000 in your favorite browser. If you login on localhost:3000, then open localhost:3001, you should get logged in automatically (SSO WOOOOOO)
 ```
 
+## Before shutting down the system or suspending the VM
+
+Run
+
+```console
+docker-compose down
+```
+
+Otherwise it is possible that the keycloak container is in a bad state, i.e. it won't accept any incoming requests anymore the next time you start the containers with docker-compose up. If you forgot to run docker-compose down, running 'docker-compose down' followed by 'docker-compose up' should reset the containers and make everything work again.
+
 ## Developer Notes
 
 ### Build react-example and react-example2 Docker Images locally
