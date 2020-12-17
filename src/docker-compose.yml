@@ -3,7 +3,7 @@ version: "3"
 
 services:
   postgres:
-    image: postgres@sha256:5344d1b6f33169b56f450c0586ffc3497f0479e1fc499bed76857912d2fe5f98
+    image: danielebert00/postgrestestedversion:1
     volumes:
       - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
     environment:
@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   keycloak:
-    image: quay.io/keycloak/keycloak@sha256:f851655ae5c04e29d9203bfbf9abc0ab390184556c6ee4f6e62c6547b1c93d31
+    image: danielebert00/keycloaktestedversion:1
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres

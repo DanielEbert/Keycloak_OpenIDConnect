@@ -26,7 +26,7 @@ Run
 cd ..../sichere_webanwendungen/src/
 docker-compose pull
 ```
-'docker-compose pull' will pull the pre-built docker images from dockerhub. Optionally, you can skip this command, follow the steps below in section 'Build frontend1 and frontend2 Docker Images locally', and finally run 'docker-compose up', which will build all images except the keycloak and postgresql container images locally.
+'docker-compose pull' will pull the pre-built docker images from dockerhub. Optionally, you can skip this command, follow the steps below in section 'Build frontend1 and frontend2 Docker Images locally', and finally run 'docker-compose up', which will build all images except the keyloak and postgresql containers locally.
 
 ## Run
 
@@ -56,7 +56,7 @@ Otherwise it is possible that the keycloak container is in a bad state, i.e. it 
 
 As mentioned in the text, the Docker Images were built, uploaded to Dockerhub, and are automatically downloaded when 'docker-compose up' is executed. If you want to build the Docker Images for frontend 1 and frontend2 locally, you need to execute the following:
 ~~~console
-Install npm
+Install npm (e.g. with sudo apt install npm)
 cd frontend1
 npm install
 npm run build
@@ -65,13 +65,17 @@ npm install
 npm run build
 ~~~
 
-The dependencies, which are installed with 'npm install' have a size of 2 GB. For this reason, and because building locally is optional, the dependencies are not included in the Git Repo by default and have to be built manually.
+The dependencies, which are installed with 'npm install', have a size of 2 GB. For this reason, and because building locally is optional, the dependencies are not included in the Git Repo by default and have to be built manually.
 
 Then the containers can be created with:
 ```console
 docker-compose up --build
 ```
 or, if you have not pulled them from dockerhub already, they are build locally with 'docker-compose up'.
+
+### Original keycloak and postgres container images
+
+The keycloak and postgres container images are from [jboss/keycloak](https://hub.docker.com/r/jboss/keycloak/tags?page=1&ordering=last_updated) and [postgres](https://hub.docker.com/_/postgres), respectively. We are using and have uploaded the versions of these containers used by us during testing to our [dockerhub](https://hub.docker.com/u/danielebert00). The reason for this is that future keycloak and postgres versions might change e.g. the configuration and that could mean that our preconfigured keycloak in /postgres\_data won't work anymore. Furthermore, these vendors might delete older versions of their images and by reuploading them we make sure we still have a copy of them.
 
 ### Solved problem 1
 
