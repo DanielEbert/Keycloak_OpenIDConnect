@@ -2,10 +2,10 @@
 
 ## Credentials
 
-VMWare VM:
+VMWare VM:  
 Username: user, Password: user  
 
-Admin Console:
+Admin Console:  
 Username: admin, Password: iuq123  
 
 Keycloak example registered user:  
