@@ -6,10 +6,6 @@
 \chapter{Single Sign On bei Webanwendungen}
 \chapterauthor{Daniel Ebert und Sebastian Scherer}
 
-% Abstract?
-
-%Cite Syntax - A: wenn du einen kompletten Absatz zitierst, dann nach dem Punkt. Wenn du einen Satz zitiertst, vor dem Punkt. Mein Betreuer von Bosch hat gemeint, es ist nicht gut einen kompletten Absatz zu zitieren. Der Leser denkt sonst man hat einen kompletten Absatz abgeschrieben. Es ist kein Problem, wenn mehrere Sätze hinereinander den gleichen \cite haben. 
-
 \section{Einleitung} \label{EB_Einleitung}
 
 Durch das \textit{Single Sign-on (SSO)} muss sich ein Benutzer nur einmal unter Zuhilfenahme eines einzigen Authentifizierungsverfahrens identifizieren \cite{EB52}. Danach übernimmt der SSO-Mechanismus die Aufgabe, den Anwender zu authentifizieren und die erkannte Identität zu bestätigen \cite{EB52}. Dies hat den Vorteil, dass sich der Benutzer nur einmal identifizieren muss und seine Identität sicher an weitere Systeme weitergegeben werden kann, ohne dass sich dieser dort erneut anmelden muss. Dadurch hat der Benutzer Zugriff auf mehrere Systeme, wie z.B. Frontend Anwendungen oder Backend Services, bei dem die Ressourcen für die authentifizierten und autorisierten Benutzer beschränkt ist.
@@ -18,7 +14,7 @@ Durch das \textit{Single Sign-on (SSO)} muss sich ein Benutzer nur einmal unter 
 
 % Gute Graphiken für den Vortrag: https://www.renovodata.com/blog/2019/01/17/single-sign-on
 
-SSO ist vor allem in Webanwendungen hilfreich, da der Benutzer dort oft mit vielen verschiedenen Systemen interagieren muss \cite{EB34}. Ohne SSO müssten sich Benutzer bei jedem System individuell und erneut mit einem separaten Account einloggen \cite{EB34}. Somit müsste sich der Benutzer mehrere Passwörter merken und bei jeden System einen manuellen Anmeldemechanismus durchführen. Dies senkt die psychologische Akzeptanz der Benutzer für die Sicherheit, da heutige Anmeldeprozesse Multi-Faktor Authentifizierung verwenden, welche Zeit und Aufwand benötigen.
+SSO ist vor allem in Webanwendungen hilfreich, da der Benutzer dort oft mit vielen verschiedenen Systemen interagieren muss \cite{EB34}. Ohne SSO müssten sich Benutzer bei jedem System individuell und erneut mit einem separaten Account einloggen \cite{EB34}. Somit müsste sich der Benutzer mehrere Passwörter merken und bei jedem System einen manuellen Anmeldemechanismus durchführen. Dies senkt die psychologische Akzeptanz der Benutzer für die Sicherheit, da heutige Anmeldeprozesse Multi-Faktor Authentifizierung verwenden, welche Zeit und Aufwand benötigen.
 
 In der Praxis wird daher in vielen Fällen dasselbe Passwort für mehrere Systeme verwendet. Werden dennoch unterschiedliche Passwörter verwendet, dann sind diese oft einfach gehalten, damit man sich alle Passwörter merken kann. Aus sicherheitstechnischer Sicht ist das nicht gut. Einfache Passwörter könnten z.B. durch Brute-Force oder durch Dictionary Attacks gebrochen werden. Immer dasselbe Passwort zu verwenden ist ebenfalls kritisch. Hat eines der Systeme einen Data Leak, dann könnten Angreifer Zugriff auf alle Systeme mit demselben Passwort erhalten. Dafür könnte zwar auch ein Password Manager verwendet werden \cite{EB34}. Bei diesen hat man allerdings immer noch das Problem der \textit{Psychological Acceptability} der Benutzer, da sich diese bei jedem System erneut registrieren und einloggen müssen. Hier schafft SSO Abhilfe.
 
@@ -30,15 +26,15 @@ Neben den im letzten Absatz erläuterten Vorteil der \textit{Psychological Accep
 
 \subsection{Nachteile von SSO}
 
-SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits existierende Systeme einzubauen \cite{EB34}. Um dem entgegenzuwirken bieten SSO Lösungen wie \textit{Keycloak} fertige Adapter für verschiedene Programmiersprachen und Systeme an, wie z.B. für ReactJS \cite[OpenID Connect]{EB26} \cite{EB36}. Außerdem könnte man durch das SSO System einen \textit{Single Point of Failure} haben. Jedoch kann dem entgegengewirkt werden, beispielsweise bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden \cite{EB33}. Diese Instanzen können auf mehrere Server verteilt werden, um die Redundanz zu erhöhen. % TODO: logged in desktop?
+SSO hat auch Nachteile. Zum Beispiel kann es schwierig sein, SSO in bereits existierende Systeme einzubauen \cite{EB34}. Um dem entgegenzuwirken bieten SSO Lösungen wie \textit{Keycloak} fertige Adapter für verschiedene Programmiersprachen und Systeme an, wie z.B. für ReactJS \cite[OpenID Connect]{EB26} \cite{EB36}. Außerdem könnte man durch das SSO System einen \textit{Single Point of Failure} haben. Jedoch kann dem entgegengewirkt werden, beispielsweise bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden \cite{EB33}. Diese Instanzen können auf mehrere Server verteilt werden, um die Redundanz zu erhöhen.
 
 \subsection{Abgrenzung} \label{EB_Abgrenzung}
 
 Es gibt verschiedene Arten von SSO \cite{EB38}. Diese Arbeit konzentriert sich auf SSO für Webanwendungen. Dabei interagiert der Benutzer mit webbasierten Anwendungen und Services.
 
-Bei SSO können verschiedene Protokolle wie \textit{OAuth 2.0}, \textit{OpenID Connect(OIDC)} oder \textit{SAML 2.0} eingesetzt werden. Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt. Mit anderen Worten ist Authentifizierung der Nachweis einer Behauptung, wie z.B. der Identität eines Benutzers im System. In der Regel beweist er das, indem er einer Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt. \cite{OAuth2inAction} \label{OAuthForAuthentication}
+Bei SSO können verschiedene Protokolle wie \textit{OAuth 2.0}, \textit{OpenID Connect(OIDC)} oder \textit{SAML 2.0} eingesetzt werden. Die OAuth 2.0-Spezifikation definiert lediglich ein Delegationsprotokoll, das für die Übermittlung von Autorisierungsentscheidungen über ein Netzwerk von webfähigen Anwendungen und APIs nützlich ist, jedoch kein Authentifizierungsprotokoll. Durch Authentifizierung soll festgestellt werden, dass der Benutzer derjenige ist, für den er sich ausgibt. Mit anderen Worten ist Authentifizierung der Nachweis einer Behauptung, wie z.B. der Identität eines Benutzers im System. In der Regel beweist er das, indem er einer Anwendung eine Reihe von Anmeldedaten, wie Benutzername und Passwort, zur Verfügung stellt. \cite{OAuth2inAction} \label{SSEB_OAuthForAuthentication}
 
-OAuth 2.0 allein ist kein Mechanismus, um festzustellen, wer ein Benutzer ist oder wie er sich authentifiziert hat. Es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Access Tokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Access Token wird der API vorgelegt, die weiß, wie sie überprüfen kann, ob das Access Token valide ist. \cite{AuthorizationvsAuthentication}
+OAuth 2.0 allein ist kein Mechanismus, um festzustellen, wer ein Benutzer ist oder wie er sich authentifiziert hat. Es sagt nur, dass ein Benutzer eine Anwendung delegiert hat, um in seinem Namen zu handeln. OAuth 2.0 stellt diese Delegation in Form eines Access Tokens zur Verfügung, das die Anwendung verwenden kann, um im Namen des Benutzers zu handeln. Das Access Token wird der API vorgelegt, dessen Anwendung weiß, wie sie überprüfen kann, ob das Access Token valide ist. \cite{AuthorizationvsAuthentication}
 
 Wird zum Beispiel in ein Hotel eingecheckt, erhält man eine Schlüsselkarte, mit der das zugewiesene Zimmer betreten werden kann. Die Schlüsselkarte sagt jedoch nichts darüber aus, wer der Hotelgast ist oder wie er sich an der Rezeption authentifiziert hat. Diese Karte kann für die Dauer des Aufenthalts für den Zugang zu dem Hotelzimmer verwendet werden. In ähnlicher Weise zeigt ein OAuth 2.0 Access Token nicht an, wer ein Benutzer ist. Der Token ist ein Schlüssel, welcher für den Zugriff auf Daten verwendet werden kann. \cite{AuthorizationvsAuthentication}
 
@@ -48,19 +44,11 @@ In dieser Arbeit wird nur das OIDC Protokoll betrachtet, da dieses im Gegensatz 
 
 Es gibt verschiedene Implementierungen von SSO-Systemen. Eines der bekanntesten dieser Implementierung ist Keycloak. Keycloak ist Open Source und wird von Red Hat und einer Open Source Community entwickelt. Keycloak ist eine SSO-Lösung für Webanwendungen und RESTful-Webdienste, die OpenID Connect unterstützt. Keycloak bietet anpassbare Benutzeroberflächen für Anmeldung, Registrierung, Administration und Kontoverwaltung. Ebenfalls kann die Authentifizierung auch an Identitätsanbieter von Drittanbietern wie Facebook und Google delegiert werden. \cite{keycloakDocs}
 
-Keycloak unterstützt sowohl OIDC als auch SAML 2.0 \cite{EB26}. Anwendungen, welche mit Keycloak interagieren, müssen eines der beiden Protokolle auswählen \cite{EB26}. Zusätzlich zu den SSO-Features implementiert Keycloak auch \textit{Role Based Access Control}. Dabei können einem Benutzer Rollen wie z.B. \textit{Kunde} oder \textit{Mitarbeiter} zugewiesen werden. Basierend auf der Rolle des Benutzers hat dieser Zugriff auf andere Ressourcen. Da der Fokus dieser Arbeit auf SSO liegt, wird Role Based Access Control in der Beispielanwendung verwendet, aber nicht erläutert.
+Keycloak unterstützt sowohl OIDC als auch SAML 2.0 \cite{EB26}. Anwendungen, welche mit Keycloak interagieren, müssen eines der beiden Protokolle auswählen \cite{EB26}. Zusätzlich zu den SSO-Features implementiert Keycloak auch \textit{Role Based Access Control} \cite{EB3}. Dabei können einem Benutzer Rollen wie z.B. \textit{Kunde} oder \textit{Mitarbeiter} zugewiesen werden. Basierend auf der Rolle des Benutzers hat dieser Zugriff auf andere Ressourcen. Da der Fokus dieser Arbeit auf SSO liegt, wird Role Based Access Control in der Beispielanwendung verwendet, aber nicht erläutert.
 
 \subsection{Vorgehen}
 
-In der ersten Sektion der Arbeit wurde SSO vorgestellt zusammen mit zugehörigen Vor- und Nachteilen, sowie der Motivation und einer Abgrenzung der verschiedenen SSO Protokolle.
-
-Die darauffolgende Sektion beschreibt den Aufbau des SSO Protokolls OIDC.
-
-In der dritten Sektion werden die Schwachstellen und passenden Gegenmaßnahmen in einem Threat Model aufgeführt.
-
-In Sektion vier wird anhand einer Beispielwebanwendung SSO praktisch gezeigt.
-
-Zuletzt wird eine Zusammenfassung und ein Ausblick zu SSO gegeben.
+In der ersten Sektion der Arbeit wurde SSO vorgestellt zusammen mit zugehörigen Vor- und Nachteilen, sowie der Motivation und einer Abgrenzung der verschiedenen SSO Protokolle. Die darauffolgende Sektion beschreibt den Aufbau des SSO Protokolls OIDC. In der dritten Sektion werden die Schwachstellen und passenden Gegenmaßnahmen in einem Threat Model aufgeführt. In Sektion vier wird anhand einer Beispielwebanwendung SSO praktisch gezeigt. Zuletzt wird eine Zusammenfassung dieser Arbeit gegeben.
 
 
 \section{Aufbau von OpenID Connect}
@@ -83,7 +71,7 @@ Clients sind Entitäten, welche die Authentifizierung eines Benutzers anfordern 
 
 Die erste Art von Client ruft andere Services im Namen des authentifizierten Benutzers auf \cite[Sec. 1.1]{RFC6749} \cite[Managing Clients]{keycloakDocs}. Das sind zum Beispiel die Frontend- oder Browser-Anwendungen, welche vollständig im Webbrowser laufen und geschützte Ressourcen vom Backend Server anfordern. Obwohl der Code für die Anwendung von einem Web-Server bedient werden muss, wird der Code selbst nicht auf dem Server ausgeführt und der Web-Server behält nichts vom Laufzeitstatus der Anwendung bei \cite{OAuth2inAction}. Stattdessen geschieht alles, was die Anwendung betrifft, auf dem Computer des Endbenutzers in dessen Speicher des Web-Browsers \cite{OAuth2inAction}.
 
-Bei der zweiten Art handelt es sich um Backend-Anwendungen, die auf einem entfernten Server ausgeführt werden und auf die über Web-Services oder ein Frontend zugegriffen wird \cite{OAuth2inAction}. Die Konfiguration der Anwendung und ihr Laufzeitzustand werden auf dem Web-Server gehalten und die Browser-Verbindung wird in der Regel über ein Session-Cookie hergestellt. Diese Clients können Ressourcen bereitstellen, welche für die authentifizierten und autorisierten Benutzer beschränkt sind und können auch als geschützter \textit{Resource Server} bezeichnet werden.
+Bei der zweiten Art handelt es sich um Backend-Anwendungen, die auf einem entfernten Server ausgeführt werden und auf die über Web-Services oder ein Frontend zugegriffen wird \cite{OAuth2inAction}. Die Konfiguration der Anwendung und ihr Laufzeitzustand werden auf dem Web-Server gehalten und die Browser-Verbindung wird in der Regel über ein Session-Cookie hergestellt. Diese Clients können Ressourcen bereitstellen, welche für die authentifizierten und autorisierten Benutzer beschränkt sind und können auch als geschützter \textit{Ressourcenserver} bezeichnet werden.
 
 Die dritte Art sind native Anwendungen, die direkt auf dem Gerät des Endbenutzers laufen \cite{OAuth2inAction}. Da sich diese Arbeit auf Web SSO fokussiert, werden diese nicht behandelt, und nur der Vollständigkeit halber erwähnt.
 
@@ -101,7 +89,7 @@ Bei SSO mit OpenID Connect werden verschiedene Arten von Tokens eingesetzt. Bei 
 
 Ein JWT setzt sich aus 3 Teilen zusammen. Im Header wird der Algorithmus genannt, welcher für die Signatur des Tokens verwendet wird \cite{EB5}. Der Signaturalgorithmus kann frei gewählt werden. Keycloak verwendet standardmäßig \textit{HMAC-SHA256}. Der Payload besteht aus einer Menge von sogenannten \textit{JWT Claims} \cite{EB5}. Ein JWT Claim ist, wie ein Claim bei OpenID Connect, ein Key-Value Paar. Im Payload können auch OpenID Connect Claims übertragen werden. Der dritte Teil enthält die Signatur der anderen zwei Teile. Die drei Teile sind jeweils \textit{Base64url} kodiert \cite{EB5}. In Abbildungen dieser Arbeit wird nur der dekodierte Payload gezeigt.
 
-Im nachfolgenden werden drei Arten von Tokens: ID Token, Access Token und Refresh Token beschrieben. Diese drei Token werden nach einer erfolgreichen Authentifizierung eines Benutzers an den Client gesendet.
+Im Nachfolgenden werden drei Arten von Tokens, ID Token, Access Token und Refresh Token, beschrieben. Diese drei Token werden nach einer erfolgreichen Authentifizierung eines Benutzers an den Client gesendet.
 
 \subsubsection{ID Token}
 
@@ -158,29 +146,26 @@ Abgesehen von der ID des Benutzers, dem \texttt{sub} Claim, sollte der Access To
 
 Der \texttt{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat \cite[Requesting Claims]{EB4} \cite{EB7}. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \texttt{profile} Scope Zugriff auf die Benutzer Claims \texttt{name}, \texttt{family\_name}, \texttt{preferred\_username} und weitere beim UserInfo Endpunkt \cite[Requesting Claims]{EB4}. 
 
-Der \texttt{aud} (Audience) Claim gibt an, für welche Clients das Access Token bestimmt ist \cite[ID Token]{EB4}. Erhält ein Client ein Access Token und befindet sich dieser Client ist nicht in der \texttt{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden \cite{EB59}.
+Der \texttt{aud} (Audience) Claim gibt an, für welche Clients das Access Token bestimmt ist \cite[ID Token]{EB4}. Erhält ein Client ein Access Token und befindet sich dieser Client nicht in der \texttt{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden \cite{EB59}.
 
 \subsubsection{Refresh Token}
 
 ID-, Access- und Refresh Token haben eine Verfallszeit \cite[Sec. 4.1.4]{RFC7519} \cite[ID Token]{EB4}. Diese Verfallszeit ist im \texttt{exp} (Expiration Time) Claim als Unixzeit gespeichert \cite[Sec. 4.1.4]{RFC7519}. Ist ein Token abgelaufen, dann ist er nicht mehr gültig \cite[Sec. 4.1.4]{RFC7519}. Speziell das Access Token hat aus Sicherheitsgründen eine kurze Verfallszeit \cite{EB61}. In Keycloak ist standardmäßig eine Verfallszeit von 5 Minuten für den Access Token eingestellt.
-%TODO Authorization Codes statt access tokens
 
-Über den Refresh Token können neue ID-, Access-, und Refresh Tokens erstellt werden ohne, dass sich der Benutzer erneut authentifizieren muss. Der OpenID Provider bietet dafür einen Endpunkt an, bei dem ein Refresh Token durch gewünschte neue Tokens mit erneuerter Verfallszeit ausgetauscht werden kann \cite[Sec. 1.5]{RFC6749}. Das Refresh Token kann auch verwendet werden, um einen Access Token mit weniger Rechten zu erhalten \cite{EB12}. Das Access Token mit weniger Rechten kann dann an potentiell weniger vertrauenswürdige Clients gesendet werden.
+Über den Refresh Token können neue ID-, Access-, und Refresh Tokens erstellt werden ohne, dass sich der Benutzer erneut authentifizieren muss. Der OpenID Provider bietet dafür einen Endpunkt an, bei dem ein Refresh Token durch gewünschte neue Tokens mit erneuerter Verfallszeit ausgetauscht werden kann \cite[Sec. 1.5]{RFC6749}. Das Refresh Token kann auch verwendet werden, um einen Access Token mit weniger Rechten zu erhalten \cite{EB12}. Das Access Token mit weniger Rechten kann dann an potenziell weniger vertrauenswürdige Clients gesendet werden.
 
-Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein Benutzer kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt ein Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann das Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der Benutzer kann weiterhin neue Access Tokens anfordern. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Benutzers zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewägt werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer um möglicherweise auf geschützte Ressourcen des Benutzers zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion \ref{Validieren des Access Tokens} näher erläutert.
+Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein Benutzer kann sich sowohl über einen PC, als auch über einen Laptop mit demselben Account am System anmelden. Es gibt ein Refresh Token für den PC und einen für den Laptop. Falls der Laptop gestohlen werden sollte, dann kann das Refresh Token für den Laptop an einer Stelle, dem OpenID Provider, gesperrt werden. Ein Angreifer kann dann keine neuen Access Tokens mehr beim OpenID Provider anfordern. Der Benutzer kann weiterhin neue Access Tokens anfordern. Dadurch hat er über seinen PC weiterhin Zugriff auf seinen Account und kann weiter arbeiten. Ein Angreifer könnte allerdings trotzdem mit dem Access Token auf Ressourcen des Benutzers zugreifen, wenn dieser noch nicht abgelaufen ist. Aus diesem Grund muss bei der Wahl der Verfallszeit abgewogen werden. Je geringer die Verfallszeit ist, desto öfters müssen neue Tokens vom OpenID Provider angefordert werden. Dies erhöht die Last des OpenID Provider Servers. Je höher die Verfallszeit ist, desto mehr Zeit hat ein Angreifer, um möglicherweise auf geschützte Ressourcen des Benutzers zuzugreifen. Clients haben allerdings auch die Möglichkeit, Tokens beim OpenID Provider zu validieren. Dies wird in Sektion \ref{EB_Validieren des Access Tokens} näher erläutert.
 
 \subsection{Protokoll-Flow} \label{EB_Flows}
 
 Bei SSO kommen verschiedene Flows oder \textit{Authorization Grants} zum Einsatz. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung} beschrieben, gibt es verschiedene Protokolle und auch mehrere Varianten innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Varianten erläutert. Diese Sektion soll kurz eine Übersicht über die wichtigsten Flows von OIDC bei Webanwendungen bieten, die auf den Authorization Grant von OAuth 2.0 aufbauen.
 
 %TODO werden sie erwäht? - meinst du die OIDC flows: implicit, authorization, resource owner password credentials, ...  oder oidc, saml
+% (ebert) nur die von oidc. und richtig, nicht alle werden erwähnt, nur die flows beim login
 % Da wir uns für oidc entschieden haben würde ich wenn du die anderen flows(implicit, ...) willst, könnten wir die hier kurz aufführen
-% Die Alternativen werden jedoch kurz erwähnt, zusammen mit einer kurzen Erklärung, wann die Wahl einer Alternative sinnvoll sein kann. 
-% TODO: die alternativen sind aus sicherheitsgründen immer schlechter, darum kann der letzte satz eigentlich weg.
+% (ebert) da wir schon mehr als 20 seiten haben denke ich das erwähnen wie im nächsten abschnitt reicht?
 
-Der \textit{Authorization Code Flow} wird in der nächsten Sektion ausführlich beschrieben, da dieser am besten zum Use Case unseres praktischen Beispiels passt und der meist verwendete Flow ist.
-
-Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den \textit{Implicit Flow} und den \textit{Hybrid Flow} an, um einen Benutzer zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance \cite[Implicit and Hybrid Flow]{EB26} und eine kürzere Latenz als der Authorization Code Flow \cite[Code Flow]{EB20}. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können \cite{EB26} \cite[Implicit  Flow]{keycloakDocs}.
+Der \textit{Authorization Code Flow} wird in der nächsten Sektion ausführlich beschrieben, da dieser am besten zum Use Case unseres praktischen Beispiels passt und der meist verwendete Flow ist. Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den \textit{Implicit Flow} und den \textit{Hybrid Flow} an, um einen Benutzer zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance \cite[Implicit and Hybrid Flow]{EB26} und eine kürzere Latenz als der Authorization Code Flow \cite[Code Flow]{EB20}. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können \cite{EB26} \cite[Implicit Flow]{keycloakDocs}.
 
 \subsection{Authorization Code Flow}
 
@@ -188,15 +173,11 @@ Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll 
 
 Der \textit{Authorization Code Flow} ist der Empfohlene, um einen Benutzer zu authentisieren oder um zu überprüfen, ob der Benutzer bereits authentisiert ist \cite[Authorization Code Flow]{keycloakDocs}. 
 
-% TODO nutzen wir nicht public clients, habs auch nicht in der quelle gefunden
-% Er ist optimiert für vertrauenswürdige Clients \cite{RFC6749}. 
-
 Der Flow arbeitet mit \textit{Uniform Resource Identifier (URI)-Redirects} \cite{EB12}. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können \cite{EB12}. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Die Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flows. Der \textit{Authorization Server}, \textit{Token}- und \textit{UserInfo-Endpoint} werden vom OpenID Provider bereitgestellt \cite{EB12} \cite[Keycloak URI Endpoints]{keycloakDocs}.
 
 % https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
 % https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
 % good step description: https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd
-% client secret beim token exchange? -nein da der client im browser des users läuft
 % alternativ graphik, ist nicht besser: https://backstage.forgerock.com/docs/am/6/oidc1-guide/
 \begin{figure}[!ht]
 	\centering
@@ -205,7 +186,7 @@ Der Flow arbeitet mit \textit{Uniform Resource Identifier (URI)-Redirects} \cite
 	\label{fig:EB_AuthorizationCodeFlow}
 \end{figure} 
 
-Als erstes wird der \textit{Authorization Request} vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String, einer davon ist die Identifikationsnummer des Clients \texttt{client\_id} \cite[Authentication Request]{EB4}. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes  der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes \texttt{scope}. Der \texttt{openid} Scope muss immer in der Liste der gewünschten Scopes angegeben werden \cite[Authentication Request]{EB4}. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine \texttt{redirect\_uri} angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Benutzers zu dieser URI geleitet \cite[Authentication Request]{EB4}. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage ein \texttt{state} hinzugefügt werden, dieser kann vor \textit{Cross-Site Request Forgery (CSRF)} schützen \cite[Authentication Request]{EB4}. Ebenfalls optional kann eine \texttt{nonce} angegeben werden, welche vor Replay Angriffen schützen kann \cite[Authentication Request]{EB4}. \texttt{state} und \texttt{nonce} werden später in Schritt 6 und 8 näher betrachtet. Listing \ref{EBAuthorizationRequest} zeigt ein Beispiel für einen Authorization Request. Über den \texttt{response\_type=code} wird der Authorization Code Flow ausgewählt. Mit \texttt{response\_mode=fragment} wird festgelegt, dass später ein Code per URI Fragment übertragen wird \cite[JavaScript Adapter Reference]{EB26}. Letzteres wird später in Schritt 5 und 6 näher erläutert.
+Als erstes wird der \textit{Authorization Request} vorbereitet. Diese Anfrage enthält mehrere Parameter im Query-String, einer davon ist die Identifikationsnummer des Clients \texttt{client\_id} \cite[Authentication Request]{EB4}. Diese ID wird bei der Registrierung des Clients beim OpenID Provider angegeben. Durch diese ID kann der OpenID Provider identifizieren, auf welche Scopes der Client Zugriff haben darf. Die Anfrage enthält auch eine Liste von gewünschten Scopes \texttt{scope}. Der \texttt{openid} Scope muss immer in der Liste der gewünschten Scopes angegeben werden \cite[Authentication Request]{EB4}. Dieser spezifiziert, dass es sich um eine OpenID Connect Anfrage handelt. Weiter muss eine \texttt{redirect\_uri} angegeben werden. Nach erfolgreicher oder fehlgeschlagener Authentifizierung wird der Browser des Benutzers zu dieser URI geleitet \cite[Authentication Request]{EB4}. Diese URI muss beim Registrieren des Clients mit angegeben werden. Optional kann in der Anfrage ein \texttt{state} hinzugefügt werden, dieser kann vor \textit{Cross-Site Request Forgery (CSRF)} schützen \cite[Authentication Request]{EB4}. Ebenfalls optional kann eine \texttt{nonce} angegeben werden, welche vor Replay Angriffen schützen kann \cite[Authentication Request]{EB4}. \texttt{state} und \texttt{nonce} werden später in Schritt 6 und 8 näher betrachtet. Listing \ref{EBAuthorizationRequest} zeigt ein Beispiel für einen Authorization Request. Über den \texttt{response\_type=code} wird der Authorization Code Flow ausgewählt. Mit \texttt{response\_mode=fragment} wird festgelegt, dass später ein Code per URI Fragment übertragen wird \cite[JavaScript Adapter Reference]{EB26}. Letzteres wird später in Schritt 5 und 6 näher erläutert.
 
 \begin{lstlisting}[caption=Beispiel Authorization Request, captionpos=b, label=EBAuthorizationRequest]
 GET https://keycloak/auth/realms/Test/protocol/openid-connect/auth?
@@ -222,10 +203,9 @@ Im zweiten Schritt wird die Anfrage aus Schritt 1 an den Authorization Server, a
 
 OIDC schreibt nicht vor, mit welchen Methoden der OpenID Provider den Benutzer in Schritt 3 authentifiziert \cite[Authorization Server Authenticates End-User]{EB4}. Als sicherere Alternative zu Benutzername und Passwort könnte hier z.B. auch eine Multi-Faktor-Authentifizierung eingesetzt werden. Auch die Methode, wenn der Benutzer bereits authentifiziert ist, wird vom OIDC Protokoll nicht vorgeschrieben. Zum Beispiel implementiert Keycloak das über HTTP Cookies. Nach einer erfolgreichen Authentifizierung, wird ein ID Token als \texttt{KEYCLOAK\_IDENTITY} Cookie für Keycloaks Authorization Endpunkt gesetzt \cite{EB17}. Bei Anfragen an Keycloaks Authorization Endpunkt ist dieses Token automatisch enthalten. Der Flow für bereits authentifizierte Benutzer ist dann größtenteils gleich, wie der für nicht authentifizierte Benutzer. Allerdings wird der Benutzer dann in Schritt 3 durch das Token und nicht durch die Eingabe von z.B. Benutzername und Passwort authentifiziert.
 
-Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 sicherstellen, dass der Client für den Zugriff auf die von ihm gewünschten Scopes berechtigt ist. Im vorhinein kann der Administrator des OpenID Providers die erlaubten Scopes für jeden Client festlegen \cite{EB68}. Optional kann in diesem Schritt auch ein interaktiver Dialog mit dem Benutzer stattfinden \cite[Authorization Server Obtains End-User Consent]{EB4}. Dabei wird dem Benutzer die Liste der gewünschten Scopes angezeigt. Der Benutzer hat hier die Möglichkeit den Scopes zuzustimmen oder die Authentifizierung abzubrechen.
+Nach erfolgreicher Authentifizierung muss der OpenID Provider in Schritt 4 sicherstellen, dass der Client für den Zugriff auf die von ihm gewünschten Scopes berechtigt ist. Im Vorhinein kann der Administrator des OpenID Providers die erlaubten Scopes für jeden Client festlegen \cite{EB68}. Optional kann in diesem Schritt auch ein interaktiver Dialog mit dem Benutzer stattfinden \cite[Authorization Server Obtains End-User Consent]{EB4}. Dabei wird dem Benutzer die Liste der gewünschten Scopes angezeigt. Der Benutzer hat hier die Möglichkeit den Scopes zuzustimmen oder die Authentifizierung abzubrechen.
 
-% TODO client opak?
-In Schritt 5 und 6 wird der Benutzer bzw. der Browser zur \texttt{redirect\_uri} umgeleitet. Diese URI ist im Authorization Request von Schritt 1 spezifiziert worden. Die URI enthält einen vom OpenID Provider erstellten Code im Query-String oder im URI Fragment. Dieser Code ist für den Client opak \cite{EB67}. Seine Struktur wird also nur vom OpenID Provider verstanden. Der Code enthält Informationen über die Authentifizierung der vorherigen Schritte. Dazu gehören z.B. welche Scopes im Access Token enthalten sein werden. Der Code hat eine kurze Verfallszeit \cite[Authorization Code Flow]{keycloakDocs}. Im Folgenden wird eine beispielhafte Redirect URI gezeigt.
+In Schritt 5 und 6 wird der Benutzer bzw. der Browser zur \texttt{redirect\_uri} umgeleitet. Diese URI ist im Authorization Request von Schritt 1 spezifiziert worden. Die URI enthält einen vom OpenID Provider erstellten Code im Query-String oder im URI Fragment. Dieser Code wird Authorization Code genannt und ist für den Client opak \cite{EB67}. Seine Struktur wird also nur vom OpenID Provider verstanden. Der Authorization Code enthält Informationen über die Authentifizierung der vorherigen Schritte. Dazu gehören z.B. welche Scopes im Access Token enthalten sein werden. Der Authorization Code hat eine kurze Verfallszeit \cite[Authorization Code Flow]{keycloakDocs}. Im Folgenden wird eine beispielhafte Redirect URI gezeigt.
 
 \begin{lstlisting}[caption=Beispiel Redirect URI, captionpos=b, label=EBBeispielRedirectURI]
 https://frontend.com/#
@@ -234,15 +214,11 @@ https://frontend.com/#
         b7-a589-06972b3cf410.ef40a086-7a64-4b49-b3f0-11dc5cf92a68
 \end{lstlisting}
 
-Durch das im Authorization Request aus Schritt 1 angegebene \texttt{response\_mode=fragment} werden die Informationen über das URI Fragment übermittelt \cite[JavaScript Adapter Reference]{EB26}. Der in der Redirect URI zurückgegebene \texttt{state} muss derselbe sein wie in dem vorigen Authorization Request \cite[End-User Grants Authorization]{EB20}. Das verhindert CSRF, was später in der Sektion des Threat Models näher erläutert wird.
+Durch das im Authorization Request aus Schritt 1 angegebene \texttt{response\_mode=fragment} werden die Informationen über das URI Fragment übermittelt \cite[JavaScript Adapter Reference]{EB26}. Der in der Redirect URI zurückgegebene \texttt{state} muss derselbe sein wie in dem vorigen Authorization Request \cite[End-User Grants Authorization]{EB20}. Das verhindert CSRF, was später in der Sektion \ref{SSEB_Cross-Site-Request-Forgery} des Threat Models näher erläutert wird.
 
-%TODO Sebastian threat model
-% state csrf explained https://stackoverflow.com/questions/58823560/what-kind-of-csrf-attack-does-state-parameter-prevent-in-oauth2-based-authentica > entweder hier oder später
+Der Authorization Code kann am Token Endpoint des OpenID Connect Providers zu einem ID, Access und optional einem Refresh Token ausgetauscht werden \cite[Token Endpoint]{EB4}. Dies wird in Schritt 7 und 8 per HTTP POST Anfrage durchgeführt \cite{EB20}. Um potenzielle Replay Angriffe zu verhindern, kann dieser Authorization Code nur einmal verwendet werden und hat eine sehr kurze Verfallszeit \cite[Authorization Code Flow]{keycloakDocs}.
 
-%TODO welcher code? - authorization 
-Der Authorization Code kann am Token Endpoint des OpenID Connect Providers zu einem ID, Access und optional einem Refresh Token ausgetauscht werden \cite[Token Endpoint]{EB4}. Dies wird in Schritt 7 und 8 per HTTP POST Anfrage durchgeführt \cite{EB20}. Um potenzielle Replay Angriffe zu verhindern, kann dieser Code nur einmal verwendet werden und hat eine sehr kurze Ablaufzeit \cite[Authorization Code Flow]{keycloakDocs}.
-
-Durch die POST Anfrage werden die Tokens im HTTP Response Body zurückgegeben. Dadurch werden sie nicht dem Browser ausgesetzt \cite{EB22} und z.B. nicht im Browserverlauf gespeichert \cite[Implicit  Flow]{keycloakDocs}. Im Gegensatz dazu wurden Informationen wie z.B. der Authorization Code dem Browser ausgesetzt. Da der Access Token eine längere Verfallszeit hat und potentiell nicht widerrufen werden kann, sollte der Browser diesen aus Sicherheitsgründen nicht speichern \cite[Implicit  Flow]{keycloakDocs}.
+Durch die POST Anfrage werden die Tokens im HTTP Response Body zurückgegeben. Dadurch werden sie nicht dem Browser ausgesetzt \cite{EB22} und z.B. nicht im Browserverlauf gespeichert \cite[Implicit Flow]{keycloakDocs}. Im Gegensatz dazu wurden Informationen wie z.B. der Authorization Code dem Browser ausgesetzt. Da der Access Token eine längere Verfallszeit hat und potentiell nicht widerrufen werden kann, sollte der Browser diesen aus Sicherheitsgründen nicht speichern \cite[Implicit Flow]{keycloakDocs}.
 
 In Schritt 8 muss das ID Token validiert werden. Dazu gehört zum Beispiel das Überprüfen der Signatur des Tokens \cite[ID Token Validation]{EB4}. Wird im Authorization Request in Schritt 1 eine \texttt{nonce} angegeben, dann muss der ID Token einen \texttt{nonce} Claim enthalten. Die \texttt{nonce} des Authorization Request muss mit der \texttt{nonce} des ID Tokens übereinstimmen. Außerdem muss die ID des Clients im \texttt{aud} Claim des ID Tokens enthalten sein, die \texttt{iss} muss die ID des OpenID Providers enthalten und der ID Token darf nicht bereits abgelaufen sein. Der \texttt{aud} und \texttt{iss} Claim wurden in Sektion \ref{EB_End-Benutzer} erläutert. Optional können weitere Validierungen stattfinden. Zum Beispiel kann ein Token abgelehnt werden, wenn die \texttt{auth\_time} zu weit in der Vergangenheit liegt. Diese und alle weiteren optionalen Validierungen werden in \cite[ID Token Validation]{EB4} aufgeführt.
 
@@ -254,13 +230,13 @@ Wie bereits in Sektion \ref{EB_AccessToken} erläutert, kann der ID Token nicht 
 
 Der in dieser Sektion vorgestellte Prozess ermöglicht den Zugriff auf Ressourcen in anderen Clients, welche für die authentifizierten und autorisierten Benutzer beschränkt ist. Diese anderen Clients werden dabei, wie schon erwähnt, auch Ressourcen Server genannt. Dabei wird der Access Token dem Ressourcen Server übergeben. Der Standard schreibt nicht vor, wie dieses Übergeben des Access Tokens stattfinden soll \cite[Sec. 7]{RFC6749}. Allerdings gibt der Standard an, dass das Access Token üblicherweise über den Authorization Header der HTTP Anfrage als sogenanntes Bearer Token übermittelt werden sollte \cite[Sec. 7]{RFC6749}. 
 
-Bearer Token bedeutet, dass jeder, der im Besitz des Tokens ist, das Token einsetzten kann \cite[Sec. 1.2]{RFC6750}. Das bedeutet, dass der Ressourcen Server das Token an andere Clients senden kann, um von diese Ressourcen abzurufen, z.B. in einer Microservice Architektur \cite{EB31}. Aus diesem Grund sollte man aus Sicherheitsgründen, vor allem wenn es möglicherweise nicht vertrauenswürdige Clients gibt, die erlaubten Scopes im Access Tokens analysieren und diese so weit wie möglich beschränken. Außerdem kann, wie in Sektion \ref{EB_AccessToken} beschrieben ist, über den Audience Claim im Access Token angegeben werden, für welche Clients das Access Token bestimmt ist. Der Ressourcen Server sollte validieren, dass seine Client ID im Audience Claim enthalten ist, bevor er angeforderte geschützte Daten zurücksendet \cite[Audience Support]{keycloakDocs}.
+Bearer Token bedeutet, dass jeder, der im Besitz des Tokens ist, das Token einsetzten kann \cite[Sec. 1.2]{RFC6750}. Das bedeutet, dass der Ressourcen Server das Token an andere Clients senden kann, um von diesen Ressourcen abzurufen, z.B. in einer Microservice Architektur \cite{EB31}. Aus diesem Grund sollte man aus Sicherheitsgründen, vor allem wenn es möglicherweise nicht vertrauenswürdige Clients gibt, die erlaubten Scopes im Access Tokens analysieren und diese so weit wie möglich beschränken. Außerdem kann, wie in Sektion \ref{EB_AccessToken} beschrieben ist, über den Audience Claim im Access Token angegeben werden, für welche Clients das Access Token bestimmt ist. Der Ressourcen Server sollte validieren, dass seine Client ID im Audience Claim enthalten ist, bevor er angeforderte geschützte Daten zurücksendet \cite[Audience Support]{keycloakDocs}.
 
-\subsubsection{Validieren des Access Tokens} \label{Validieren des Access Tokens}
+\subsubsection{Validieren des Access Tokens} \label{EB_Validieren des Access Tokens}
 
-Außer, der im letzten Abschnitt erläuterten Validierung des Audience Claims, müssen weitere Informationen überprüft werden, bevor geschützte Daten vom Ressourcen Server herausgegeben werden. Dazu gehört die Überprüfung, ob das Token bereits abgelaufen ist \cite[Sec. 4.1.4]{RFC7519}. Außerdem kann ein Ressourcen Server, basierend auf den erlaubten Scopes des Access Tokens, Entscheidungen treffen \cite[Sec. 3.3]{RFC6749}. Zum Beispiel kann er die Herausgabe geschützter Daten aufgrund nicht vorhandener erlaubten Scopes verweigern \cite[Sec. 3.3]{RFC6749}.
+Außer der im letzten Abschnitt erläuterten Validierung des Audience Claims, müssen weitere Informationen überprüft werden, bevor geschützte Daten vom Ressourcen Server herausgegeben werden. Dazu gehört die Überprüfung, ob das Token bereits abgelaufen ist \cite[Sec. 4.1.4]{RFC7519}. Außerdem kann ein Ressourcen Server, basierend auf den erlaubten Scopes des Access Tokens, Entscheidungen treffen \cite[Sec. 3.3]{RFC6749}. Zum Beispiel kann er die Herausgabe geschützter Daten aufgrund nicht vorhandener erlaubten Scopes verweigern \cite[Sec. 3.3]{RFC6749}.
 
-Zusätzlich muss das Access Token validiert werden. Grundsätzlich gibt es zwei Verschiedene Varianten, wie das Access Token validiert werden kann. In dieser Sektion werden diese als Online und als Offline Variante bezeichnet.
+Zusätzlich muss das Access Token validiert werden. Grundsätzlich gibt es zwei verschiedene Varianten, wie das Access Token validiert werden kann. In dieser Sektion werden diese als Online und als Offline Variante bezeichnet.
 
 \begin{figure}[!ht]
 	\centering
@@ -271,7 +247,7 @@ Zusätzlich muss das Access Token validiert werden. Grundsätzlich gibt es zwei 
 
 In Abbildung \ref{fig:EB_Access Token Verifizierung Offline Variante} ist eine Übersicht der Offline Variante gezeigt. Dabei wird der Public Key, dessen Private Key vom OpenID Provider für die Signatur des Access Tokens verwendet wurde, vom OpenID Provider abgerufen. In der Abbildung ist Keycloak der OpenID Provider und der Client wird als Service bezeichnet. Der Client kann die Signatur des Access Tokens mit dem Public Key validieren.
 
-Bei der Offline Variante wird der Public Key oft gecached \cite{EB32}. Das verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers \cite{EB32}. Allerdings kann das Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Benutzers durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. % theorietisch könnte client bescheid gegeben werden
+Bei der Offline Variante wird der Public Key oft gecached \cite{EB32}. Das verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers \cite{EB32}. Allerdings kann das Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Benutzers durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. % theorietisch könnte client bescheid gegeben werden > (ebert) richtig
 
 \begin{figure}[!ht]
 	\centering
@@ -284,17 +260,8 @@ Eine Übersicht der Online Variante wird in Abbildung \ref{fig:EB_Access Token V
 
 Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in Sektion \ref{EB_Einleitung} erwähnt, bietet Keycloak die Möglichkeit an, mehrere Keycloak Instanzen zu verwenden \cite{EB33}. Dadurch kann die Last für den OpenID Provider auf mehrere Server verteilt werden. Darüber hinaus kann die Latenzzeit reduziert werden, indem z.B. der OpenID Provider Server und der Ressourcen Server im selben Rechenzentrum oder Rack betrieben werden.
 
-% increases the day of responses and increases the processing needed
 
-% check if needed scope. can depending on scope and validate signature; check if in aud claim. isnt there list of all checks??
-
-% https://tools.ietf.org/html/rfc6749#section-7
-
-% Der Access Token wird für die Authorisierung des Benutzers verwendet. Man kann ihn als Schlüssel für Ressourcen interpretieren. Er enthält Informationen, auf welche Ressourcen und Clients man mit dem Access Token Zugriff hat. In Web-SSO kann der Access Token z.B. als Bearer Token im HTTP Authentication Header an Backend Services enthalten sein. 
-
-
-
-\section{Threat Model}
+\section{Threat Model} \label{SSEB_Threat Model}
 \begin{comment}
 %TODO remove at the end
 % Hauptquellen - steht fast das gleiche drin:
@@ -314,15 +281,15 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 % https://tools.ietf.org/html/rfc6749#section-10
 \end{comment}
 
-In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert und aufgeführt wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
+In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert. Weiter wird aufgeführt, wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{ssoProtocols}
 
 Ein großer Teil der Sicherheit von OpenID Connect und OAuth 2.0 basiert auf der Annahme, dass Transport Layer Security (TLS) verwendet wird, um die Kommunikation zwischen den beteiligten Parteien zu sichern \cite{mladenov2016security}. Es wird davon ausgegangen, dass die entsprechenden TLS-Kanäle sicher sind. Die Protokolle selbst sind frei von Kryptographie. Ebenfalls wird davon ausgegangen, dass der Endbenutzer nicht dazu verleitet werden kann vom Angreifer generierte TLS-Zertifikate als gültige Zertifikate für echte Clients zu akzeptieren \cite{mladenov2016security}.
 
-Obwohl OAuth 2.0 und OpenID Connect ein Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. Sie müssen korrekt eingesetzt und verwaltet werden.
+Obwohl OAuth 2.0 und OpenID Connect Sicherheitsprotokolle sind, garantiert ihre Verwendung allein noch keine Sicherheit. Sie müssen korrekt eingesetzt und verwaltet werden.
 
 \subsection{OAuth 2.0 zur Authentifizierung}
 
-Wie bereits erklärt, ist OAuth 2.0 ein fester Bestandteil für das Delegieren von Autorisierungen im Web und damit von SSO. Eine wichtige Einschränkung von OAuth 2.0 ist die Tatsache, dass es für die Autorisierung und nicht für die Authentifizierung konzipiert wurde \ref{OAuthForAuthentication}. Die Verwendung von OAuth 2.0 zur Authentifizierung führt daher zu ernsthaften Schwachstellen.
+Wie bereits erklärt, ist OAuth 2.0 ein fester Bestandteil für das Delegieren von Autorisierungen im Web und damit von SSO. Eine wichtige Einschränkung von OAuth 2.0 ist die Tatsache, dass es für die Autorisierung und nicht für die Authentifizierung konzipiert wurde \ref{SSEB_OAuthForAuthentication}. Die Verwendung von OAuth 2.0 zur Authentifizierung führt daher zu ernsthaften Schwachstellen.
 
 Die Häufigkeit dieser Schwachstelle wurde in einer Feldstudie mit über 149 beliebten Anwendungen untersucht \cite{chen2014oauth}. Das Ergebnis ist, dass 89 Anwendungen (59,7\%) OAuth 2.0 für Authentifizierung verwendet haben und damit anfällig sind \cite{chen2014oauth}. Diese Studie verdeutlicht die Schwere dieses Basis-Threats.
 
@@ -334,24 +301,24 @@ Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem
 
 \subsection{Client Schwachstellen}
 
-In dieser Sektion werden häufige Angriffen auf Clientss präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
+In dieser Sektion werden häufige Angriffen auf Clients präsentiert und praktische Möglichkeiten zur Verhinderung dieser Angriffe gezeigt.
 
-Der Client hat Geheimnisse, wie Access- und Refresh-Tokens, für die er sicherstellen muss, dass diese an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Des Weiteren muss der Client darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
+Der Client hat Geheimnisse, wie Access und Refresh Tokens, für die er sicherstellen muss, dass diese an einem Ort aufbewahrt wird, der für Außenstehende nicht leicht zugänglich ist. Des Weiteren muss der Client darauf achten, dass diese Geheimnisse nicht versehentlich in Audit-Protokollen abgelegt werden, wo ein Dritter nach ihnen suchen könnte.
 
-\subsubsection{Cross-Site-Request-Forgery}
+\subsubsection{Cross-Site-Request-Forgery} \label{SSEB_Cross-Site-Request-Forgery}
 
 % Gute Erklärung: https://www.youtube.com/watch?v=_xrhWLqX1j0
 % Der Client erzeugt das Token nicht der Server? - Ist sonst anders
 
 Cross-Site-Request-Forgery (CSRF) tritt auf, wenn der Browser des Benutzers veranlasst wird eine unerwünschte Aktion durch eine Anfrage an eine Webanwendung auszuführen, auf der der Benutzer gerade per Cookie authentifiziert ist. Wenn ein Benutzer bei einer Anwendung angemeldet ist, kann ein Angreifer den Browser des Benutzers manipulieren, sodass er eine Anfrage stellt, an die das Cookie automatisch angehängt wird und die Anfrage als angemeldeter Benutzer ausgeführt wird. 
 
-Um den Angriff durchzuführen, kann der Angreifer einfach einen OAuth-Flow starten und einen Authorization Code vom Authorization Server erhalten. Der Angreifer veranlasst den Client des Opfers, den Authorization Code des Angreifers in einer bösartigen Anfrage zu verwenden, um den Code gegen einen Access Code einzutauschen. Der Ressourcenbesitzer hätte somit seine Client-Anwendung mit dem Autorisierungskontext des Angreifers verbunden. Dies hat katastrophale Folgen, wenn das OAuth-Protokoll zur Authentifizierung verwendet wird. \cite{OAuth2inAction}
+Um den Angriff durchzuführen, kann der Angreifer einen OAuth-Flow starten und einen Authorization Code vom Authorization Server erhalten. Der Angreifer veranlasst den Client des Opfers, den Authorization Code des Angreifers in einer bösartigen Anfrage zu verwenden, um den Code gegen einen Access Code einzutauschen. Der Ressourcenbesitzer hätte somit seine Client-Anwendung mit dem Autorisierungskontext des Angreifers verbunden. Dies hat katastrophale Folgen, wenn das OAuth-Protokoll zur Authentifizierung verwendet wird. \cite{OAuth2inAction}
 
-Die wirksamste Mitigation ist das Hinzufügen eines unvorhersehbaren Elements oder State-Tokens in jeder Anfrage. Der Zustandsparameter des Authorization Codes kann zur Vermeidung von CSRF verwendet werden. Dieser Parameter wird vom Client bei der Initialisierung der Session erstellt und an den Authorization Server gesendet, welcher diesen zurück sendet, um den Status zwischen jeder Anfrage und Antwort aufrechtzuerhalten. Versucht nun ein Angreifer dem Benutzer eine bösartige URL unterzuschieben, wird überprüft ob die URL dieses State-Token enthält. Ist das State-Token nicht enthalten, verwirft der Client des Benutzers die URL des Angreifers und CSRF ist nicht mehr möglich. \cite{OAuth2inAction}
+Die wirksamste Mitigation ist das Hinzufügen eines unvorhersehbaren Elements oder State-Tokens in jeder Anfrage. Der Zustandsparameter des Authorization Codes kann zur Vermeidung von CSRF verwendet werden. Dieser Parameter wird vom Client bei der Initialisierung der Session erstellt und an den Authorization Server gesendet, welcher diesen zurück sendet, um den Status zwischen jeder Anfrage und Antwort aufrechtzuerhalten. Versucht nun ein Angreifer dem Benutzer eine bösartige URL unterzuschieben, wird überprüft, ob die URL dieses State-Token enthält. Ist das State-Token nicht enthalten, verwirft der Client des Benutzers die URL des Angreifers und CSRF ist nicht mehr möglich. \cite{OAuth2inAction}
 
 Dieses State-Token wurde in Sektion \ref{EB_Authentifizierung_eines_Benutzers} bereits gezeigt. Das generierte State-Token kann in einem State-Cookie gespeichert werden.
 
-Keycloak implementiert diesen Teil der Spezifikation vollständig, so dass alle Anmeldungen geschützt sind. Die Keycloak Admin Console ist eine reine JavaScript/HTML5-Anwendung, die REST-Anfragen an die Keycloak Admin REST-API des Backend macht. Diese Anfragen erfordern alle eine Bearer-Token-Authentifizierung und werden über JavaScript-Ajax-Anfragen durchgeführt. CSRF ist hier nicht anwendbar. \cite{keycloakDocs}
+Keycloak implementiert diesen Teil der Spezifikation vollständig, so dass alle Anmeldungen geschützt sind. Zum Beispiel ist die Keycloak Admin Console eine reine JavaScript/HTML5-Anwendung, die REST-Anfragen an die Keycloak Admin REST-API des Backend macht. Diese Anfragen erfordern alle eine Bearer-Token-Authentifizierung und werden über JavaScript-Ajax-Anfragen durchgeführt. CSRF ist hier nicht anwendbar. \cite{keycloakDocs}
 
 Der einzige Teil von Keycloak, der für CSRF anfällig ist, sind die Seiten zur Verwaltung der Benutzerkonten. Um dieses Problem zu entschärfen, setzt Keycloak ein Status-Cookie und bettet den Wert dieses Status-Cookies auch in versteckte Formularfelder oder Abfrageparameter in Aktionslinks ein. Dieser Abfrage- oder Formularparameter wird gegen das Status-Cookie geprüft, um zu verifizieren, dass die Anfrage durch den Benutzer erfolgt ist. \cite{keycloakDocs}
 
@@ -366,7 +333,7 @@ Der Hauptgrund dafür ist, dass Authorization Server unterschiedliche \texttt{re
 
 \subsubsection{Diebstahl von Tokens}
 
-Das Hauptziel eines Angreifers ist der Diebstahl eines Access Tokens. Mit dem Access Token kann der Angreifer alle Arten von Operationen durchführen, für die er nicht autorisiert ist. 
+Das Hauptziel eines Angreifers ist der Diebstahl eines Access Tokens. Mit dem Access Token könnte der Angreifer Operationen durchführen, für die er nicht autorisiert ist. 
 
 Access Token werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens im Header (\texttt{Authorization: Bearer <Access Token>}) gesendet, jedoch definiert RFC 6750 weitere Methoden \cite{RFC6750}. Einer davon ist der URI-Abfrageparameter, der es ermöglicht Access Tokens im URI über dem Abfrageparameter \texttt{access\_token} zu senden. Diese Methode kann zum Stehlen von Access Tokens verwendet werden. 
 
@@ -381,13 +348,13 @@ Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren,
 
 \subsubsection{XSS bei Endpunkten}
 
-Wenn eine REST-API eingesetzt wird, bei der die Antwort von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt ist anfällig für Cross-Site-Scripting (XSS)-Angriffe, wenn der Ressourcenserver \texttt{access\_token} als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
+Wenn eine REST-API eingesetzt wird, bei der die Antwort von Benutzereingaben abhängt, ist das Risiko, auf eine XSS-Schwachstelle zu stoßen, hoch. Ein Endpunkt kann anfällig für Cross-Site-Scripting (XSS)-Angriffe sein, wenn der Ressourcenserver \texttt{access\_token} als URI-Parameter unterstützt. Dann kann der Angreifer eine URI fälschen, welche den XSS-Angriff in einem Inputwert enthält und dann Social Engineering einsetzen, um ein Opfer dazu zu bringen, diesem Link zu folgen. \cite{OAuth2inAction}
 
 Ist der Endpunkt für XSS anfällig ist, kann ein Angreifer eine bösartige URI fälschen, die auf die geschützte Ressource verweist. Sollte das Opfer diese Aufrufen, ist der Angriff abgeschlossen, wodurch die Ausführung des JavaScripts erzwungen wird \cite{OAuth2inAction}. Der bösartige XSS-Code kann beispielsweise Daten extrahieren, um dem Angreifer die Möglichkeit zu geben, sich als authentifizierter Benutzer auszugeben. 
 
-Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. Des Weiteren kann der richtige \textit{Content-Type} in einer HTTP-Antwort zusätzlichen Schutz bieten. Wird beispielsweise der Content-Type \texttt{application/json} verwendet, wird die Antwort in JSON zurückgegeben und somit der XSS-Code nicht vom Browser ausgeführt. Ein weiterer nützlicher Response-Header, der von allen Browsern unterstützt wird, ist \texttt{X-Content-Type-Options: nosniff}. Dieser Sicherheitsheader verhindert, dass die Browser \textit{MIME Sniffing} für eine Antwort verwenden, die vom angegebenen Content-Type abweicht. Ebenso kann der Sicherheitsheader ist \texttt{X-XSS-Protection} gesetzt werden, der automatisch den XSS-Filter aktiviert, welcher in den meisten neueren Webbrowsern eingebaut ist. Ein weiterer nützlicher Response-Header gegen XSS ist \texttt{Content-Security-Policy (CSP)}, der in modernen Browsern deklariert, welche dynamischen Ressourcen über einen HTTP-Header geladen werden dürfen.
+Die Output Sanitization ist der bevorzugte Ansatz zur Verteidigung gegen XSS. Des Weiteren kann der richtige \textit{Content-Type} in einer HTTP-Antwort zusätzlichen Schutz bieten. Wird beispielsweise der Content-Type \texttt{application/json} verwendet, wird die Antwort in JSON zurückgegeben und somit der XSS-Code nicht vom Browser ausgeführt. Ein weiterer nützlicher Response-Header, der von allen Browsern unterstützt wird, ist \texttt{X-Content-Type-Options: nosniff}. Dieser Sicherheitsheader verhindert, dass die Browser \textit{MIME Sniffing} für eine Antwort verwenden, die vom angegebenen Content-Type abweicht. Ebenso kann der Sicherheitsheader \texttt{X-XSS-Protection} gesetzt werden, der automatisch den XSS-Filter aktiviert, welcher in den meisten neueren Webbrowsern eingebaut ist. Ein weiterer nützlicher Response-Header gegen XSS ist \texttt{Content-Security-Policy (CSP)}, der in modernen Browsern deklariert, welche dynamischen Ressourcen über einen HTTP-Header geladen werden dürfen.
 
-Die letzte Gegenmaßnahme, die ein Client implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist es übergebene Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token  enthält\cite{OAuth2inAction}. 
+Die letzte Gegenmaßnahme, die ein Client implementieren kann, um jede Möglichkeit auszuschließen, dass ein bestimmter Endpunkt für XSS anfällig ist, ist das Übergeben von Access Tokens in den Anfrageparametern nicht zu unterstützen \cite{OAuth2inAction}. XSS wäre auf dem Endpunkt theoretisch noch möglich, aber nicht ausnutzbar, da ein Angreifer keine Möglichkeit hat, eine URI zu fälschen, die auch das Access Token enthält\cite{OAuth2inAction}. 
 
 Daher muss das Access Token über den Authorization Header gesendet werden. In Keycloak wird die Authentifizierung über Authorization Header erzwungen \cite{keycloakDocs}.
 
@@ -395,17 +362,17 @@ Daher muss das Access Token über den Authorization Header gesendet werden. In K
 
 \subsubsection{Token Replays}
 
-In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token durch XSS zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token besitzt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine relativ kurze Lebensdauer hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist oder kurz davor steht. In der Sektion \ref{Realms} wird gezeigt, wie die Lebensdauer oder Ablaufzeit des Access Tokens in Keycloak bestimmt werden kann.
+In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token durch XSS zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token besitzt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine kurze Verfallszeit hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist oder kurz davorsteht. In der Sektion \ref{EB_Realms} wird gezeigt, wie die Verfallszeit des Access Tokens in Keycloak bestimmt werden kann.
 
 OIDC und OAuth 2.0 sind frei von Kryptographie. Stattdessen verlassen sich die Protokolle vollständig auf das Vorhandensein von TLS über die verschiedenen Verbindungen hinweg. Aus diesem Grund gilt es die Verwendung von TLS im gesamten System so weit wie möglich durchzusetzen.
 
 Dabei kann \textit{HTTP Strict Transport Security (HSTS)} helfen. HSTS erlaubt es zu definieren, dass Browser oder andere konforme User-Agents nur über sichere HTTPS-Verbindungen interagieren sollten und niemals über das unsichere HTTP-Protokoll. HSTS kann über den zusätzlichen HTTP-Header \texttt{Strict-Transport-Security} hinzugefügt werden. Jedes Mal, wenn versucht wird, den Endpunkt des Client-Backends mit dem Browser über HTTP zu erreichen, würde der Browser einen Redirect zu HTTPS durchführen. Dadurch wird jede unerwartete unverschlüsselte Kommunikation (wie z.B. Protokoll-Downgrade-Angriffe) vermieden. \cite{OAuth2inAction}
 
-Jedoch sollte nicht alleine auf HSTS vertraut werden, da es User-Agents gibt, die diesen Header nicht unterstützen und daher in den Produktion nur HTTPS, beziehungsweise TLS, eingesetzt werden. In der Sektion \ref{Realms} wird gezeigt, wie dies in Keycloak konfiguriert werden kann.
+Jedoch sollte nicht alleine auf HSTS vertraut werden, da es User-Agents gibt, die diesen Header nicht unterstützen und daher sollte in der Produktion nur HTTPS, beziehungsweise TLS, eingesetzt werden. In der Sektion \ref{EB_Realms} wird gezeigt, wie dies in Keycloak konfiguriert werden kann.
 
 \subsection{Authorization Server Schwachstellen}
 
-Der Authorization Server ist die komplexeste Komponente im SSO- und ODIC-System, daher am schwersten zu sichern. In dieser Sektion werden dessen Schwachstellen präsentiert und gezeigt wie diese mitigiert werden müssen.
+Der Authorization Server ist die komplexeste Komponente im SSO- und ODIC-System, und daher am schwersten zu sichern. In dieser Sektion werden dessen Schwachstellen präsentiert und gezeigt wie diese mitigiert werden müssen.
 
 Für den Authorization Server gelten alle allgemeinen Sicherheitsmaßnahmen für den Einsatz sicherer Webserver. Besonders hervorzuheben sind Server-Logs, die Verwendung von TLS und eine sichere Hosting-Umgebung mit angemessenen Konto-Zugriffskontrollen.
 
@@ -420,19 +387,21 @@ In der Sektion \ref{EB_Authentifizierung_eines_Benutzers} wird erklärt, dass de
 % Beispiel siehe OAuth in Action Seite 155
 % Clients müssen vertraulich sein, Clients in unserem Beispiel sind vertraulich
 
-Wichtig für diese Schwachstelle ist es, dass vertrauliche Clients verwendet werden. Da bei ihnen der Authorization Code den Server verlässt und zum Benutzer gelangt, so dass er in der Browser-Historie verbleibt.
+Session Hijacking kann auftreten, wenn vertrauliche Clients verwendet werden. Bei diesert Art Clients verlässt der Authorization Code den Server und gelangt zum Benutzer. Dabei verbleibt der Authorization Code in der Browser-Historie.
+% (ebert) TODO: basti passt der obere absatz so (ist von mir)? den originalen absatz habe ich nicht ganz verstanden und deshalb angeändert. wir können auch den originalen wider verwenden
 
 Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit seinen eigenen Anmeldedaten anmelden, manipuliert jedoch den Redirect zum Client und injiziert den Authorization Code aus der Session des Benutzers, der im Browser-Verlauf gespeichert ist. Das Resultat ist, dass der Angreifer dann Zugriff auf die Ressource des ursprünglichen Benutzers hat.
 
 Als Mitigation gegen diese Schwachstelle empfiehlt die OAuth 2.0 Spezifikation, dass Authorization Codes nur einmal vom Client verwendet werden dürfen \cite{OAuthAuthorizationResponse}. Wenn ein Authorization Code mehr als einmal verwendet wird, muss der Authorization Server die Anfrage ablehnen und sollte alle Access Tokens zurücknehmen, die zuvor auf der Grundlage dieses Authorization Codes ausgegeben wurden \cite{OAuthAuthorizationResponse}.
 
-Diese Gegenmaßnahme wird durch Keycloak unterstützt. Ein Authorization Code kann nur einmal verwendet werden und als zusätzliche Maßnahme ist die Lebensdauer für Authorization Codes sehr kurz - einige Sekunden, sodass der Benutzer seinen Authorization Code gegen ein Access Token eintauschen kann \cite[Sec. 19]{keycloakDocs}.
+Diese Gegenmaßnahme wird durch Keycloak unterstützt. Ein Authorization Code kann nur einmal verwendet werden. Als zusätzliche Maßnahme ist die Verfallszeit für Authorization Codes sehr kurz - einige Sekunden, bei der der Benutzer seinen Authorization Code gegen ein Access Token eintauschen kann \cite[Sec. 19]{keycloakDocs}.
 
 \subsubsection{Redirection URI Manipulation}
 
 Bei der Verwendung des Authorization Code Flows \ref{EB_Authentifizierung_eines_Benutzers} kann der Client über den Parameter \texttt{redirect\_uri} einen Redirect-URI angeben. Wenn ein Angreifer den Wert des Redirect-URIs manipulieren kann, kann er den Authorization Server veranlassen, den Benutzer einer Ressource zu einem URI unter der Kontrolle des Angreifers mit dem Authorization Code des Angreifers umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
 
 Ein Angreifer kann einen Account bei einem Client erstellen und den Authorization Flow einleiten. Wenn der Benutzer des Angreifers an den Authorization Server gesendet wird, um Zugriff zu gewähren, greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers. Der Angreifer trickst dann den Benutzer einer Ressource aus, dem manipulierten Link zu folgen, um den Zugriff auf den Client zu autorisieren. \cite{OAuthAuthorizationSecurityConsiderations}
+% TODO: (ebert) fehlt bei 'greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers' noch ein wort? meinst du 'greift ... an'?
 
 Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anfrage gestellt, welche dieser autorisiert. Das Opfer wird dann an einen Ressourcen-Endpunkt unter der Kontrolle des Angreifers mit dem Authorization Code umgeleitet. Der Angreifer schließt den Authorization Flow ab, indem er den Authorization Code an den Client, unter Verwendung der ursprünglichen Redirect-URI, sendet. Der Client tauscht den Authorization Code mit einem Access Token und verknüpft es mit dem Client-Account des Angreifers, welcher nun Zugang zu den geschützten Ressourcen erhalten kann. \cite{OAuthAuthorizationSecurityConsiderations}
 
@@ -440,7 +409,7 @@ Um dieser Schwachstelle entgegenzuwirken, stellt der Authorization Server sicher
 
 \subsubsection{Open Redirector}
 
-Der Authorization Server und der Client-Redirect-Endpunkt können so konfiguriert sein, sodass sie als offene Redirector funktionieren. Ein offener Redirector ist ein Endpunkt, der einen Parameter verwendet, um einen Benutzer ohne jegliche Validierung automatisch an den durch den Parameterwert angegebenen Ort umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
+Der Authorization Server und der Client-Redirect-Endpunkt können so konfiguriert sein, sodass sie als \texttt{offene Redirector} funktionieren. Ein offener Redirector ist ein Endpunkt, der einen Parameter verwendet, um einen Benutzer ohne jegliche Validierung automatisch an den durch den Parameterwert angegebenen Ort umzuleiten. \cite{OAuthAuthorizationSecurityConsiderations}
 
 Offene Redirects können bei Phishing-Angriffen verwendet werden oder von einem Angreifer, um Benutzer dazu zu bringen, bösartige Seiten zu besuchen, indem die URI eines bekannten Ziels verwendet wird. \cite{OAuthAuthorizationSecurityConsiderations}
 
@@ -472,19 +441,20 @@ In den Sektionen der vorherigen Sektionen wurde präsentiert, wie Access Tokens 
 
 Eine Gegenmaßnahme, die ein Client anwenden kann, besteht darin, den Umfang des Tokens auf das für seine Aufgaben erforderliche Minimum zu beschränken \cite{OAuthAuthorizationSecurityConsiderations}. Dieser Ansatz der minimalen Privilegien schränkt ein, wofür das Token verwendet werden kann, wenn es erfasst wird. Um die Auswirkungen auf die Benutzererfahrung so gering wie möglich zu halten, kann ein Client während der Autorisierungsphase nach allen geeigneten Bereichen fragen und dann das Refresh-Token verwenden, um Access Token mit eingeschränktem Bereich zu erhalten, mit denen die Ressource direkt aufgerufen werden kann \cite{OAuthAuthorizationSecurityConsiderations}. Diese Gegenmaßnahme wird insofern durch Keycloak unterstützt, dass in Umgebungen zwischen den einzelnen Services, unter denen das Vertrauen gering ist, der Empfängerkreis der Tokens limitiert werden kann \cite[Sec. 19]{keycloakDocs}. Dies kann sowohl für die Scopes, als auch für die Audience konfiguriert werden \cite[Sec. 19]{keycloakDocs}.
 
-Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist das Token im Transient Memory zu belassen. Browser löschen dann das Token wenn der Browser vom Benutzer geschlossen wird.
+Um Angriffe zu minimieren, die sich aus den Injektionen in den Speicher ergeben, ist das Token im Transient Memory zu belassen. Browser löschen dann das Token, wenn der Browser vom Benutzer geschlossen wird.
 
 Eine große Bandbreite von Bedrohungen kann durch den Schutz der Inhalte des Tokens abgemildert werden, durch Verwendung einer digitalen Signatur oder eines Message Authentication Codes (MAC) \cite{RFC6750}. Der OAuth 2.0 Standard spezifiziert weder die Kodierung noch den Inhalt des Tokens, diese müssen selbst bestimmt werden. Der Schutz der Token-Integrität muss ausreichend sein, um eine Veränderung des Tokens zu verhindern  \cite{RFC6750}. In Keycloak werden JWTs verwendet, welche signiert werden \cite[Sec. 19]{keycloakDocs}. 
 
 Um Token Redirects zu mitigieren, ist es wichtig, dass der Authorization Server die Identität der vorgesehenen Empfänger in das Token aufnimmt \cite{RFC6750}\cite[Sec. 19]{keycloakDocs}. In Keycloak wird durch den \texttt{sub}-Claim die Benutzer-ID mitaufgenommen.
 
-Gegen Token Replay muss die Lebensdauer des Tokens begrenzt werden \cite{RFC6750}. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Lebensdauer ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger \cite{RFC6750}. Da in Keycloak JWTs eingesetzt werden, haben die Tokens automatisch eine Ablaufzeit, welche durch den Keycloak Admin gesetzt werden kann. Des Weiteren können alle Tokens bei einer Kompromittierung widerrufen werden.
+Gegen Token Replay muss die Verfallszeit des Tokens gering sein \cite{RFC6750}. Eine Möglichkeit, dies zu erreichen, besteht darin, ein Gültigkeitszeitfeld in den geschützten Teil des Tokens zu setzen. Je kürzer die Verfallszeit ist, desto geringer sind die Auswirkungen. Empfohlen wird eine Stunde oder weniger \cite{RFC6750}. Da in Keycloak JWTs eingesetzt werden, haben die Tokens automatisch eine Ablaufzeit, welche durch den Keycloak Admin gesetzt werden kann. Des Weiteren können alle Tokens bei einer Kompromittierung widerrufen werden.
 
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung} \label{EB_Beispielwebanwendung}
 
 %TODO Begriffe wie ressource server, clients, authorization server, access token mit einbauen
 % am einfachsten ist es du packst die draw io datei zu deinen bildern ins repo, dann kann ich es auch bearbeiten - hat zeit
+% (ebert) du hast recht, die begriffe müssen irgendwo mit rein. ich finde es schwierig die übersicht zu machen, weil wir das übersicht bild nicht zu detailliert machen sollten. ich habe die draw.io datei ins repo hochgeladen, vielleicht kannst du deine idee für die übersicht zeigen dann können wir nochmal darüber reden. vielleicht können wir auch unter dem übersicht bild einen absatz schreiben mit den begriffen, z.B. beim 'Zugriff auf geschützte Ressourcen' (rot) wird Access Token im Bearer Header mitgeschickt, blau verwendet Auth. Code Flow, green ist online token veri...
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{Images/Ebert/ArchitectureDiagram.png}
@@ -497,7 +467,7 @@ Abbildung \ref{fig:EB_Beispielwebanwendung Überblick} zeigt einen Überblick ü
 %TODO anpassen wenn Graphik geupdatet ist
 Zum Beispiel startet das Frontend den Flow 'Zugriff auf geschützte Ressourcen', indem das Frontend eine HTTP Post Anfrage an das Backend sendet. Die Namen und Funktionsweisen der Flows in Abbildung \ref{fig:EB_Beispielwebanwendung Überblick} korrespondieren mit den in Sektion \ref{EB_Flows} beschriebenen Flows. 
 
-Alle Docker Container werden mit Docker-Compose gestartet und konfiguriert. Docker-Compose ist ein Tool für Multi-Container-Anwendungen \cite{EB40}. Über Docker-Compose wird ein Netzwerk erstellt und konfiguriert. Dadurch können die Komponenten untereinander kommunizieren. Außerdem kann der Benutzer dadurch über den Browser mit den Komponenten kommunizieren. Über Docker-Compose wird ebenfalls ein persistenten Speicher für die Komponente DB (Datenbank) aufgesetzt und Umgebungsvariablen für die Anwendungen in den Containern gesetzt.
+Alle Docker Container werden mit Docker-Compose gestartet und konfiguriert. Docker-Compose ist ein Tool für Multi-Container-Anwendungen \cite{EB40}. Über Docker-Compose wird ein Netzwerk erstellt und konfiguriert. Dadurch können die Komponenten untereinander kommunizieren. Außerdem kann der Benutzer dadurch über den Browser mit den Komponenten kommunizieren. Über Docker-Compose wird ebenfalls ein persistenter Speicher für die Komponente DB (Datenbank) aufgesetzt und Umgebungsvariablen für die Anwendungen in den Containern gesetzt.
 
 \begin{figure}[!ht]
 	\centering
@@ -506,31 +476,26 @@ Alle Docker Container werden mit Docker-Compose gestartet und konfiguriert. Dock
 	\label{fig:EB_Struktur des Git-Verzeichnisses}
 \end{figure} % TODO: update after everything finished
 
-%TODO der lebt im Mittelalter, da könenn wir kein Git Repo mit abgeben, wir müssen das Repo mit abgeben und dann darauf verweisen, wie es einen absatz weiter unten steht
-In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des Git-Verzeichnisses zu sehen, welches wir für dieses Beispiel erstellt haben. Dieses Git Repository kann unter TODO geclont werden. Um das Beispiel zu starten, muss Docker, Docker-Compose und das Git Repository TODO heruntergeladen bzw. installiert sein. Außerdem muss, wie in der \texttt{src/README.md} näher beschrieben, der Pfad zum \texttt{postgres\_data} Ordner in der \texttt{src/.env}-Datei gesetzt werden.
+%TODO wir müssen das Repo mit abgeben und dann darauf verweisen, wie es einen absatz weiter unten steht
+In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des src Ordners zu sehen, welcher die von uns erstellen Dateien dieser Beispielwebanwendung enthält. Dieser src Ordner ist Teil des Git Repositories, welches unter \cite{SSEB1} heruntergeladen werden kann ist. Dort ist in der Datei 'src/README.md' \cite{SSEB2} die Anleitung zum Installieren und Starten dieser Beispielwebanwendung, sowie die Anmeldeinformationen für die von uns erstelle VMWare VM, die Keycloak Admin Console und einen registrierten Beispielbenutzer der Webanwendung. In der VMWare VM ist, wie in der 'src/README.md' näher erläutert, dieses Repository bereits heruntergeladen und die erforderlichen Befehle zur Installation wurden bereits ausgeführt. In der VM kann die Beispielwebanwendung mit 'cd /home/user/sichere\_webanwendungen/src \&\& docker-compose up' gestartet werden.
 
-%TODO will der vmware oder virtualbox?
-Als Alternative zur manuellen Installation des letzten Absatzes kann die von uns erstelle VMWare VM unter TODO verwendet werden. Die Benutzernamen und Passwörter für die VM und die Keycloak Benutzer sind in der src/README.md Datei des Git Repositories TODO.
+Die \texttt{docker-compose.yml} Datei enthält die Konfiguration für Docker-Compose. In \texttt{.env} wird der Pfad zum \texttt{postgres\_data} Ordner gesetzt, sowie das Adminpasswort für Keycloak. Keycloak ist in dieser Beispielwebanwendung bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. 
 
-Die \texttt{docker-compose.yml} Datei enthält die Konfiguration für Docker-Compose. In \texttt{.env} wird der Pfad zum \texttt{postgres\_data} Ordner gesetzt, sowie das Adminpasswort für Keycloak. Im Beispiel ist Keycloak bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. 
-
-%TODO wo ist postgres\_db, meinst postgres_data
-Diese Konfiguration ist in der Datenbank bzw. dem \texttt{postgres\_db} Ordner gespeichert. Die Ordner \texttt{frontend1} und \texttt{frontend2} enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben im HTML identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner \texttt{service} zu finden.
+Diese Konfiguration ist in der Datenbank bzw. dem \texttt{postgres\_data} Ordner gespeichert. Die Ordner \texttt{frontend1} und \texttt{frontend2} enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben im HTML identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner \texttt{service} zu finden.
 
 %TODO bei mir werden die Container nicht vom hub gepullt durch docker compose
 % für die rekostruktion: lösch die container lokal bei dir und dann ... up
-Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen.
+% (ebert) richtig, durch das 'build: ... dockerfile' wählt docker-compose up jetzt standardmäßig das lokale bauen aus und nicht das pullen. habe in der README das angepasst, jetzt sollte es passen (wenn man es nicht über die vm macht, wo die container bereits geclont sind, muss man docker-compose pull ausführen. wenn man manuell bauen will stehen auch instrukionen dafür dabei (man muss dafür die frontend packages installieren mit npm))
+Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen. Die Anleitung zum lokalen Bauen der Container Images ist ebenfalls in der src/README.md Datei des Repositories \cite{SSEB2}.
 
-Im Root Folder des geklonten Git Repositories TODO kann der Befehl \texttt{docker-compose up} ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter \texttt{localhost:3000} und Frontend 2 unter \texttt{localhost:3001} erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Flows gezeigt, sowie näher erläutert. Die genaue Dokumentation zur Implementierung des Systems kann im Code über DocStrings, Kommentaren und einer HTML-Dokumentation nachgelesen werden.
+Im src Ordner des geklonten Git Repositories \cite{SSEB1} kann der Befehl \texttt{docker-compose up} ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter \texttt{localhost:3000} und Frontend 2 unter \texttt{localhost:3001} erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Flows gezeigt, sowie näher erläutert. Die genaue Dokumentation zur Implementierung des Systems kann im Code über DocStrings, Kommentaren und einer HTML-Dokumentation nachgelesen werden.
 
-% TODO: also upload vm to some place and say as an alternative there is a vmware VM with these prerequisites installed.
-% TODO: should run docker-compose down before shutting down the VM/PC and next start again run docker-compose up
 
 \subsection{Keycloak} \label{EB_Keycloak}
 
 Der Keycloak Authorization Server ist unter \texttt{localhost:8080} erreichbar. Die Security Admin Console ist eine GUI zum Konfigurieren von Keycloak für Keycloak Administratoren. Über \texttt{localhost:8080/auth/admin/} ist diese GUI erreichbar. Im Beispiel kann man sich dort mit dem Benutzernamen \texttt{admin} und Passwort \texttt{iuq123} anmelden. Als Alternative zur GUI kann Keycloak auch über die sogenannte Admin CLI konfiguriert werden.
 
-\subsubsection{Realms}\label{Realms}
+\subsubsection{Realms}\label{EB_Realms}
 
 Keycloak hat ein Konzept namens \textit{Realms}. Jeder Realm hat eine Menge von Clients und Benutzern. Ein Realm ist wie eine Sandbox. Die Clients und Benutzer eines Realms sind isoliert von Clients und Benutzern anderer Realms \cite[Core Concepts and Terms]{keycloakDocs}.
 
@@ -551,17 +516,16 @@ In der linken Navigationsleiste der Security Admin Console kann unter \textit{Cl
 
 In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfiguration des \texttt{frontend1}-Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak frontend1 Client Konfiguration}:
 \begin{itemize}
-	\item \emph{Client ID:} \texttt{react-example} ist die Client ID für Frontend 1.
+	\item \emph{Client ID:} \texttt{frontend1} ist die Client ID für Frontend 1.
 	
 	\item \emph{Consent Required:} Setzt fest, ob der Benutzer den von Clients gewünschten Scopes zustimmen muss. Das ist der im Authorization Code Flow in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebene Schritt 4.
 	
 	\item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
 	
-	\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients beschrieben. Der Wert \textit{public} ist für die Frontend Applikationen. Backend 1 und 2 haben die Client ID \texttt{service1} und \texttt{service2}. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf \texttt{bearer-only} gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
+	\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients für Web SSO beschrieben. Der Wert \textit{public} ist für die Frontend Applikationen. Backend 1 und 2 haben die Client ID \texttt{service1} und \texttt{service2}. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf \texttt{bearer-only} gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
 	
 	\item \emph{Valid Redirect URIs:} Hier können möglichst präzise Validierungsrichtlinien für Redirect URIs gesetzt werden, nach \ref{Registrierung_redirect_uri}.
 	
-	%TODO add CORS zu threat model
 	\item \emph{Web Origins:} Dadurch ist für diesen Client der HTTP Header \texttt{Access-Control-Allow-Origin: http://localhost:3000} in Nachrichten von Keycloak zum Client enthalten. Dieses Feld muss auf die URL des Frontends gesetzt werden, um CORS zu erlauben. Ansonsten akzeptiert der Browser eingehende Anfragen bzw. Redirects von Keycloak nicht.
 \end{itemize}
 
@@ -647,7 +611,7 @@ In \ref{fig:EB_Nicht Authentifiziert} ist eine Abbildung der Website von \texttt
 	\label{fig:EB_Nicht Authentifizierte Anfrage an Backend}
 \end{figure}
 
-In der oberen Navigationsleiste sind auf der rechten Seite zwei Buttons, über die sich Benutzer authentifizieren oder registrieren können. Für beides bietet der Keycloak Adapter Funktionen an, welche beim Klicken des jeweiligen Buttons ausgeführt werden. Beim Klicken des \texttt{Login} Buttons wird der Authorization Code Flow initiiert. Der Benutzer wird dann zu Keycloaks Authorization Endpunkt geleitet. Das ist in Abbildung \ref{fig:EB_Login Font des Authorization Endpunkts} dargestellt. In der Adresszeile sieht man die Addresse des Authorization Endpunkts und einen Teil des Query-Strings, der die Parameter des Authorization Requests enthält.
+In der oberen Navigationsleiste sind auf der rechten Seite zwei Buttons, über die sich Benutzer authentifizieren oder registrieren können. Für beides bietet der Keycloak Adapter Funktionen an, welche beim Klicken des jeweiligen Buttons ausgeführt werden. Beim Klicken des \texttt{Login} Buttons wird der Authorization Code Flow initiiert. Der Benutzer wird dann zu Keycloaks Authorization Endpunkt geleitet. Das ist in Abbildung \ref{fig:EB_Login Font des Authorization Endpunkts} dargestellt. In der Adresszeile sieht man die Addresse des Authorization Endpunkts und einen Teil des Query-Strings, der die Parameter des Authorization Requests enthält. Der Benutzer kann sich hier z.B. als Admin Benutzer mit 'admin:iuq123' (Username:Password), oder mit dem bereits registrierten Beispielbenutzer 'user:user' einloggen. Für beide Benuter sind unterschiedliche Lieblingsfarben als Attribute konfiguriert.
 
 \begin{figure}[!ht]
 	\centering
@@ -665,7 +629,7 @@ Nach einer erfolgreichen Authentifizierung mit dem Authorization Code Flow wird 
 	\label{fig:EB_Authentifizierte Anfrage an Backend}
 \end{figure} 
 
-Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung. Ist ein Benutzer authentifiziert, dann werden ID-, Access-, und Refresh Token in der GUI geparst angezeigt. Abbildung \ref{fig:EB_Token} zeigt davon einen Ausschnitt.
+Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung. Ist ein Benutzer authentifiziert, dann werden ID-, Access-, und Refresh Token in der GUI dekodiert angezeigt. Abbildung \ref{fig:EB_Token} zeigt davon einen Ausschnitt.
 
 \begin{figure}[!ht]
 	\centering
@@ -674,7 +638,7 @@ Der Adapter stellt außerdem APIs zum Abrufen von Tokens zur Verfügung. Ist ein
 	\label{fig:EB_Token}
 \end{figure}
 
-Durch die erfolgreichen Authentifizierung mit dem Authorization Code Flow hat Keycloak den in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebenen \texttt{KEYCLOAK\_IDENTITY} Cookie für Keycloaks Authorization Endpunkt gesetzt. Dieser Cookie enthält einen ID Token. In Abbildung \ref{fig:EB_ID Token Cookie für Keycloak} ist manuell zum Authorization Endpunkt navigiert worden und über die Chrome Developer Console kann der Cookie angezeigt werden. Dadurch wird, wie in Abbildung \ref{fig:EB_Snapshot nach Aufruf des zweiten Frontends} gezeigt, dass der Benutzer beim Aufruf des zweiten Frontend Clients automatisch authentisiert wird.
+Durch die erfolgreichen Authentifizierung mit dem Authorization Code Flow hat Keycloak den in Sektion \ref{EB_Authentifizierung_eines_Benutzers} beschriebenen \texttt{KEYCLOAK\_IDENTITY} Cookie für Keycloaks Authorization Endpunkt gesetzt. Dieser Cookie enthält einen ID Token. In Abbildung \ref{fig:EB_ID Token Cookie für Keycloak} ist manuell zum Authorization Endpunkt navigiert worden und über die Chrome Developer Console kann der Cookie angezeigt werden. Durch diesen Cookie wird, wie in Abbildung \ref{fig:EB_Snapshot nach Aufruf des zweiten Frontends} gezeigt, der Benutzer beim Aufruf des zweiten Frontend Clients automatisch authentisiert.
 
 \begin{figure}[!ht]
 	\centering
@@ -689,8 +653,6 @@ Durch die erfolgreichen Authentifizierung mit dem Authorization Code Flow hat Ke
 	\caption{Snapshot nach Aufruf des zweiten Frontends}
 	\label{fig:EB_Snapshot nach Aufruf des zweiten Frontends}
 \end{figure}
-
-% TODO: sollte ich hier interessante abschnitte des codes zeigen? oder einfach nur auf code verweisen mit dem hinweis, dass der code dokumentiert ist? code ist wirklich nicht interessant, vor allem wenn man keine react kenntnisse hat, und ist meistens nur 1 zeile. code des backends ist mehr interessant -sebastian: passt so, finde es so gut, der Verweis ist zu beginn der sektion da, also kann man entsprechend nach schauen wenn man es genau wissen will, wir können ja nicht immer bei Adam und Eva anfangen
 
 
 \subsection{Backend} \label{EB_Backend}
@@ -722,20 +684,16 @@ def validate_token(token):
   return f'subject identifier (sub): {r_json["sub"]}', 200
 \end{lstlisting} % TODO: schauen dass das Listing nicht gerade über 3 Seiten geht
 
-Dabei wird der Token als erstes über die PyJWT Bibliothek dekodiert. Die Signatur des Tokens wird dort noch nicht validiert. Danach wird überprüft, ob der Token einen \texttt{aud} Claim enthält und ob die ID des jeweiligen Backend Clients im \texttt{aud} Claim enthalten ist. Die Motivation hinter dieser Überprüfung wurde in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} erläutert. Für die Validierung der Signatur wird die in Sektion \ref{Validieren des Access Tokens} beschriebene Online Validierung eingesetzt, bei der der Token über Keycloak validiert wird. Dabei wird eine Anfrage an Keycloaks UserInfo Endpunkt mit dem Token im HTTP Authorization Header als Bearer Token gesendet. Bei valider Signatur liefert die Keycloak Anfrage den Statuscode \texttt{200} und die für den UserInfo Endpunkt und den Access Token zugelassenen Claims im HTTP Message Body zurück. 
+Dabei wird der Token als erstes über die PyJWT Bibliothek dekodiert. Die Signatur des Tokens wird dort noch nicht validiert. Danach wird überprüft, ob der Token einen \texttt{aud} Claim enthält und ob die ID des jeweiligen Backend Clients im \texttt{aud} Claim enthalten ist. Die Motivation für diese Art der Überprüfung wurde in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} erläutert. Für die Validierung der Signatur wird die in Sektion \ref{EB_Validieren des Access Tokens} beschriebene Online Validierung eingesetzt, bei der der Token über Keycloak validiert wird. Dabei wird eine Anfrage an Keycloaks UserInfo Endpunkt mit dem Token im HTTP Authorization Header als Bearer Token gesendet. Bei valider Signatur liefert die Keycloak Anfrage den Statuscode \texttt{200} und die für den UserInfo Endpunkt und den Access Token zugelassenen Claims im HTTP Message Body zurück. 
 
 Die Funktion \ref{validateTokenFunction} gibt einen Tuple mit zwei Elementen zurück und implementiert die zuvor beschriebene Vorgehensweise. Das erste Element wird als HTTP Message Body und das zweite Element als Statuscode an den Sender der Anfrage an das Backend zurückgesendet. Bei nicht erfolgreicher Validierung des Tokens wird der Statuscode \texttt{402} mit Fehlermeldung im HTTP Message Body zurückgegeben. Andernfalls wird die ID des Benutzers des Access Tokens und Statuscode \texttt{200} zurückgegeben.
 
-% weil ich online token veri mache, ist nach 'Logout All' auch alle Tokens invalide
 
-\section{Zusammenfassung und Ausblick}
+\section{Zusammenfassung}
 
-- Keycloak ist sicher weil es das OIDC Standard implementiert und Gegenmaßnahmen für die von diesem Protokoll entstehenden Gefahren implementeirt. (welche Gegenmaßnahmen? vielleicht verweis auf threat model sec, aber da haben wir ja nur die häufigsten Gefahren genannt. Keycloak hat 2 millionen zeilen, da kannst du aber auch nicht einfach sagen dass das sicher ist.)
+In dieser Arbeit ist SSO bei Webanwendungen vorgestellt worden. Dabei wurde speziell das OIDC Protokoll und Keycloak, sowie die Sicherheit dieser analysiert. Keycloak unterstützt OIDC und implementiert geeignete Gegenmaßnahmen, um sich und Keycloak's Benutzer vor den unter anderem in Sektion \ref{SSEB_Threat Model} Threat Model vorgestellten möglichen Angriffsszenarien bei Web SSO zu schützen. Aus diesem Grund kann Keycloak und dessen Adapter, wie in der von uns implementierten und in Sektion \ref{EB_Beispielwebanwendung} vorgestellten Beispielwebanwendung, verwendet werden, um Web SSO sicher zu implementieren.
 
-%TODO
-TODO
-
-
+% TODO: reicht das als 'zusammenfassung'
 
 
 %TODO
