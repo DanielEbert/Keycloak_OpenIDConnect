@@ -1,11 +1,9 @@
-# TODO restructure services
-# TODO change naming of the services - reactapp to client ...
 
 version: "3"
 
 services:
   postgres:
-    image: postgres
+    image: danielebert00/postgrestestedversion:1
     volumes:
       - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
     environment:
@@ -13,7 +11,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: danielebert00/keycloaktestedversion:1
     environment:
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
