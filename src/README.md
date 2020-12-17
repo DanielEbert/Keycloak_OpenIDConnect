@@ -1,5 +1,16 @@
 # How to install
 
+## Credentials
+
+VMWare VM:
+Username: user, Password: user  
+
+Admin Console:
+Username: admin, Password: iuq123  
+
+Keycloak example registered user:  
+Username: user, Password: user
+
 ## Requirements
 
 If you use the VM, the Requirements are already installed and set up so you can skip this step and continue with section 'Run' below.
