@@ -158,11 +158,6 @@ Das folgende Beispiel soll die Motivation für die Verfallszeit erläutern. Ein 
 
 Bei SSO kommen verschiedene Flows oder \textit{Authorization Grants} zum Einsatz. Wie in der Abgrenzung in Sektion \ref{EB_Abgrenzung} beschrieben, gibt es verschiedene Protokolle und auch mehrere Varianten innerhalb eines Protokolls. Deshalb werden in dieser Arbeit nicht alle Protokolle und Varianten erläutert. Diese Sektion soll kurz eine Übersicht über die wichtigsten Flows von OIDC bei Webanwendungen bieten, die auf den Authorization Grant von OAuth 2.0 aufbauen.
 
-%TODO werden sie erwäht? - meinst du die OIDC flows: implicit, authorization, resource owner password credentials, ...  oder oidc, saml
-% (ebert) nur die von oidc. und richtig, nicht alle werden erwähnt, nur die flows beim login
-% Da wir uns für oidc entschieden haben würde ich wenn du die anderen flows(implicit, ...) willst, könnten wir die hier kurz aufführen
-% (ebert) da wir schon mehr als 20 seiten haben denke ich das erwähnen wie im nächsten abschnitt reicht?
-
 Der \textit{Authorization Code Flow} wird in der nächsten Sektion ausführlich beschrieben, da dieser am besten zum Use Case unseres praktischen Beispiels passt und der meist verwendete Flow ist. Als Alternative zum Authorization Code Flow bietet das OpenID Connect Protokoll den \textit{Implicit Flow} und den \textit{Hybrid Flow} an, um einen Benutzer zu authentifizieren. Diese zwei Alternativen haben beide eine bessere Performance \cite[Implicit and Hybrid Flow]{EB26} und eine kürzere Latenz als der Authorization Code Flow \cite[Code Flow]{EB20}. Trotzdem sollten beide, zumindest mit Keycloak, aus Sicherheitsgründen nicht verwendet werden, da bei beiden Access Tokens über den Browserverlauf geleakt werden können \cite{EB26} \cite[Implicit Flow]{SSEB_keycloakDocs}.
 
 \subsection{Authorization Code Flow}
@@ -260,24 +255,6 @@ Den Nachteilen der Online Variante kann entgegengewirkt werden. Wie bereits in S
 
 
 \section{Threat Model} \label{SSEB_Threat Model}
-\begin{comment}
-%TODO remove at the end
-% Hauptquellen - steht fast das gleiche drin:
-% https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation
-
-% https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/threat_model_mitigation
-
-% In der ersten Quellen wird zusätzlich Host und Admin Endpoints and Console mit IP Restriction aufgeführt.
-
-% Buch OAuth 2.0 in Action: sortiert die Schwachstellen nach Client, Resources, Server, Token
-
-% https://www.groundai.com/project/on-the-security-of-modern-single-sign-on-protocols-second-order-vulnerabilities-in-openid-connect/2
-
-% https://www.nds.ruhr-uni-bochum.de/media/ei/veroeffentlichungen/2017/01/13/OIDCSecurity_1.pdf
-
-% Wäre das einfachste und möglicherweise das Beste
-% https://tools.ietf.org/html/rfc6749#section-10
-\end{comment}
 
 In dieser Sektion werden mögliche Schwachstellen des OpenID Connect Protokolls erläutert. Weiter wird aufgeführt, wie diese mitigiert werden können. Eine Liste potenzieller Schwachstellen und was gegen sie getan werden muss, kann in dem von der IETF herausgegebenen Dokument \textit{OAuth 2.0 Threat Model and Security Considerations} \cite{SSEB_RFC6819} gefunden werden. Die am häufigsten vorkommenden und schwerwiegendsten Schwachstellen werden hier erörtert. \cite{SSEB_ssoProtocols}
 
@@ -292,8 +269,6 @@ Wie bereits erklärt, ist OAuth 2.0 ein fester Bestandteil für das Delegieren v
 Die Häufigkeit dieser Schwachstelle wurde in einer Feldstudie mit über 149 beliebten Anwendungen untersucht \cite{SSEB_chen2014oauth}. Das Ergebnis ist, dass 89 Anwendungen (59,7\%) OAuth 2.0 für Authentifizierung verwendet haben und damit anfällig sind \cite{SSEB_chen2014oauth}. Diese Studie verdeutlicht die Schwere dieses Basis-Threats.
 
 Eine weitere Studie, die die Häufigkeit dieser Schwachstelle unterstreicht, wurde von Zhou et al. durchgeführt \cite{SSEB_184435}.
-
-%TODO eventuell die Pitfalls von OAuth 2.0 for authentication aufführen - OAuth 2.0 in action Seite 242, Kapitel 13.4 ff
 
 Daher muss OpenID Connect verwendet werden, welches auf OAuth 2.0 aufbaut, indem es Identitätsmanagement und Benutzerauthentifizierung bietet.
 
@@ -326,16 +301,11 @@ Es ist äußerst wichtig, bei der Auswahl der registrierten \texttt{redirect\_ur
 
 Der Hauptgrund dafür ist, dass Authorization Server unterschiedliche \texttt{redirect\_uri} Validierungsrichtlinien verwenden können. Die einzige zuverlässig sichere Validierungsmethode, die der Authorization Server anwenden sollte, ist die exakte Übereinstimmung \cite{SSEB_OAuth2inAction}. Alle anderen Lösungen, die auf Regular Expressions basieren oder Unterverzeichnisse des registrierten \texttt{redirect\_uri} zulassen, sind suboptimal und gefährlich \cite{SSEB_OAuth2inAction}.
 
-% Eventuell die allowing subdirectory method for matching the redirect_uri aufführen
-%TODO eventuell OAuth in Action Seite 128 - 134
-
 \subsubsection{Diebstahl von Tokens}
 
 Das Hauptziel eines Angreifers ist der Diebstahl eines Access Tokens. Mit dem Access Token könnte der Angreifer Operationen durchführen, für die er nicht autorisiert ist. 
 
 Access Token werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens im Header (\texttt{Authorization: Bearer <Access Token>}) gesendet, jedoch definiert RFC 6750 weitere Methoden \cite{SSEB_RFC6750}. Einer davon ist der URI-Abfrageparameter, der es ermöglicht Access Tokens im URI über dem Abfrageparameter \texttt{access\_token} zu senden. Diese Methode kann zum Stehlen von Access Tokens verwendet werden. 
-
-% TODO eventuell siehe OAuth in Action Seite 128 - 134
 
 Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Access Token offengelegt, da der Referrer die gesamte URL enthält  \cite{SSEB_OAuth2inAction}. Die Verwendung des Authorization Headers vermeidet diese Art von Problemen, da das Access Token nicht in der URL erscheint \cite{SSEB_OAuth2inAction}.
 
@@ -356,8 +326,6 @@ Die letzte Gegenmaßnahme, die ein Client implementieren kann, um jede Möglichk
 
 Daher muss das Access Token über den Authorization Header gesendet werden. In Keycloak wird die Authentifizierung über Authorization Header erzwungen \cite{SSEB_keycloakDocs}.
 
-% TODO Eventuell CORS noch hinzufügen - Seite 148 - 151
-
 \subsubsection{Token Replays}
 
 In einer vorherigen Sektion wurde gezeigt, wie es möglich ist, ein Access Token durch XSS zu stehlen. Selbst wenn die geschützte Ressource über HTTPS läuft, kann der Angreifer, sobald er das Access Token besitzt, auf die geschützte Ressource zugreifen. Aus diesem Grund ist es wichtig, ein Access Token zu haben, welches eine kurze Verfallszeit hat, um das Risiko des Token Replays zu minimieren. Selbst wenn es einem Angreifer gelingt, an ein Access Token zu gelangen, nimmt die Schwere des Angriffs ab, wenn dieses bereits abgelaufen ist oder kurz davorsteht. In der Sektion \ref{EB_Realms} wird gezeigt, wie die Verfallszeit des Access Tokens in Keycloak bestimmt werden kann.
@@ -374,19 +342,11 @@ Der Authorization Server ist die komplexeste Komponente im SSO- und ODIC-System,
 
 Für den Authorization Server gelten alle allgemeinen Sicherheitsmaßnahmen für den Einsatz sicherer Webserver. Besonders hervorzuheben sind Server-Logs, die Verwendung von TLS und eine sichere Hosting-Umgebung mit angemessenen Konto-Zugriffskontrollen.
 
-%TODO Eventuell die Basic Keycloak threats hinzufügen, wie IP/Port Restriction
-% https://www.keycloak.org/docs/latest/server_admin/index.html#threat-model-mitigation
-
 \subsubsection{Session Hijacking}
 
 In der Sektion \ref{EB_Authentifizierung_eines_Benutzers} wird erklärt, dass der Client einen Redirect-Schritt unternehmen muss, um an ein Access Token vom Authorization Server zu gelangen. Dieser Redirect veranlasst den Browser, eine Anfrage an den Client zu stellen, einschließlich des Authorization Codes.
 
-% Kann abweichen je nachdem ob die Client vertraulich sind oder nicht
-% Beispiel siehe OAuth in Action Seite 155
-% Clients müssen vertraulich sein, Clients in unserem Beispiel sind vertraulich
-
 Session Hijacking kann auftreten, wenn vertrauliche Clients verwendet werden. Bei diesert Art Clients verlässt der Authorization Code den Server und gelangt zum Benutzer. Dabei verbleibt der Authorization Code in der Browser-Historie.
-% (ebert) TODO: basti passt der obere absatz so (ist von mir)? den originalen absatz habe ich nicht ganz verstanden und deshalb angeändert. wir können auch den originalen wider verwenden
 
 Gelangt nun ein Angreifer auf den Rechner des Benutzers, kann sich dieser mit seinen eigenen Anmeldedaten anmelden, manipuliert jedoch den Redirect zum Client und injiziert den Authorization Code aus der Session des Benutzers, der im Browser-Verlauf gespeichert ist. Das Resultat ist, dass der Angreifer dann Zugriff auf die Ressource des ursprünglichen Benutzers hat.
 
@@ -398,8 +358,7 @@ Diese Gegenmaßnahme wird durch Keycloak unterstützt. Ein Authorization Code ka
 
 Bei der Verwendung des Authorization Code Flows \ref{EB_Authentifizierung_eines_Benutzers} kann der Client eine Redirect-URI über den Parameter \texttt{redirect\_uri} angeben. Wenn ein Angreifer den Wert des Redirect-URIs manipulieren kann, kann er den Authorization Server veranlassen, den Benutzer einer Ressource zu einem URI unter der Kontrolle des Angreifers mit dem Authorization Code des Angreifers umzuleiten. \cite{SSEB_OAuthAuthorizationSecurityConsiderations}
 
-Ein Angreifer kann einen Account bei einem Client erstellen und den Authorization Flow einleiten. Wenn der Benutzer des Angreifers an den Authorization Server gesendet wird, um Zugriff zu gewähren, greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers. Der Angreifer trickst dann den Benutzer einer Ressource aus, dem manipulierten Link zu folgen, um den Zugriff auf den Client zu autorisieren. \cite{SSEB_OAuthAuthorizationSecurityConsiderations}
-% TODO: (ebert) fehlt bei 'greift der Angreifer den vom Client bereitgestellten Authorization-URI und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers' noch ein wort? meinst du 'greift ... an'?
+Ein Angreifer kann einen Account bei einem Client erstellen und den Authorization Flow einleiten. Wenn der Benutzeraccount des Angreifers an den Authorization Server gesendet wird, um Zugriff zu gewähren, greift der Angreifer auf den vom Client bereitgestellten Authorization-URI zu und ersetzt den Redirect-URI des Clients durch einen URI unter der Kontrolle des Angreifers. Der Angreifer trickst dann den Benutzer einer Ressource aus, dem manipulierten Link zu folgen, um den Zugriff auf den Client zu autorisieren. \cite{SSEB_OAuthAuthorizationSecurityConsiderations}
 
 Am Authorization Server wird dann dem Opfer über einen Client eine gültige Anfrage gestellt, welche dieser autorisiert. Das Opfer wird dann an einen Ressourcen-Endpunkt unter der Kontrolle des Angreifers mit dem Authorization Code umgeleitet. Der Angreifer schließt den Authorization Flow ab, indem er den Authorization Code an den Client, unter Verwendung der ursprünglichen Redirect-URI, sendet. Der Client tauscht den Authorization Code mit einem Access Token und verknüpft es mit dem Client-Account des Angreifers, welcher nun Zugang zu den geschützten Ressourcen erhalten kann. \cite{SSEB_OAuthAuthorizationSecurityConsiderations}
 
@@ -481,9 +440,6 @@ Die \texttt{docker-compose.yml} Datei enthält die Konfiguration für Docker-Com
 
 Diese Konfiguration ist in der Datenbank bzw. dem \texttt{postgres\_data} Ordner gespeichert. Die Ordner \texttt{frontend1} und \texttt{frontend2} enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben im HTML identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner \texttt{service} zu finden.
 
-%TODO bei mir werden die Container nicht vom hub gepullt durch docker compose
-% für die rekostruktion: lösch die container lokal bei dir und dann ... up
-% (ebert) richtig, durch das 'build: ... dockerfile' wählt docker-compose up jetzt standardmäßig das lokale bauen aus und nicht das pullen. habe in der README das angepasst, jetzt sollte es passen (wenn man es nicht über die vm macht, wo die container bereits geclont sind, muss man docker-compose pull ausführen. wenn man manuell bauen will stehen auch instrukionen dafür dabei (man muss dafür die frontend packages installieren mit npm))
 Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen. Die Anleitung zum lokalen Bauen der Container Images ist ebenfalls in der src/README.md Datei des Repositories \cite{SSEB2}.
 
 Im src Ordner des geklonten Git Repositories \cite{SSEB1} kann der Befehl \texttt{docker-compose up} ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter \texttt{localhost:3000} und Frontend 2 unter \texttt{localhost:3001} erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Flows gezeigt, sowie näher erläutert. Die genaue Dokumentation zur Implementierung des Systems kann im Code über DocStrings, Kommentaren und einer HTML-Dokumentation nachgelesen werden.
