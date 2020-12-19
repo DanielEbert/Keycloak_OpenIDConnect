@@ -36,7 +36,7 @@ OAuth 2.0 allein ist kein Mechanismus, um festzustellen, wer ein Benutzer ist od
 
 Wird zum Beispiel in ein Hotel eingecheckt, erhält man eine Schlüsselkarte, mit der das zugewiesene Zimmer betreten werden kann. Die Schlüsselkarte sagt jedoch nichts darüber aus, wer der Hotelgast ist oder wie er sich an der Rezeption authentifiziert hat. Diese Karte kann für die Dauer des Aufenthalts für den Zugang zu dem Hotelzimmer verwendet werden. In ähnlicher Weise zeigt ein OAuth 2.0 Access Token nicht an, wer ein Benutzer ist. Der Token ist ein Schlüssel, welcher für den Zugriff auf Daten verwendet werden kann. \cite{SSEB_AuthorizationvsAuthentication}
 
-OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist. OIDC ist ein vollwertiges Authentifizierungs- und Autorisierungsprotokoll. OIDC macht auch starken Gebrauch von den \textit{JSON Web Token (JWT)}-Standards. Diese Standards definieren ein JSON-Format für Identitäts-Token und Möglichkeiten, diese Daten auf kompakte und webfreundliche Weise digital zu signieren und zu verschlüsseln \cite{SSEB_ssoProtocols}. OIDC ist ein offener Standard, welcher von der OpenID Foundation im Februar 2014 veröffentlicht wurde \cite{SSEB_OAuth2inAction}.
+OIDC ist ein Authentifizierungsprotokoll, das eine Erweiterung von OAuth 2.0 ist. OIDC ist ein vollwertiges Authentifizierungs- und Autorisierungsprotokoll. OIDC macht auch starken Gebrauch von den \textit{JSON Web Token (JWT)}-Standards. Diese Standards definieren ein JSON-Format für Identitäts-Token und Möglichkeiten, diese Daten auf kompakte und webfreundliche Weise digital zu signieren und zu verschlüsseln \cite{SSEB_RFC7519}. OIDC ist ein offener Standard, welcher von der OpenID Foundation im Februar 2014 veröffentlicht wurde \cite{EB4}.
 
 In dieser Arbeit wird nur das OIDC Protokoll betrachtet, da dieses im Gegensatz zu SAML 2.0 speziell für Webanwendungen entwickelt worden ist und das modernere Protokoll ist \cite[OpenID Connect vs. SAML]{SSEB_keycloakDocs}. Außerdem ist OIDC besser für HTML5 / JavaScript-Anwendungen geeignet, da es auf der Client-Seite einfacher zu implementieren ist als SAML 2.0. Da Token im JSON-Format vorliegen, sind sie mittels JavaScript leichter zu verarbeiten \cite{SSEB_ssoProtocols}.
 
@@ -79,7 +79,7 @@ Der \textit{OpenID Provider} kann Benutzer authentifizieren und Claims der Benut
 
 Es gibt weitere Endpunkte des OpenID Providers, wie zum Beispiel Endpunkte um \textit{ID}, \textit{Access} und \textit{Refresh Tokens} anzufordern, um einen Benutzer auszuloggen oder um die Signatur eines Token zu validieren \cite[Keycloak URI Endpoints]{SSEB_keycloakDocs}. OpenID Provider können Benutzer selbst oder über einen externen Identity Provider wie Google, Github oder Stack Overflow authentifizieren \cite{EB7} \cite[Social Identity Providers]{SSEB_keycloakDocs}. Dementsprechend werden die Accountdaten lokal oder bei dem externen Identity Provider gespeichert.
 
-Der OpenID Provider ist auch für das Verwalten der Clients verantwortlich. Zum Beispiel müssen sich Clients beim OpenID Provider registrieren, um am SSO teilzunehmen \cite[Client Registration]{EB26} \cite{EB57}. Zusätzlich kann der OpenID Provider festlegen, auf welche anderen Clients, z.B. Backend Services und auf die Informationen und Ressourcen, z.B. Claims, ein Client Zugriff hat \cite[Audience Support]{SSEB_keycloakDocs} \cite[ID Token]{EB4}. Das wird in der Beispielimplementierung in Sektion \ref{EB_Keycloak} näher erläutert.
+Der OpenID Provider ist auch für das Verwalten der Clients verantwortlich. Zum Beispiel müssen sich Clients beim OpenID Provider registrieren, um am SSO teilzunehmen \cite[Client Registration]{EB26} \cite{EB57}. Zusätzlich kann der OpenID Provider festlegen, auf welche anderen Clients, z.B. Backend Services, und auf welche Informationen und Ressourcen, z.B. Claims, ein Client Zugriff hat \cite[Audience Support]{SSEB_keycloakDocs} \cite[ID Token]{EB4}. Das wird in der Beispielimplementierung in Sektion \ref{EB_Keycloak} näher erläutert.
 
 \subsection{Tokens} \label{EB_Tokens}
 
@@ -142,7 +142,7 @@ Abgesehen von der ID des Benutzers, dem \texttt{sub} Claim, sollte der Access To
 }
 \end{lstlisting}
 
-Der \texttt{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat \cite[Requesting Claims]{EB4} \cite{EB7}. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \texttt{profile} Scope Zugriff auf die Benutzer Claims \texttt{name}, \texttt{family\_name}, \texttt{preferred\_username} und weitere beim UserInfo Endpunkt \cite[Requesting Claims]{EB4}. 
+Der \texttt{scope} Claim beschreibt sowohl welche Benutzer Claims über den UserInfo Endpunkt abgerufen werden können, als auch auf welche Ressourcen man mit dem Access Token Zugriff hat \cite[Requesting Claims]{EB4} \cite{EB7}. Ein Scope kann eine Menge von Claims beschreiben. Zum Beispiel hat man mit dem \texttt{profile} Scope Zugriff auf die Benutzer Claims \texttt{name}, \texttt{family\_name}, \texttt{preferred\_username} und Weitere beim UserInfo Endpunkt \cite[Requesting Claims]{EB4}. 
 
 Der \texttt{aud} (Audience) Claim gibt an, für welche Clients das Access Token bestimmt ist \cite[ID Token]{EB4}. Erhält ein Client ein Access Token und befindet sich dieser Client nicht in der \texttt{aud} Liste des Access Tokens, dann sollten keine geschützten Ressourcen an den Sender zurückgeschickt werden \cite{EB59}.
 
@@ -440,9 +440,9 @@ Die \texttt{docker-compose.yml} Datei enthält die Konfiguration für Docker-Com
 
 Diese Konfiguration ist in der Datenbank bzw. dem \texttt{postgres\_data} Ordner gespeichert. Die Ordner \texttt{frontend1} und \texttt{frontend2} enthalten den Source Code für die Frontend Applikationen. Die zwei Frontend Applikationen sind außer verschiedener Farben im HTML identisch. Backend 1 und 2 sind ebenfalls identisch. Ihr Source Code ist im Ordner \texttt{service} zu finden.
 
-Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum des jeweiligen Image ist im jeweiligen Source Folder der Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen. Die Anleitung zum lokalen Bauen der Container Images ist ebenfalls in der src/README.md Datei des Repositories \cite{SSEB2}.
+Für Keycloak und die Datenbank waren bereits Docker Container Images vorhanden. Für die Frontend und Backend Komponenten haben wir neue Docker Container Images erstellt. Diese haben wir im Dockerhub unter \cite{EB42} hochgeladen. Das Dockerfile zum Bauen des jeweiligen Image ist im Source Folder der jeweiligen Komponente. Die Images können, müssen aber nicht lokal gebaut werden. Mit Docker-Compose werden diese automatisch von Dockerhub heruntergeladen. Die Anleitung zum lokalen Bauen der Container Images ist ebenfalls in der src/README.md Datei des Repositories \cite{SSEB2}.
 
-Im src Ordner des geklonten Git Repositories \cite{SSEB1} kann der Befehl \texttt{docker-compose up} ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter \texttt{localhost:3000} und Frontend 2 unter \texttt{localhost:3001} erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Flows gezeigt, sowie näher erläutert. Die genaue Dokumentation zur Implementierung des Systems kann im Code über DocStrings, Kommentaren und einer HTML-Dokumentation nachgelesen werden.
+Im src Ordner des geklonten Git Repositories \cite{SSEB1} kann der Befehl \texttt{docker-compose up} ausgeführt werden, um alle Container zu starten. Nach circa einer Minute ist Frontend 1 im Browser unter \texttt{localhost:3000} und Frontend 2 unter \texttt{localhost:3001} erreichbar. Im Folgenden wird eine Übersicht der Implementierung und Konfiguration der Komponenten und Flows gezeigt, sowie näher erläutert. Die genaue Dokumentation zur Implementierung des Systems kann im Code, z.B. im Git Repository \cite{SSEB1} oder in der VM, über DocStrings, Kommentaren und einer Dokumentation nachgelesen werden.
 
 
 \subsection{Keycloak} \label{EB_Keycloak}
@@ -459,7 +459,7 @@ Für das Beispiel wurde ein neuer Realm mit dem Namen \texttt{Test} erstellt. In
 
 \subsubsection{Clients}
 
-In der linken Navigationsleiste der Security Admin Console kann unter \textit{Clients} alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: \texttt{frontend1, frontend2, service1, service2}. Die Konfiguration der Clients kann unter \texttt{Edit} angezeigt werden.
+In der linken Navigationsleiste der Security Admin Console können unter \textit{Clients} alle Clients des Realms angezeigt werden und neue Clients erstellt werden. Im Beispiel wurden die folgenden vier Clients erstellt: \texttt{frontend1, frontend2, service1, service2}. Die Konfiguration der Clients kann unter \texttt{Edit} angezeigt werden.
 
 \begin{figure}[!ht]
 	\centering
@@ -468,7 +468,7 @@ In der linken Navigationsleiste der Security Admin Console kann unter \textit{Cl
 	\label{fig:EB_Keycloak frontend1 Client Konfiguration}
 \end{figure}
 
-In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfiguration des \texttt{frontend1}-Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in \ref{fig:EB_Keycloak frontend1 Client Konfiguration}:
+In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfiguration des \texttt{frontend1}-Clients gezeigt. Die folgende Auflistung beschreibt wichtige Felder in Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration}:
 \begin{itemize}
 	\item \emph{Client ID:} \texttt{frontend1} ist die Client ID für Frontend 1.
 	
@@ -476,7 +476,7 @@ In Abbildung \ref{fig:EB_Keycloak frontend1 Client Konfiguration} ist die Konfig
 	
 	\item \emph{Client Protocol:} Legt das Protokoll OIDC fest, welches der Client bei der Kommunikation mit Keycloak verwendet.
 	
-	\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients für Web SSO beschrieben. Der Wert \textit{public} ist für Clients der ersten Art, die Frontend Applikationen. Backend 1 und 2 haben die Client ID \texttt{service1} und \texttt{service2}. Diese sind Clients der zweiten Art. Bei diesen wird der Access Type auf \texttt{bearer-only} gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
+	\item \emph{Access Type:} In Sektion \ref{EB_Client} wurden zwei Arten von Clients für Web SSO beschrieben. Der Wert \textit{public} ist für Clients der ersten Art, die Frontend Applikationen. Backend 1 und 2 haben die Client ID \texttt{service1} und \texttt{service2}. Diese sind Clients der zweiten Art. Bei diesen ist der Access Type auf \texttt{bearer-only} gesetzt. Dadurch können die Backend Services keinen Authorization Code Flow anstoßen.
 	
 	\item \emph{Valid Redirect URIs:} Hier können möglichst präzise Validierungsrichtlinien für Redirect URIs gesetzt werden, nach \ref{Registrierung_redirect_uri}.
 	
