@@ -70,6 +70,7 @@ The dependencies, which are installed with 'npm install', have a size of 2 GB. F
 
 Then the containers can be created with:
 ```console
+cd ..../sichere_webanwendungen/src/
 docker-compose up --build
 ```
 or, if you have not pulled them from dockerhub already, they are build locally with 'docker-compose up'.
