@@ -57,10 +57,11 @@ Otherwise it is possible that the keycloak container is in a bad state, i.e. it 
 As mentioned in the text, the Docker Images were built, uploaded to Dockerhub, and are automatically downloaded when 'docker-compose up' is executed. If you want to build the Docker Images for frontend 1 and frontend2 locally, you need to execute the following:
 ~~~console
 Install npm (e.g. with sudo apt install npm)
+cd ..../sichere_webanwendungen/src/
 cd frontend1
 npm install
 npm run build
-cd frontend2
+cd ../frontend2
 npm install
 npm run build
 ~~~
