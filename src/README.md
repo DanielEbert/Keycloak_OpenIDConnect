@@ -26,7 +26,7 @@ Run
 cd ..../sichere_webanwendungen/src/
 docker-compose pull
 ```
-'docker-compose pull' will pull the pre-built docker images from dockerhub. Optionally, you can skip this command, follow the steps below in section 'Build frontend1 and frontend2 Docker Images locally', and finally run 'docker-compose up', which will build all images except the keyloak and postgresql containers locally.
+'docker-compose pull' will pull the pre-built docker images from dockerhub. Optionally, you can skip this command, follow the steps below in section 'Build frontend1 and frontend2 Docker Images locally', and finally run 'docker-compose up', which will build all images except the keycloak and postgresql containers locally.
 
 ## Run
 
