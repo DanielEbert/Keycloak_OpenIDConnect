@@ -9,12 +9,12 @@ ansi-2020wise-scherer-ebert-konzept/**
 
 venv
 
-ansi-2020wise-ebert-scherer-ausarbeitung/**
+Seminar/**
 
-!ansi-2020wise-ebert-scherer-ausarbeitung/Images
-!ansi-2020wise-ebert-scherer-ausarbeitung/Images/**
-!ansi-2020wise-ebert-scherer-ausarbeitung/ebert-scherer-sso.tex
-!ansi-2020wise-ebert-scherer-ausarbeitung/ebert-scherer-sso.bib
-!ansi-2020wise-ebert-scherer-ausarbeitung/seminar-ebert-scherer.tex
-!ansi-2020wise-ebert-scherer-ausarbeitung/Quellen
-!ansi-2020wise-ebert-scherer-ausarbeitung/Quellen/**
+!Seminar/Images
+!Seminar/Images/**
+!Seminar/ebert-scherer-sso.tex
+!Seminar/ebert-scherer-sso.bib
+!Seminar/seminar-ebert-scherer.tex
+!Seminar/Quellen
+!Seminar/Quellen/**
