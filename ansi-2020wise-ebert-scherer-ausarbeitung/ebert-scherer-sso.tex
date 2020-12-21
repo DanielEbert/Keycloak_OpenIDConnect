@@ -1,6 +1,3 @@
-% !TeX root = seminar-ebert-scherer.tex
-% TODO: remove all comments
-
 \chapter{Single Sign On bei Webanwendungen}
 \chapterauthor{Daniel Ebert und Sebastian Scherer}
 
@@ -10,15 +7,11 @@ Durch das \textit{Single Sign-on (SSO)} muss sich ein Benutzer nur einmal unter 
 
 \subsection{Motivation}
 
-% Gute Graphiken für den Vortrag: https://www.renovodata.com/blog/2019/01/17/single-sign-on
-
 SSO ist vor allem in Webanwendungen hilfreich, da der Benutzer dort oft mit vielen verschiedenen Systemen interagieren muss \cite{EB34}. Ohne SSO müssten sich Benutzer bei jedem System individuell und erneut mit einem separaten Account einloggen \cite{EB34}. Somit müsste sich der Benutzer mehrere Passwörter merken und bei jedem System einen manuellen Anmeldemechanismus durchführen. Dies senkt die psychologische Akzeptanz der Benutzer für die Sicherheit, da heutige Anmeldeprozesse Multi-Faktor Authentifizierung verwenden, welche Zeit und Aufwand benötigen.
 
 In der Praxis wird daher in vielen Fällen dasselbe Passwort für mehrere Systeme verwendet. Werden dennoch unterschiedliche Passwörter verwendet, dann sind diese oft einfach gehalten, damit man sich alle Passwörter merken kann. Aus sicherheitstechnischer Sicht ist das nicht gut. Einfache Passwörter könnten z.B. durch Brute-Force oder durch Dictionary Attacks gebrochen werden. Immer dasselbe Passwort zu verwenden ist ebenfalls kritisch. Hat eines der Systeme einen Data Leak, dann könnten Angreifer Zugriff auf alle Systeme mit demselben Passwort erhalten. Dafür könnte zwar auch ein Password Manager verwendet werden \cite{EB34}. Bei diesen hat man allerdings immer noch das Problem der \textit{Psychological Acceptability} der Benutzer, da sich diese bei jedem System erneut registrieren und einloggen müssen. Hier schafft SSO Abhilfe.
 
 \subsection{Vorteile von SSO}
-
-%es gibt mehr Vorteile und Nachteile - wenn Zeit hinzufügen: https://www.renovodata.com/blog/2019/01/17/single-sign-on
 
 Neben den im letzten Absatz erläuterten Vorteil der \textit{Psychological Acceptability} im Hinblick auf die Benutzer hat SSO auch Vorteile für die Entwickler. Bei SSO müssen sich diese nur um ein System zur Authentifizierung kümmern \cite{EB34}. Weiter sorgt SSO für eine simplere Administration, da alle Benutzerdaten in einem System aufbewahrt werden \cite{EB34}. Außerdem sind die Benutzer eher dazu bereit, ein sichereres Passwort zu verwenden, wenn sie wissen, dass sie sich nur ein Passwort merken müssen.
 
@@ -168,10 +161,6 @@ Der \textit{Authorization Code Flow} ist der Empfohlene, um einen Benutzer zu au
 
 Der Flow arbeitet mit \textit{Uniform Resource Identifier (URI)-Redirects} \cite{EB12}. Außerdem muss der Client eingehende HTTP-Anfragen vom OpenID Provider erhalten können \cite{EB12}. Für diese Bedingungen eignet sich z.B. ein Webbrowser. Die Abbildung \ref{fig:EB_AuthorizationCodeFlow} zeigt eine Übersicht des Authorization Code Flows. Der \textit{Authorization Server}, \textit{Token}- und \textit{UserInfo-Endpoint} werden vom OpenID Provider bereitgestellt \cite{EB12} \cite[Keycloak URI Endpoints]{SSEB_keycloakDocs}.
 
-% https://www.keycloak.org/docs/latest/server_admin/index.html#authorization-code-flow
-% https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth
-% good step description: https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd
-% alternativ graphik, ist nicht besser: https://backstage.forgerock.com/docs/am/6/oidc1-guide/
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1\textwidth]{Images/EbertScherer/AuthorizationCodeFlow.png}
@@ -217,7 +206,6 @@ In Schritt 8 muss das ID Token validiert werden. Dazu gehört zum Beispiel das �
 
 Wie bereits in Sektion \ref{EB_AccessToken} erläutert, kann der ID Token nicht alle Benutzer Claims enthalten. Die durch den \texttt{scope} Claim des Access Tokens zugelassenen Benutzer Claims können abschließend optional über den UserInfo Endpunkt angefordert werden.
 
-% kurz erwähnen dass sich clients dynamisch oder alternativ dass admin das macht in openid provider? kurz?
 
 \subsubsection{Zugriff auf geschützte Ressourcen} \label{EB_Zugriff auf geschützte Ressourcen}
 
@@ -240,7 +228,7 @@ Zusätzlich muss das Access Token validiert werden. Grundsätzlich gibt es zwei 
 
 In Abbildung \ref{fig:EB_Access Token Verifizierung Offline Variante} ist eine Übersicht der Offline Variante gezeigt. Dabei wird der Public Key, dessen Private Key vom OpenID Provider für die Signatur des Access Tokens verwendet wurde, vom OpenID Provider abgerufen. In der Abbildung ist Keycloak der OpenID Provider und der Client wird als Service bezeichnet. Der Client kann die Signatur des Access Tokens mit dem Public Key validieren.
 
-Bei der Offline Variante wird der Public Key oft gecached \cite{EB32}. Das verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers \cite{EB32}. Allerdings kann das Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Benutzers durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. % theorietisch könnte client bescheid gegeben werden > (ebert) richtig
+Bei der Offline Variante wird der Public Key oft gecached \cite{EB32}. Das verringert die Latenz der Anfrage und die Auslastung des OpenID Provider Servers \cite{EB32}. Allerdings kann das Access Token dann nicht widerrufen und invalidiert werden. Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit. Trotzdem bleibt dabei ein Zeitraum, in dem der erlaubte Zugriff eines Benutzers durch seine bereits existierenden Access Tokens nicht eingeschränkt werden kann. Um dieses Problem zu lösen, kann die Online Variante zur Validierung verwendet werden. 
 
 \begin{figure}[!ht]
 	\centering
@@ -280,8 +268,6 @@ Der Client hat Geheimnisse, wie Access und Refresh Tokens, für die er sicherste
 
 \subsubsection{Cross-Site-Request-Forgery} \label{SSEB_Cross-Site-Request-Forgery}
 
-% Gute Erklärung: https://www.youtube.com/watch?v=_xrhWLqX1j0
-% Der Client erzeugt das Token nicht der Server? - Ist sonst anders
 
 Cross-Site-Request-Forgery (CSRF) tritt auf, wenn der Browser des Benutzers veranlasst wird eine unerwünschte Aktion durch eine Anfrage an eine Webanwendung auszuführen, auf der der Benutzer gerade per Cookie authentifiziert ist. Wenn ein Benutzer bei einer Anwendung angemeldet ist, kann ein Angreifer den Browser des Benutzers manipulieren, sodass er eine Anfrage stellt, an die das Cookie automatisch angehängt wird und die Anfrage als angemeldeter Benutzer ausgeführt wird. 
 
@@ -309,10 +295,6 @@ Access Token werden an Ressourcenserver meist durch Übergabe des Inhaber-Tokens
 
 Wenn ein Angreifer in der Lage ist einen Link zu dieser Zielseite zu platzieren, dann wird im Referer-Header das Access Token offengelegt, da der Referrer die gesamte URL enthält  \cite{SSEB_OAuth2inAction}. Die Verwendung des Authorization Headers vermeidet diese Art von Problemen, da das Access Token nicht in der URL erscheint \cite{SSEB_OAuth2inAction}.
 
-% \subsection{Client-Backend Schwachstellen}
-% Eventuell Name zu Geschütze Ressourcen Schwachstellen und die andere section zu client allgemein - am besten ganz weg
-% In dieser Sektionen sollen die Schwachstellen und Verteidigungen für Client-Backends, auch geschützter Ressourcenserver genannt, gezeigt werden. 
-% Die geschützten Ressourcen des Client-Backends sind in mehrfacher Hinsicht verwundbar. Die erste entsteht durch Endpunktschwachstellen und die zweite durch Token Replays.
 
 \subsubsection{XSS bei Endpunkten}
 
@@ -378,9 +360,6 @@ Daher erfordert Keycloak, dass alle Clients mindestens ein Redirect-URI-Muster r
 
 Die Schwachstellen der vorausgegangenen Sektionen hatten es meist zum Ziel ein Access Token oder einen Authorization Code zu erhalten. In dieser Sektion soll gezeigt werden welche Schwachstellen der Umgang mit den Tokens und Codes hat und wie diese Risiken minimiert werden können. 
 
-% \subsubsection{Bearer Token}
-% https://tools.ietf.org/html/rfc6750#section-5
-% https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/
 
 Die OAuth 2.0 und OIDC-Spezifikationen verwenden Bearer-Token, sodass jeder, der im Besitz des Tokens ist, dieses verwenden kann, unabhängig davon wer er ist. Diese Bearer verwenden alle Klartextzeichen und benötigen daher TLS als Grundlage für die Sicherheit. \cite{SSEB_OAuthAuthorizationSecurityConsiderations}
 
@@ -409,10 +388,6 @@ Gegen Token Replay muss die Verfallszeit des Tokens gering sein \cite{SSEB_RFC67
 
 \section{Umsetzung von SSO innerhalb einer Beispielwebanwendung} \label{EB_Beispielwebanwendung}
 
-%TODO Begriffe wie ressource server, clients, authorization server, access token mit einbauen
-% am einfachsten ist es du packst die draw io datei zu deinen bildern ins repo, dann kann ich es auch bearbeiten - hat zeit
-% (ebert) du hast recht, die begriffe müssen irgendwo mit rein. ich finde es schwierig die übersicht zu machen, weil wir das übersicht bild nicht zu detailliert machen sollten. ich habe die draw.io datei ins repo hochgeladen, vielleicht kannst du deine idee für die übersicht zeigen dann können wir nochmal darüber reden. vielleicht können wir auch unter dem übersicht bild einen absatz schreiben mit den begriffen, z.B. beim 'Zugriff auf geschützte Ressourcen' (rot) wird Access Token im Bearer Header mitgeschickt, blau verwendet Auth. Code Flow, green ist online token veri...
-% (ebert) update: habe einen absatz zur übersicht geschrieben, inklusive der begriffe wie ressource server, clients - damit sollte die übersicht so passen
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=.8\textwidth]{Images/EbertScherer/ArchitectureDiagram.png}
@@ -433,7 +408,6 @@ Alle Docker Container werden mit Docker-Compose gestartet und konfiguriert. Dock
 	\label{fig:EB_Struktur des Git-Verzeichnisses}
 \end{figure}
 
-%TODO wir müssen das Repo mit abgeben und dann darauf verweisen, wie es einen absatz weiter unten steht
 In Abbildung \ref{fig:EB_Struktur des Git-Verzeichnisses} ist die Struktur des src Ordners zu sehen, welcher die von uns erstellen Dateien dieser Beispielwebanwendung enthält. Dieser src Ordner ist Teil des Git Repositories, welches unter \cite{SSEB1} heruntergeladen werden kann ist. Dort ist in der Datei 'src/README.md' \cite{SSEB2} die Anleitung zum Installieren und Starten dieser Beispielwebanwendung, sowie die Anmeldeinformationen für die von uns erstelle VMWare VM, die Keycloak Admin Console und einen registrierten Beispielbenutzer der Webanwendung. In der VMWare VM ist, wie in der 'src/README.md' näher erläutert, dieses Repository bereits heruntergeladen und die erforderlichen Befehle zur Installation wurden bereits ausgeführt. In der VM kann die Beispielwebanwendung mit 'cd /home/user/sichere\_webanwendungen/src \&\& docker-compose up' gestartet werden.
 
 Die \texttt{docker-compose.yml} Datei enthält die Konfiguration für Docker-Compose. In \texttt{.env} wird der Pfad zum \texttt{postgres\_data} Ordner gesetzt, sowie das Adminpasswort für Keycloak. Keycloak ist in dieser Beispielwebanwendung bereits konfiguriert. Zum Beispiel sind Frontend 1 und 2 bereits in Keycloak als Clients eingetragen. 
