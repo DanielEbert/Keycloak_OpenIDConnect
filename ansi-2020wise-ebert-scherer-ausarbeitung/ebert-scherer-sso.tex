@@ -539,7 +539,7 @@ In \ref{fig:EB_Nicht Authentifiziert} ist eine Abbildung der Website von \texttt
 	\label{fig:EB_Nicht Authentifizierte Anfrage an Backend}
 \end{figure}
 
-In der oberen Navigationsleiste sind auf der rechten Seite zwei Buttons, über die sich Benutzer authentifizieren oder registrieren können. Für beides bietet der Keycloak Adapter Funktionen an, welche beim Klicken des jeweiligen Buttons ausgeführt werden. Beim Klicken des \texttt{Login} Buttons wird der Authorization Code Flow initiiert. Der Benutzer wird dann zu Keycloaks Authorization Endpunkt geleitet. Das ist in Abbildung \ref{fig:EB_Login Form des Authorization Endpunkts} dargestellt. In der Adresszeile sieht man die Addresse des Authorization Endpunkts und einen Teil des Query-Strings, der die Parameter des Authorization Requests enthält. Der Benutzer kann sich hier z.B. als Admin Benutzer mit 'admin:iuq123' (Username:Password), oder mit dem bereits registrierten Beispielbenutzer 'user:user' einloggen. Für beide Benuter sind unterschiedliche Lieblingsfarben als Attribute konfiguriert.
+In der oberen Navigationsleiste sind auf der rechten Seite zwei Buttons, über die sich Benutzer authentifizieren oder registrieren können. Für beides bietet der Keycloak Adapter Funktionen an, welche beim Klicken des jeweiligen Buttons ausgeführt werden. Wenn diese Buttons nicht angezeigt werden, muss im Browser herausgezoomt oder das Browser Fenster vergrößert werden. Beim Klicken des \texttt{Login} Buttons wird der Authorization Code Flow initiiert. Der Benutzer wird dann zu Keycloaks Authorization Endpunkt geleitet. Das ist in Abbildung \ref{fig:EB_Login Form des Authorization Endpunkts} dargestellt. In der Adresszeile sieht man die Addresse des Authorization Endpunkts und einen Teil des Query-Strings, der die Parameter des Authorization Requests enthält. Der Benutzer kann sich hier z.B. als Admin Benutzer mit 'admin:iuq123' (Username:Password), oder mit dem bereits registrierten Beispielbenutzer 'user:user' einloggen. Für beide Benuter sind unterschiedliche Lieblingsfarben als Attribute konfiguriert.
 
 \begin{figure}[!ht]
 	\centering
@@ -587,7 +587,11 @@ Durch die erfolgreichen Authentifizierung mit dem Authorization Code Flow hat Ke
 
 Die zwei Backend Services lauschen auf verschiedenen Ports, sind aber im Hinblick auf die Funktionsweise gleich. Sie sind in Python geschrieben und verwenden das Web MicroFramework \textit{Flask} \cite{EB48}. \texttt{Flask-CORS}, eine Erweiterung von Flask, wird verwendet, um CORS für die Sender aller eingehenden Anfragen zu erlauben \cite{EB49}. \texttt{PyJWT} implementiert den JSON Web Token (JWT) Standard (RFC 7519 \cite{SSEB_RFC7519}) \cite{EB51}. Das Backend verwendet PyJWT um Access Tokens zu decodieren.
 
-Eingehende Anfragen werden in zwei Schritten abgearbeitet. Im ersten Schritt wird der Access bzw. Bearer Token aus dem HTTP Authorization Header extrahiert. Schlägt dies fehl, z.B. wenn die Anfrage keinen HTTP Authorization Header enthält, dann wird der Text \texttt{FAILED} im HTTP Message Body mit Statuscode \texttt{402} zurückgegeben. Andernfalls wird der extrahierte Token an die in der folgenden Auflistung gezeigten Funktion übergeben.
+Eingehende Anfragen werden in zwei Schritten abgearbeitet. Im ersten Schritt wird der Access bzw. Bearer Token aus dem HTTP Authorization Header extrahiert. Schlägt dies fehl, z.B. wenn die Anfrage keinen HTTP Authorization Header enthält, dann wird der Text \texttt{FAILED} im HTTP Message Body mit Statuscode \texttt{402} zurückgegeben. Andernfalls wird der extrahierte Token an die in der Auflistung \ref{validateTokenFunction} gezeigten Funktion übergeben.
+
+Dabei wird der Token als erstes über die PyJWT Bibliothek dekodiert. Die Signatur des Tokens wird dort noch nicht validiert. Danach wird überprüft, ob der Token einen \texttt{aud} Claim enthält und ob die ID des jeweiligen Backend Clients im \texttt{aud} Claim enthalten ist. Die Motivation für diese Art der Überprüfung wurde in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} erläutert. Für die Validierung der Signatur wird die in Sektion \ref{EB_Validieren des Access Tokens} beschriebene Online Validierung eingesetzt, bei der der Token über Keycloak validiert wird. Dabei wird eine Anfrage an Keycloaks UserInfo Endpunkt mit dem Token im HTTP Authorization Header als Bearer Token gesendet. Bei valider Signatur liefert die Keycloak Anfrage den Statuscode \texttt{200} und die für den UserInfo Endpunkt und den Access Token zugelassenen Claims im HTTP Message Body zurück. 
+
+Die Funktion in Auflistung \ref{validateTokenFunction} gibt einen Tuple mit zwei Elementen zurück. Das erste Element wird als HTTP Message Body und das zweite Element als Statuscode an den Sender der Anfrage an das Backend zurückgesendet. Bei nicht erfolgreicher Validierung des Tokens wird der Statuscode \texttt{402} mit Fehlermeldung im HTTP Message Body zurückgegeben. Andernfalls wird die ID des Benutzers des Access Tokens und Statuscode \texttt{200} zurückgegeben.
 
 \begin{lstlisting}[caption=Token Validierung im Backend, captionpos=b, language=python, label=validateTokenFunction]
 def validate_token(token):
@@ -611,11 +615,6 @@ def validate_token(token):
   r_json = json.loads(r.text)
   return f'subject identifier (sub): {r_json["sub"]}', 200
 \end{lstlisting}
-
-Dabei wird der Token als erstes über die PyJWT Bibliothek dekodiert. Die Signatur des Tokens wird dort noch nicht validiert. Danach wird überprüft, ob der Token einen \texttt{aud} Claim enthält und ob die ID des jeweiligen Backend Clients im \texttt{aud} Claim enthalten ist. Die Motivation für diese Art der Überprüfung wurde in Sektion \ref{EB_Zugriff auf geschützte Ressourcen} erläutert. Für die Validierung der Signatur wird die in Sektion \ref{EB_Validieren des Access Tokens} beschriebene Online Validierung eingesetzt, bei der der Token über Keycloak validiert wird. Dabei wird eine Anfrage an Keycloaks UserInfo Endpunkt mit dem Token im HTTP Authorization Header als Bearer Token gesendet. Bei valider Signatur liefert die Keycloak Anfrage den Statuscode \texttt{200} und die für den UserInfo Endpunkt und den Access Token zugelassenen Claims im HTTP Message Body zurück. 
-
-Die Funktion \ref{validateTokenFunction} gibt einen Tuple mit zwei Elementen zurück und implementiert die zuvor beschriebene Vorgehensweise. Das erste Element wird als HTTP Message Body und das zweite Element als Statuscode an den Sender der Anfrage an das Backend zurückgesendet. Bei nicht erfolgreicher Validierung des Tokens wird der Statuscode \texttt{402} mit Fehlermeldung im HTTP Message Body zurückgegeben. Andernfalls wird die ID des Benutzers des Access Tokens und Statuscode \texttt{200} zurückgegeben.
-
 
 \section{Zusammenfassung}
 
