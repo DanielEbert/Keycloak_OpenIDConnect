@@ -92,7 +92,7 @@
 \setbeamerfont{framesource}{size=\tiny}
 \newcommand{\source}[1]{\begin{textblock*}{4cm}(8.2cm,8.1cm)
     \begin{beamercolorbox}[ht=0.5cm,right]{framesource}
-        \usebeamerfont{framesource}\usebeamercolor[fg]{framesource} Quelle: [{#1}]
+        \usebeamerfont{framesource}\usebeamercolor[fg]{framesource} Quelle: {#1}
     \end{beamercolorbox}
 \end{textblock*}}
 
@@ -117,7 +117,7 @@ Hochschule Aalen \\ % Your institution for the title page
 %\frametitle{Eröffnung}
 \begin{figure}
 \includegraphics[width=0.7\linewidth]{img/eröffnung.jpg}
-\source{1}
+\source{[1]}
 \end{figure}
 \end{frame}
 % Hallo mein Name ist Daniel Ebert. Ich möchte meine Präsentation mit einer Motivation beginnen. Und zwar hat man heutzutage vor allem bei Webanwendungen oft das Problem, dass Benutzer mit vielen >verschiedenen< Webanwendungen interagieren müssen. Wenn sich diese Benutzer bei jeder Webanwendung erneut mit einem separaten Account registrieren und einloggen müssen, dann kostet das Zeit und die Benutzer müssen sich für jede Webanwendung ein separates Passwort merken. Wenn sich Benutzer mehrere Passwörter merken müssen, dann werden oft entweder einfache Passwörter gewählt, die schnell durch z.B. Rainbow Tables oder Dictionary Attacks gebrochen werden können, oder es wird für jede Webanwendung das gleiche Passwort gewählt. Wenn dann eines dieser Webanwendungen einen Data Leak hat, dann haben Angreifer Zugriff auf alle Accounts des Benutzers auf allen Webanwendungen.
@@ -125,7 +125,7 @@ Hochschule Aalen \\ % Your institution for the title page
 \begin{frame}
 \titlepage % Print the title page
 \end{frame}
-% Die Lösung für dieses Problem ist das sogenannte Single Sign On und nach dieser Präsentation werdet Ihr wissen was es damit auf sich hat und wie ihr Single Sign On in euren Projekten verwenden könnt.
+% Als Lösung für dieses Problem kann das sogenannte Single Sign On eingesetzt werden und nach dieser Präsentation werdet Ihr wissen was es damit auf sich hat und wie ihr Single Sign On in euren Projekten verwenden könnt.
 
 \begin{frame}
 \frametitle{Overview} % Table of contents slide, comment this block out to remove it
@@ -137,21 +137,18 @@ Hochschule Aalen \\ % Your institution for the title page
 %	PRESENTATION SLIDES
 %----------------------------------------------------------------------------------------
 
-% TODO: cite, use same cites as in paper
-
 \section{Einleitung}
 
 \begin{frame}
-\frametitle{SSO}
+\frametitle{Single Sign On (SSO)}
 \begin{itemize}
-\item Benutzer muss sich nur einmal mit Authentifizierungsverfahrens authentifizieren
+\item Benutzer durchläuft ein Authentifizierungsverfahren
 \item Danach übernimmt SSO-Mechanismus das Authentifizieren
 \vspace{15pt}
 \begin{figure}
 \includegraphics[width=0.7\linewidth]{img/SSOoverview.jpg}
-\source{1}
+\source{[1], \cite{1}}
 \end{figure}
-
 \end{itemize}
 \end{frame}
 
@@ -159,16 +156,17 @@ Hochschule Aalen \\ % Your institution for the title page
 \frametitle{Beispiel SSO Use Case}
 \begin{itemize}
 \item Eine Gruppe von Webseiten nimmt am SSO teil
-\item Benutzer loggt sich auf einer dieser Website mit Passwort ein
-\item Danach wird Benutzer auf anderen Websiten automatisch eingeloggt
+\item Benutzer loggt sich auf einer dieser Webseiten mit seinen Anmeldedaten ein
+\item Dann wird der Benutzer auf anderen Webseiten automatisch eingeloggt
 \begin{figure}
 \includegraphics[width=0.7\linewidth]{img/SSOdiagram.png}
-\source{2}
+\source{[2]}
 \end{figure}
 \end{itemize}
 \end{frame}
 % jede dieser Webseiten stellt Dienste zur Verfügung, die für die authentifizierten und autorisierten Benutzer beschränkt ist
 % müssen auch nicht nur Web Apps sein, das können auch Ressourcenserver sein, die auf einem entfernten Server laufen und die über eine REST API z.B. Ressourcen bereitstellen
+% TODO: maybe better img? rm cloud
 
 \begin{frame}
 \frametitle{Vorteile}
@@ -187,24 +185,36 @@ Hochschule Aalen \\ % Your institution for the title page
 	\item Alle Benutzerdaten an einem Ort
 \end{itemize}
 \end{itemize}
+\source{\cite{2}}
 \end{frame}
-% Psychological Acceptability: Sicherheitsmechanismen sollten allenfalls minimale Behinderungen einführen. Ansonsten ignorieren Endbenutzer diese Sicherheitsmechanismen
-% Verschiedene passwörter merken führt zur Wahl einfacher Passwöter, hier hilft SSO bei dem man einen Benutzernamen und ein Passwort für mehrere Webanwendungen hat.
 
 \begin{frame}
 \frametitle{Nachteile}
 \begin{itemize}
 \item Single Point of Failure
 \begin{itemize}
-	\item Redundanz duch mehrere Keycloak Instanzen % TODO: Keycloak wurde hier noch nicht erklärt
+	\item Redundanz durch mehrere Instanzen
 \end{itemize}
 \item Bereits existierende Systeme an SSO anbinden kann schwierig sein
 \begin{itemize}
 	\item Keycloak Adapter vereinfachen Anbindung
 \end{itemize}
 \end{itemize}
+\vspace{15pt}
+\begin{figure}
+\centering
+\begin{minipage}{.4\textwidth}
+\centering
+\includegraphics[width=.8\linewidth]{img/noun_Domino Effect_2020716.png}
+\end{minipage}%
+\begin{minipage}{.4\textwidth}
+\centering
+\includegraphics[width=.6\linewidth]{img/5904.jpg}
+\end{minipage}
+\source{[14], [15], \cite{3}, \cite{4}}
+\end{figure}
+
 \end{frame}
-% Keycloak bietet fertige Adapter für verschiedene Systeme und Programmiersprachen an. Diese Adapter vereinfachen die Anbindung von Systemen am SSO. % TODO: noch ein satz dazu sagen?
 
 \begin{frame}
 \frametitle{Alternativen}
@@ -226,6 +236,7 @@ Hochschule Aalen \\ % Your institution for the title page
 	\item Alternativen: Okta, Auth0, Apereo CAS
 	\end{itemize}
 \end{itemize}
+\source{\cite{5}, \cite{6}}
 \end{frame}
 % Nicht vollständig
 % Es gibt verschiedene Möglichkeiten SSO umzusetzen.
@@ -233,8 +244,8 @@ Hochschule Aalen \\ % Your institution for the title page
 % OIDC und SAML 2.0 oder Kerberos
 % Keycloak. Keycloak unterstützt sowohl das OIDC als auch das SAML 2.0 Protokoll. In der Beispielanwendung wird Keycloak ausschließlich mit OIDC verwendet
 % Zusätzlich zu den SSO Features implementiert Keycloak auch Role Based Access Control. 
-% Die Wahl der Implementierung für das SSO System ist wichtiger als man zunächst denkt, auch wenn die zur Auswahl stehenden Implementierung alle dasselbe Protokoll wie z.B. OIDC unterstützen. Denn es ist gerade >nicht< so, dass jede Implementierung die das OIDC Protokoll unterstützt genau gleich funktioniert. Der Grund dafür ist, dass das OIDC Protokoll manche Features als optional markiert. Die SSO Implementierung kann dann entscheiden welche optionalen Features implementiert werden. Zusätzlich werden manche Entscheidungen, z.B. wie sich der Benutzer authentifizieren soll, also z.B. über Username und Passwort, mit Zwei Faktor Authentifizierung, und so weiter, der SSO Implementierung überlassen. Da kann es  dann zwischen SSO Implementierung Unterschiede geben.
-% Es ist auch so, dass die Implementierungen teilweise verschiedene oder teilweise nicht alle Sicherheitsfeatures enthalten. Das ist nicht immer schlecht, weil manchmal werden manche Sicherheitsfeatures aufgrund des Use Cases nicht benötigt. Aber da muss man dann halt schauen, welche Implementierung für seinen SSO Use Case infrage kommt, und bei unserem SSO für Webanwendungen ist Keycloak eine gute Wahl, wie wir dann auch später sehen werden.
+% Die Wahl der Implementierung für das SSO System ist wichtiger als man zunächst denkt, auch wenn die zur Auswahl stehenden Implementierung alle dasselbe Protokoll wie z.B. OIDC unterstützen. Denn es ist gerade >nicht< so, dass jede Implementierung die das OIDC Protokoll unterstützt genau gleich funktioniert. Der Grund dafür ist, dass das OIDC Protokoll manche Features als optional markiert. Die SSO Implementierung kann dann entscheiden welche optionalen Features implementiert werden. Zusätzlich werden manche Entscheidungen, z.B. wie sich der Benutzer authentifizieren soll, also z.B. über Username und Passwort, mit Zwei Faktor Authentifizierung, und so weiter, der SSO Implementierung überlassen. Da kann es dann zwischen SSO Implementierung Unterschiede geben.
+% Es ist auch so, dass die Implementierungen teilweise verschiedene oder teilweise nicht alle Sicherheitsfeatures enthalten. Das ist nicht immer schlecht, weil manchmal werden manche Sicherheitsfeatures aufgrund des Use Cases nicht benötigt. Aber da muss man dann halt schauen, welche Implementierung für seinen SSO Use Case infrage kommt. Bei unserem SSO für Webanwendungen ist Keycloak eine gute Wahl, weil sich Keycloak auf moderne Webanwendungen spezialisiert hat, wie wir dann auch später in der Beispielanwendung sehen werden.
 
 \section{Aufbau von OpenID Connect}
 
@@ -251,13 +262,13 @@ Hochschule Aalen \\ % Your institution for the title page
 \frametitle{Benutzer}
 \begin{itemize}
 \item Menschliche Teilnehmer
-\item Kann sich einloggen
-\item Benutzer hat Claims zugeordnet
+\item Kann sich mittels Authentifizierungsverfahrens authentifizieren
+\item Jeder Benutzer hat Claims
 \end{itemize}
 \vspace{15pt}
 \begin{figure}
 \includegraphics[width=0.2\linewidth]{img/usericon.png}
-\source{3}
+\source{[3], \cite{6}, \cite{7}}
 \end{figure}
 \end{frame}
 % usericon.webp
@@ -267,7 +278,7 @@ Hochschule Aalen \\ % Your institution for the title page
 \frametitle{Claims}
 \begin{itemize}
 \item Key-Value Paare
-\item Information über Benutzer, z.B. Name, Adresse, email
+\item Information über Benutzer, z.B. Name, Adresse, E-Mail
 \item Information über Authentifizierung, z.B. wann und bei wem hat Authentifizierung des Benutzers stattgefunden
 \item Beispiel Claims:
 	\begin{itemize}
@@ -277,7 +288,7 @@ Hochschule Aalen \\ % Your institution for the title page
 \end{itemize}
 \begin{figure}
 \includegraphics[width=.3\linewidth]{img/userdatafolder.png}
-\source{7}
+\source{[7], [16], \cite{7}}
 \end{figure}
 \end{frame}
 % 'iss' (Issuer) Claim: ID der Instanz, bei der sich der Benutzer authentifiziert hat
@@ -288,17 +299,17 @@ Drei Arten von Clients:
 \begin{enumerate}
 \item Ruft andere Clients/Services im Namen des authentifizierten Benutzers auf
 	\begin{itemize}
-	\item z.B. Frontend Anwendungen
+	\item z.B. Frontend Webanwendungen
 	\item Rufen geschützte Ressourcen von Backend Services ab
 	\end{itemize}
-\item Backend Services die Ressourcen bereitstellen
+\item Backend Services, die Ressourcen bereitstellen
 	\begin{itemize}
 	\item z.B. Ressourcenserver
-	\item Ressourcen beschränkt für authentifizierte und authorisierte Benutzer
+	\item Ressourcen beschränkt für authentifizierte und autorisierte Benutzer
 	\end{itemize}
 \item Native Anwendungen
 	\begin{itemize}
-	\item Laufen auf Gerät des Benutzers
+	\item Laufen auf dem Gerät des Benutzers
 	\item Für Web SSO nicht interessant
 	\end{itemize}
 \end{enumerate}
@@ -313,7 +324,7 @@ Drei Arten von Clients:
 \centering
 \includegraphics[width=.5\linewidth]{img/web-service-icon-9.jpg}
 \end{minipage}
-\source{4, 5}
+\source{[4], [5], \cite{8}, \cite{9}}
 \end{figure}
 
 \end{frame}
@@ -335,7 +346,7 @@ Drei Arten von Clients:
 \vspace{15pt}
 \begin{figure}
 \includegraphics[width=.5\linewidth]{img/keycloaklogo.png}
-\source{6}
+\source{[6], \cite{6}, \cite{7}}
 \end{figure}
 \end{frame}
 
@@ -343,7 +354,7 @@ Drei Arten von Clients:
 \frametitle{Tokens}
 \begin{itemize}
 \item Tokens im JWT-Format
-\item Erstellt und Signiert vom OpenID Provider
+\item Erstellt und signiert vom OpenID Provider
 \item Verschiedene Arten von Tokens:
 	\begin{itemize}
 	\item ID Token
@@ -353,7 +364,7 @@ Drei Arten von Clients:
 \item 3 teilige Struktur:
 \begin{figure}
 \includegraphics[width=1\linewidth]{img/jwttoken.png}
-\source{8}
+\source{[8], \cite{10}}
 \end{figure}
 \end{itemize}
 \end{frame}
@@ -366,7 +377,7 @@ Drei Arten von Clients:
 \begin{itemize}
 \item Enthält Claims über die Authentifizierung des Benutzers
 	\begin{itemize}
-	\item z.B. 'auth\_time' Claim: Wann hat Authentifizierung stattgefunden
+	\item z.B. 'auth\_time' Claim: Wann hat die Authentifizierung stattgefunden?
 	\end{itemize}
 \item Optional weitere Claims mit Informationen über den Benutzer
 \item Ist nur für den an der Authentifizierung des Benutzers beteiligten Client gedacht
@@ -374,32 +385,41 @@ Drei Arten von Clients:
 \end{itemize}
 \begin{figure}
 \includegraphics[width=.3\linewidth]{img/idtoken.png}
-\source{9}
+\source{[9], \cite{7}}
 \end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Access Token}
 \begin{itemize}
-\item Schlüssel für Ressourcen, welche für die authentifizierten und authorisierten Benutzer beschränkt ist
+\item Schlüssel für Ressourcen, welche für die authentifizierten und autorisierten Benutzer beschränkt ist
 \item Kann z.B. als Bearer Token im HTTP Authorization Header an Backend Services enthalten sein
 \item Sollte außer 'sub' Claim keine Informationen über Benutzer enthalten
 \item Informationen über Benutzer kann mit Access Token bei UserInfo Endpunkt angefordert werden
-\item Enthält 'scope' Claim
-	\begin{itemize}
-	\item Spezifiziert Ressourcen und Benutzer Claims
-	\item Mit Access Token Zugriff hat man auf Spezifiziertes Zugriff
-	\item Ressourcen bei Backend Services 
-	\item Benutzer Claims bei UserInfo Endpunkt
-	\end{itemize}
 \end{itemize}
+\vspace{15pt}
+\begin{figure}
+\includegraphics[width=.2\linewidth]{img/accesstokenicon.png}
+\source{[10], \cite{8}, \cite{6}, \cite{11}}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Access Token}
+\begin{itemize}
+\item Mit Access Token Zugriff hat man Zugriff auf:
+	\begin{itemize}
+	\item Ressourcen bei Backend Services 
+	\item Benutzer Claims bei UserInfo Endpunkt
+	\end{itemize}
+\item Enthält 'scope' Claim
+	\begin{itemize}
+	\item Spezifiziert Ressourcen und Benutzer Claims
+	\end{itemize}
+\end{itemize}
 \begin{figure}
-\includegraphics[width=.7\linewidth]{img/accesstokeniconfull.png}
-\source{10, 11}
+\includegraphics[width=.5\linewidth]{img/accesstokeniconfull.png}
+\source{[10], [11], \cite{8}, \cite{6}}
 \end{figure}
 \end{frame}
 % Wie gesagt, nicht jeder Schlüssel passt zu jedem Schloss => access token nur für bestimmte (scope claim) ressourcen und benutzer claims
@@ -417,7 +437,7 @@ Drei Arten von Clients:
 \vspace{25pt}
 \begin{figure}
 \includegraphics[width=.2\linewidth]{img/Refreshicon.png}
-\source{12}
+\source{[12], \cite{10}, \cite{7}, \cite{8}}
 \end{figure}
 \end{frame}
 % Optional neue Tokens mit weniger Rechten für z.B. Access Token an weniger vertrauenswürdigen client
@@ -444,6 +464,7 @@ Drei Arten von Clients:
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow1.png}
+\source{[3], [4], [5], \cite{7}}
 \end{figure}
 \end{frame}
 
@@ -467,6 +488,7 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow2.png}
+\source{[3], [4], [5], \cite{7}}
 \end{figure}
 \end{frame}
 % Das ist wichtig, denn im nächsten Schritt, bei der authentifizierung des Benutzers, gibt der Benutzer z.B. sein Passwort ein. Da das nicht auf der Seite des Clients passiert, sind die Anmeldeinformationen des Benutzers vom Client abgeschirmt. Der Client arbeitet nur mit Tokens und nicht mit Anmeldeinformationen wie Benutzername und Passwort.
@@ -476,6 +498,7 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow3.png}
+\source{[3], [4], [5], \cite{7}}
 \end{figure}
 \end{frame}
 
@@ -484,6 +507,7 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow4.png}
+\source{[3], [4], [5], \cite{7}}
 \end{figure}
 \end{frame}
 % Durch die POST Anfrage werden die Tokens im HTTP Response Body zurückgegeben. Dadurch werden sie nicht dem Browser ausgesetzt. Um potenzielle Replay Angriffe zu verhindern, kann dieser Authorization Code nur einmal verwendet werden und hat eine sehr kurze Verfallszeit
@@ -493,6 +517,7 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow5.png}
+\source{[3], [4], [5], \cite{7}}
 \end{figure}
 \end{frame}
 % Danach noch ID Token validieren
@@ -500,11 +525,12 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{frame}
 \frametitle{Zweite Authentifizierung}
 \begin{itemize}
-\item Nach erster erfolgreicher Authentifizierung wird Cookie mit ID Token für Keycloak's Authorization Endpunkt gesetzt
+\item Nach erster erfolgreicher Authentifizierung wird Cookie mit ID Token für Keycloaks Authorization Endpunkt gesetzt
 \end{itemize}
 \begin{figure}
 \centerfloat
 \includegraphics[width=1.1\linewidth]{img/authflow6.png}
+\source{[3], [4], [5], \cite{7}, \cite{12}}
 \end{figure}
 \end{frame}
 
@@ -517,6 +543,11 @@ GET https://keycloak/auth/realms/.../auth?
 \item Einschränken der abrufbaren Ressourcen und Benutzer Claims durch 'scope' und Audience Claims des Access Tokens
 \item Empfänger muss 'scope' und Audience Claims überprüfen
 \end{itemize}
+\vspace{15pt}
+\begin{figure}
+\includegraphics[width=1\linewidth]{img/microservice.png}
+\source{[4], [5], \cite{8}, \cite{13}}
+\end{figure}
 \end{frame}
 % Empfänger der HTTP Anfrage mit dem Access Token muss 'scope' und Audience Claims überprüfen, und das, bevor er die Ressourcen und Benutzer Claims zurücksendet.
 
@@ -524,13 +555,13 @@ GET https://keycloak/auth/realms/.../auth?
 \frametitle{Validieren des Access Tokens - Offline Variante}
 \begin{figure}
 \includegraphics[width=.7\linewidth]{img/VerifyAccessTokenOffline.PNG}
-\source{13}
+\source{[13], \cite{10}}
 \end{figure}
 \begin{itemize}
 \item Public Key gecached
 \item Verringerte Latenz
 \item Verringerte Auslastung des Keycloak Servers
-\item Access Token kann nicht wiederrufen und invalidiert werden
+\item Access Token kann nicht widerrufen und invalidiert werden
 \end{itemize}
 \end{frame}
 % Aus diesem Grund haben Access Tokens im OpenID Connect Protokoll eine kurze Verfallszeit
@@ -539,12 +570,12 @@ GET https://keycloak/auth/realms/.../auth?
 \frametitle{Validieren des Access Tokens - Online Variante}
 \begin{figure}
 \includegraphics[width=.5\linewidth]{img/VerifyAccessTokenOnline.PNG}
-\source{13}
+\source{[13], \cite{10}}
 \end{figure}
 \begin{itemize}
 \item Höhere Latenz
 \item Höhere Auslastung des Keycloak Servers
-\item Access Token kann wiederrufen und invalidiert werden
+\item Access Token kann widerrufen und invalidiert werden
 \end{itemize}
 \end{frame}
 
@@ -574,23 +605,24 @@ GET https://keycloak/auth/realms/.../auth?
 \begin{itemize}
 \item Cross-Site-Request-Forgery (CSRF)
 	\begin{itemize}
-	\item Z.B. Angreifer sendet gefälschte Authentifizierungsantwort an Client's redirect URI
+	\item z.B. Angreifer sendet gefälschte Authentifizierungsantwort an Clients redirect URI
 	\item State Token (Anti-CSRF Token)
 	\end{itemize}
 \item Registrierung der redirect\_uri
 	\begin{itemize}
 	\item Angreifer gibt sich als Client aus
-	\item Möglich wenn redirect\_uri zu unspezifisch
+	\item Möglich, wenn redirect\_uri zu unspezifisch
 	\end{itemize}
 \item Diebstahl von Tokens 
 	\begin{itemize}
-	\item Z.B. durch XSS
+	\item z.B. durch XSS
 	\end{itemize}
 \item OIDC frei von Kryptographie
 	\begin{itemize}
 	\item Verwendung von TLS voraussetzen, z.B. mit HSTS
 	\end{itemize}
 \end{itemize}
+\source{\cite{9}, \cite{6}, \cite{8}}
 \end{frame}
 % A CSRF attack against the client's redirection URI allows an attacker to inject its own authorization code or access token, which can result in the client using an access token associated with the attacker's protected resources rather than the victim's (e.g., save the victim's bank account information to a protected resource controlled by the attacker). That value allows you to prevent the attack by confirming that the value coming from the response matches the one you sent.
 % It prevents an attack where the attacker produces a fake authentication response, e.g. as part of the Basic Client Profile by sending a code to the Client's redirect URI. For example: after phishing the user an attacker could inject a stolen code that would be associated with the current user in this way. The state correlates request and response so an unsolicited crafted response is not possible without knowing the state parameter that was used in the request.
@@ -605,10 +637,11 @@ GET https://keycloak/auth/realms/.../auth?
 	\end{itemize}
 \item Session Hijacking
 	\begin{itemize}
-	\item Z.B. Authorization Code aus Browser-Verlauf auslesen
+	\item z.B. Authorization Code aus Browser-Verlauf auslesen
 	\item Deshalb darf Authorization Code nur einmal eingelöst werden %für tokens und ist danach ungültig
 	\end{itemize}
 \end{itemize}
+\source{\cite{8}, \cite{6}}
 \end{frame}
 
 \begin{frame}
@@ -624,49 +657,172 @@ GET https://keycloak/auth/realms/.../auth?
 	\end{itemize}
 \item Token Redirect
 	\begin{itemize}
-	\item Empfänger ID im Token % TODO: was ist das?
+	\item Empfänger ID (Audience Claim) im Token
 	\end{itemize}
 \item Token Disclosure
 	\begin{itemize}
 	\item Token selbst könnte sensible Informationen enthalten
 	\end{itemize}
 \end{itemize}
+\source{\cite{13}, \cite{8}, \cite{6}}
 \end{frame}
 % Token Replay: Sobald eine Anfrage mit Access Key geknackt ist, kann Access Key vom Angreifer wiederverwendet werden (vorrausgesetzt nicht Token abgelaufen). Nicht nur Inhalt der nachricht, z.B. Ressource wird offengelegt, sondern token kann auch weiterverwendet werden für Ressourcen die vom Client nie angefordert wurden.
+% Ein Angreifer verwendet ein Token, das für einen bestimmten Ressourcenserver generiert wurde, um Zugriff auf einen anderen Ressourcenserver zu erhalten Hierbei glaubt das Opfer fälschlicherweise, dass das Token für es gültig ist.
 
 \section{Demo von SSO innerhalb einer Beispielwebanwendung}
 
 \begin{frame}
-\frametitle{Notiz an Herr Professor Karg}
+\frametitle{Notiz an Herrn Professor Karg}
 \begin{itemize}
-\item Notiz an Herr Professor Karg: Abschließend folgt noch eine Demo der implementierten Beispielwebanwendung in der VM. Vom Inhalt wird diese Demo ungefähr so sein wie das Kapitel 1.4 "Umsetzung von SSO innerhalb einer Beispielwebanwendung" unserer Ausarbeitung.
+\item Notiz an Herrn Professor Karg: Abschließend folgt noch eine Demo der implementierten Beispielwebanwendung in der VM. Vom Inhalt wird diese Demo ungefähr so sein wie das Kapitel 1.4 "Umsetzung von SSO innerhalb einer Beispielwebanwendung" unserer Ausarbeitung.
 \end{itemize}
 \end{frame}
 
-% TODO: eventuell zusammenfassung slide
+\begin{frame}
+\frametitle{Überblick der Beispielwebanwendung}
+\begin{figure}
+\includegraphics[width=.7\linewidth]{img/ArchitectureDiagram.png}
+\end{figure}
+\end{frame}
+
+\section{Zusammenfassung}
+
+\begin{frame}
+\frametitle{Zusammenfassung}
+\begin{itemize}
+\item Benutzer durchläuft ein Authentifizierungsverfahren
+\item Danach automatische Authentifizierung durch SSO-Mechanismus
+\item Drei Rollen bei OpenID Connect:
+	\begin{itemize}
+	\item Benutzer: Menschlicher Teilnehmer
+	\item Client: z.B. Webanwendungen oder Ressourcenserver, die am SSO teilnehmen
+	\item OpenID Provider: Authentifiziert Benutzer, stellt Endpunkte bereit
+	\end{itemize}
+\item Drei Arten von Tokens bei OpenID Connect:
+	\begin{itemize}
+	\item ID Token: Informationen über Authentifizierung des Benutzers 
+	\item Access Token: Schlüssel für Ressourcen und Benutzerinformationen
+	\item Refresh Token: Anfordern neuer Tokens
+	\end{itemize}
+\end{itemize}
+\end{frame}
 
 \begin{frame}
 \frametitle{Quellen Teil 1}
-\begin{itemize}
-\item [1] https://www.renovodata.com/blog/2019/01/17/single-sign-on
-\item [2] https://insready.com/en/blog/single-sign-using-oauth2-and-jwt-distributed-architecture
-\item [3] https://commons.wikimedia.org/wiki/File:User\_icon\_2.svg
-\item [4] https://thenounproject.com/term/web-application/3085910/
-\item [5] https://icon-library.com/icon/web-service-icon-9.html
-\item [6] https://design.jboss.org/keycloak/logo/images/ keycloak\_logo\_600px.png
-\end{itemize}
+\footnotesize{
+\begin{thebibliography}{99}
+\bibitem[Mar20]{1} Margaret Rouse (2020)
+\newblock single sign-on (SSO)
+\newblock \emph{url:} \url{https://searchsecurity.techtarget.com/definition/single-sign-on} (besucht am 01.12.2020)
+
+\bibitem[BK16]{2} Tayibia Bazaz et al. (2016)
+\newblock A Review on Single Sign on Enabling Technologies and Protocols
+\newblock \emph{International Journal of Computer Applications} 151, p. 18-25
+
+\bibitem[Mat20]{3} Mattia Panzeri et al. (2020)
+\newblock @react-keycloak/web
+\newblock \emph{url:} \url{https://www.npmjs.com/package/@react-keycloak/web} (besucht am 29.11.2020)
+
+\bibitem[Red20a]{4} Redhat. Inc (2020)
+\newblock Server Administration Guide - Red Hat Single Sign-On 7.0.
+\newblock \emph{url:} \url{https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.0/html/server_administration_guide/index} (besucht am 25.11.2020)
+\end{thebibliography}
+}
 \end{frame}
 
 \begin{frame}
 \frametitle{Quellen Teil 2}
+\footnotesize{
+\begin{thebibliography}{99}
+\bibitem[RR12]{5} Vedala Radha und D. Reddy (2012)
+\newblock A Survey on Single Sign-On Techniques
+\newblock \emph{Procedia Technology} 4, S. 134-139
+
+\bibitem[Red20b]{6} Redhat. Inc (2020)
+\newblock Server Administration Guide
+\newblock \emph{url:} \url{https://www.keycloak.org/docs/latest/server_admin/index.html} (besucht am 28. 11. 2020)
+
+\bibitem[N S14]{7} N. Sakimura et al. (2014)
+\newblock OpenID Connect Core 1.0.
+\newblock \emph{url:} \url{https://openid.net/specs/openid-connect-core-1_0.html}
+
+\bibitem[Har12]{8} D. Hardt (2012)
+\newblock The OAuth 2.0 Authorization Framework
+\newblock \emph{url:} \url{https://tools.ietf.org/html/rfc6749}
+\end{thebibliography}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quellen Teil 3}
+\footnotesize{
+\begin{thebibliography}{99}
+\bibitem[RS17]{9} Justin Richer und Antonio Sanso (2017)
+\newblock OAuth 2 in Action
+\newblock \emph{1. Aufl. Shelter Island, NY 11964:} Manning Publications
+
+\bibitem[JBS15]{10} M. Jones, J. Bradley und N. Sakimura (2015)
+\newblock JSON Web Token (JWT)
+\newblock \emph{RFC 7519. RFC Editor,} S. 1-30 \emph{url:} \url{https://www.rfc-editor.org/rfc/rfc7519.txt}
+
+\bibitem[Ide20]{11} IdentityServer (2020)
+\newblock IdentityServer3 - Terminology
+\newblock \emph{url:} \url{https://identityserver.github.io/Documentation/docsv2/overview/terminology.html} (besucht am 29.11.2020)
+
+\bibitem[Jan16]{12} Jannik Hüls (2016)
+\newblock Single Sign-On mit Keycloak als OpenID Connect Provider
+\newblock \emph{url:} \url{https://blog.codecentric.de/2016/08/single-sign-mit-keycloak-als-openid-connect-provider/} (besucht am 29.11.2020)
+\end{thebibliography}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quellen Teil 4}
+\footnotesize{
+\begin{thebibliography}{99}
+\bibitem[JH12]{13} M. Jones und D. Hardt (2012)
+\newblock The OAuth 2.0 Authorization Framework: Bearer Token Usage
+\newblock \emph{RFC 6750. RFC Editor,} S. 1–18 \emph{url:} \url{https://tools.ietf.org/html/rfc6750}
+
+\bibitem[Ami19]{14} Amin Saqi (2019)
+\newblock A Survey on SSO Authentication Protocols: Security and Performance
+\newblock \emph{url:} \url{https://medium.com/@aminsaqi/a-survey-on-sso-authentication-protocols-security-and-performance-287dcb634bdd} (besucht am 29.11.2020)
+\end{thebibliography}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quellen (Abbildungen) Teil 5}
 \begin{itemize}
-\item [7] https://upload.wikimedia.org/wikipedia/commons/5/59/ OneDrive\_Folder\_Icon.svg; user data icon by Mohamad Arif Prasetyo from the Noun Project
-\item [8] https://www.toptal.com/web/cookie-free-authentication-with-json-web-tokens-an-example-in-laravel-and-angularjs
-\item [9] https://iconarchive.com/show/job-seeker-icons-by-inipagi/id-card-icon.html
-\item [10] https://de.cleanpng.com/png-jry6v5/
-\item [11] https://thenounproject.com/search/?q=resource\&i=2979093 resource by Hrbon from the Noun Project
-\item [12] https://commons.wikimedia.org/wiki/File:Refresh\_icon.svg
-\item [13] https://www.youtube.com/watch?v=mdZauKsMDiI
+\item [1] https://www.renovodata.com/blog/2019/01/17/single-sign-on (besucht am 23.12.2020)
+\item [2]  https://insready.com/en/blog/single-sign-using-oauth2-and-jwt-distributed-architecture von Jingsheng Wang (besucht am 17.12.2020)
+\item [3] https://commons.wikimedia.org/wiki/File:User\_icon\_2.svg (besucht am 23.12.2020)
+\item [4] https://thenounproject.com/term/web-application/3085910/ by Justin Blake from Noun Project (besucht am 23.12.2020)
+\item [5] https://icon-library.com/icon/web-service-icon-9.html (besucht am 1.01.2021)
+\item [6] https://design.jboss.org/keycloak/logo/images/ keycloak\_logo\_600px.png von Keycloak (besucht am 1.01.2021)
+\item [7] https://upload.wikimedia.org/wikipedia/commons/5/59/ OneDrive\_Folder\_Icon.svg (besucht am 2.01.2021)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quellen (Abbildungen) Teil 6}
+\begin{itemize}
+\item [8] https://www.toptal.com/web/cookie-free-authentication-with-json-web-tokens-an-example-in-laravel-and-angularjs von Tino Tkalec (besucht am 2.01.2021)
+\item [9] https://iconarchive.com/show/job-seeker-icons-by-inipagi/id-card-icon.html von Inipagi Studio (besucht am 2.01.2021)
+\item [10] https://de.cleanpng.com/png-jry6v5/ (besucht am 2.01.2021)
+\item [11] https://thenounproject.com/search/?q=resource\&i=2979093 resource by Hrbon from the Noun Project (besucht am 2.01.2021)
+\item [12] https://commons.wikimedia.org/wiki/File:Refresh\_icon.svg (besucht am 2.01.2021)
+\item [13] https://www.youtube.com/watch?v=mdZauKsMDiI von Stian Thorgersen (besucht am 2.01.2021)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Quellen (Abbildungen) Teil 7}
+\begin{itemize}
+\item [14] https://thenounproject.com/term/domino-effect/2020716/ by Oleksandr Panasovskyi from the Noun Project (besucht am 2.01.2021)
+\item [15] https://www.freepik.com/free-vector/illustration-jigsaw-icon\_2606569.htm Designed by rawpixel.com / Freepik (besucht am 3.01.2021)
+\item [16] https://thenounproject.com/pentool.knight/uploads/?i=1393568 by Mohamad Arif Prasetyo from the Noun Project (besucht am 3.01.2021)
+\item [17] https://developers.redhat.com/blog/wp-content/uploads/2019/11/keycloak3-1024x576.png von Abhishek Koserwal (besucht am 3.01.2021)
 \end{itemize}
 \end{frame}
 
@@ -679,7 +835,6 @@ GET https://keycloak/auth/realms/.../auth?
 \end{frame}
 \end{comment}
 
-
 %------------------------------------------------
 
 \begin{frame}
@@ -687,6 +842,29 @@ GET https://keycloak/auth/realms/.../auth?
 \end{frame}
 
 %----------------------------------------------------------------------------------------
+
+\begin{frame} % TODO noch weitere slides, z.B. CSRF. auch bilder
+\frametitle{Notiz an Herrn Professor Karg}
+\begin{itemize}
+\item Notiz an Herrn Professor Karg: Die folgenden Seiten sind nicht Teil der normalen Präsentation, sondern werden nur für die Beantwortung von möglichen und passenden Fragen von den Zuhörern verwendet.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extra - Authorization Code Flow im Detail}
+\begin{figure}
+\includegraphics[width=.9\linewidth]{img/AuthorizationCodeFlow.PNG}
+\source{[14]}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extra - Client Adapter}
+\begin{figure}
+\includegraphics[width=.9\linewidth]{img/keycloakadapter.png}
+\end{figure}
+\source{[17]}
+\end{frame}
 
 \end{document}
 
